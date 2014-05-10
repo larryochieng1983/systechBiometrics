@@ -71,7 +71,6 @@ public class InfoDialog {
 			/** Comment for <code>serialVersionUID</code> */
 			private static final long serialVersionUID = 1L;
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				closeButtonAction();
 			}

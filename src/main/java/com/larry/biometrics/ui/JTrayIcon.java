@@ -133,16 +133,13 @@ public class JTrayIcon extends TrayIcon {
 	 */
 	private static PopupMenuListener popupMenuListener = new PopupMenuListener() {
 
-		@Override
 		public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {
 		}
 
-		@Override
 		public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
 			window.setVisible( true );
 		}
 
-		@Override
 		public void popupMenuCanceled( PopupMenuEvent e ) {
 			window.setVisible( false );
 		}

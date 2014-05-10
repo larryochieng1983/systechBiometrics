@@ -6,19 +6,28 @@
 
 package com.larry.biometrics.ui;
 
-import SecuGen.FDxSDKPro.jni.*;
-import java.awt.*;
-import java.awt.image.*;
-import java.util.ResourceBundle;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+
+import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
+import SecuGen.FDxSDKPro.jni.SGFDxDeviceName;
+import SecuGen.FDxSDKPro.jni.SGFDxErrorCode;
+import SecuGen.FDxSDKPro.jni.SGFingerInfo;
+import SecuGen.FDxSDKPro.jni.SGFingerPosition;
+import SecuGen.FDxSDKPro.jni.SGImpressionType;
+import SecuGen.FDxSDKPro.jni.SGPPPortAddr;
 
 import com.larry.biometrics.util.ApplicationInfo;
+import com.larry.biometrics.util.ApplicationInfoImpl;
 import com.larry.biometrics.util.BiometricsUtil;
+import com.larry.biometrics.util.BiometricsUtilImpl;
+import com.larry.biometrics.util.FundMasterConfiguration;
 
 /**
  * 
- * @author Administrator
+ * @author Otieno lawrence
  */
 public class MainWindow extends javax.swing.JFrame {
 
@@ -29,7 +38,6 @@ public class MainWindow extends javax.swing.JFrame {
 	// Private instance variables
 	private long deviceName;
 	private long devicePort;
-	private JSGFPLib fplib = null;
 	private long ret;
 	private boolean bLEDOn;
 	private byte[] regMin1 = new byte[400];
@@ -44,17 +52,18 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean v1Captured = false;
 	private ApplicationInfo applicationInfo;
 	private BiometricsUtil biometricsUtil;
-	private ResourceBundle bundle;
+	private FundMasterConfiguration config;
 
 	/** Creates new form */
 	public MainWindow() {
+		biometricsUtil = new BiometricsUtilImpl();
+		applicationInfo = new ApplicationInfoImpl();
+		config = new FundMasterConfiguration();
 		bLEDOn = false;
 		initComponents();
 		disableControls();
 		this.jComboBoxRegisterSecurityLevel.setSelectedIndex(4);
 		this.jComboBoxVerifySecurityLevel.setSelectedIndex(4);
-		bundle = ResourceBundle.getBundle("resources");
-		setBundle(bundle);
 	}
 
 	private void disableControls() {
@@ -154,8 +163,8 @@ public class MainWindow extends javax.swing.JFrame {
 		jLabelSpacer1 = new javax.swing.JLabel();
 		jLabelSpacer2 = new javax.swing.JLabel();
 
-		// setTitle(applicationInfo.getApplicationName() + "-"
-		// + applicationInfo.getApplicationVendor());
+		setTitle(applicationInfo.getApplicationName() + "-"
+				+ applicationInfo.getApplicationVendor());
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				exitForm(evt);
@@ -612,7 +621,7 @@ public class MainWindow extends javax.swing.JFrame {
 			java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonGetDeviceInfoActionPerformed
 		long iError;
 
-		iError = fplib.GetDeviceInfo(deviceInfo);
+		iError = biometricsUtil.getDeviceInfo(deviceInfo);
 		if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelStatus.setText("GetDeviceInfo() Success");
 			this.jTextFieldSerialNumber.setText(new String(deviceInfo
@@ -641,7 +650,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private void jButtonConfigActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonConfigActionPerformed
 		long iError;
 
-		iError = fplib.Configure(0);
+		iError = biometricsUtil.configure();
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelStatus.setText("Configure() Success");
 			this.jButtonGetDeviceInfo.doClick();
@@ -660,14 +669,13 @@ public class MainWindow extends javax.swing.JFrame {
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
 
-		iError = fplib.MatchTemplate(regMin1, vrfMin, secuLevel, matched);
+		iError = biometricsUtil.verify(regMin1, vrfMin, secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			if (matched[0])
 				this.jLabelStatus
 						.setText("Verification Success (1st template)");
 			else {
-				iError = fplib.MatchTemplate(regMin2, vrfMin, secuLevel,
-						matched);
+				iError = biometricsUtil.getMatchingScore(regMin2, vrfMin);
 				if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE)
 					if (matched[0])
 						this.jLabelStatus
@@ -687,27 +695,26 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonVerifyActionPerformed
 
 	private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonRegisterActionPerformed
-		int[] matchScore = new int[1];
 		boolean[] matched = new boolean[1];
 		long iError;
 		long secuLevel = (long) (this.jComboBoxRegisterSecurityLevel
 				.getSelectedIndex() + 1);
 		matched[0] = false;
+		int matchScore = 0;
 
-		iError = fplib.MatchTemplate(regMin1, regMin2, secuLevel, matched);
+		iError = biometricsUtil.register(regMin1, regMin2, secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			matchScore[0] = 0;
-			iError = fplib.GetMatchingScore(regMin1, regMin2, matchScore);
+			matchScore = biometricsUtil.getMatchingScore(regMin1, regMin2);
 
 			if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 				if (matched[0])
 					this.jLabelStatus
 							.setText("Registration Success, Matching Score: "
-									+ matchScore[0]);
+									+ matchScore);
 				else
 					this.jLabelStatus
 							.setText("Registration Fail, Matching Score: "
-									+ matchScore[0]);
+									+ matchScore);
 
 			} else
 				this.jLabelStatus
@@ -720,33 +727,33 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonRegisterActionPerformed
 
 	private void jButtonCaptureV1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCaptureV1ActionPerformed
-		int[] quality = new int[1];
 		byte[] imageBuffer1 = ((java.awt.image.DataBufferByte) imgVerification
 				.getRaster().getDataBuffer()).getData();
 		long iError = SGFDxErrorCode.SGFDX_ERROR_NONE;
 
-		iError = fplib.GetImageEx(imageBuffer1,
+		iError = biometricsUtil.getImageEx(imageBuffer1,
 				jSliderSeconds.getValue() * 1000, 0, jSliderQuality.getValue());
-		fplib.GetImageQuality(deviceInfo.imageWidth, deviceInfo.imageHeight,
-				imageBuffer1, quality);
-		this.jProgressBarV1.setValue(quality[0]);
+		int quality = biometricsUtil.getImageQuality(deviceInfo.imageWidth,
+				deviceInfo.imageHeight, imageBuffer1);
+		this.jProgressBarV1.setValue(quality);
 		SGFingerInfo fingerInfo = new SGFingerInfo();
 		fingerInfo.FingerNumber = SGFingerPosition.SG_FINGPOS_LI;
-		fingerInfo.ImageQuality = quality[0];
+		fingerInfo.ImageQuality = quality;
 		fingerInfo.ImpressionType = SGImpressionType.SG_IMPTYPE_LP;
 		fingerInfo.ViewNumber = 1;
 
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelVerifyImage.setIcon(new ImageIcon(imgVerification
 					.getScaledInstance(130, 150, Image.SCALE_DEFAULT)));
-			if (quality[0] == 0)
+			if (quality == 0)
 				this.jLabelStatus.setText("GetImageEx() Success [" + ret
-						+ "] but image quality is [" + quality[0]
+						+ "] but image quality is [" + quality
 						+ "]. Please try again");
 			else {
 				this.jLabelStatus.setText("GetImageEx() Success [" + ret + "]");
 
-				iError = fplib.CreateTemplate(fingerInfo, imageBuffer1, vrfMin);
+				iError = biometricsUtil.createTemplate(fingerInfo,
+						imageBuffer1, vrfMin);
 				if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 					this.jLabelStatus
 							.setText("Verification image was captured");
@@ -762,34 +769,33 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonCaptureV1ActionPerformed
 
 	private void jButtonCaptureR2ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCaptureR2ActionPerformed
-		int[] quality = new int[1];
 		byte[] imageBuffer1 = ((java.awt.image.DataBufferByte) imgRegistration2
 				.getRaster().getDataBuffer()).getData();
 		long iError = SGFDxErrorCode.SGFDX_ERROR_NONE;
 
-		iError = fplib.GetImageEx(imageBuffer1,
+		iError = biometricsUtil.getImageEx(imageBuffer1,
 				jSliderSeconds.getValue() * 1000, 0, jSliderQuality.getValue());
-		fplib.GetImageQuality(deviceInfo.imageWidth, deviceInfo.imageHeight,
-				imageBuffer1, quality);
-		this.jProgressBarR2.setValue(quality[0]);
+		int quality = biometricsUtil.getImageQuality(deviceInfo.imageWidth,
+				deviceInfo.imageHeight, imageBuffer1);
+		this.jProgressBarR2.setValue(quality);
 		SGFingerInfo fingerInfo = new SGFingerInfo();
 		fingerInfo.FingerNumber = SGFingerPosition.SG_FINGPOS_LI;
-		fingerInfo.ImageQuality = quality[0];
+		fingerInfo.ImageQuality = quality;
 		fingerInfo.ImpressionType = SGImpressionType.SG_IMPTYPE_LP;
 		fingerInfo.ViewNumber = 1;
 
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelRegisterImage2.setIcon(new ImageIcon(imgRegistration2
 					.getScaledInstance(130, 150, Image.SCALE_DEFAULT)));
-			if (quality[0] == 0)
+			if (quality == 0)
 				this.jLabelStatus.setText("GetImageEx() Success [" + ret
-						+ "] but image quality is [" + quality[0]
+						+ "] but image quality is [" + quality
 						+ "]. Please try again");
 			else {
 				this.jLabelStatus.setText("GetImageEx() Success [" + ret + "]");
 
-				iError = fplib
-						.CreateTemplate(fingerInfo, imageBuffer1, regMin2);
+				iError = biometricsUtil.createTemplate(fingerInfo,
+						imageBuffer1, regMin2);
 				if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 					this.jLabelStatus
 							.setText("Second registration image was captured");
@@ -805,35 +811,34 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonCaptureR2ActionPerformed
 
 	private void jButtonCaptureR1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCaptureR1ActionPerformed
-		int[] quality = new int[1];
 		byte[] imageBuffer1 = ((java.awt.image.DataBufferByte) imgRegistration1
 				.getRaster().getDataBuffer()).getData();
 		long iError = SGFDxErrorCode.SGFDX_ERROR_NONE;
 
-		iError = fplib.GetImageEx(imageBuffer1,
+		iError = biometricsUtil.getImageEx(imageBuffer1,
 				jSliderSeconds.getValue() * 1000, 0, jSliderQuality.getValue());
-		fplib.GetImageQuality(deviceInfo.imageWidth, deviceInfo.imageHeight,
-				imageBuffer1, quality);
-		this.jProgressBarR1.setValue(quality[0]);
+		int quality = biometricsUtil.getImageQuality(deviceInfo.imageWidth,
+				deviceInfo.imageHeight, imageBuffer1);
+		this.jProgressBarR1.setValue(quality);
 		SGFingerInfo fingerInfo = new SGFingerInfo();
 		fingerInfo.FingerNumber = SGFingerPosition.SG_FINGPOS_LI;
-		fingerInfo.ImageQuality = quality[0];
+		fingerInfo.ImageQuality = quality;
 		fingerInfo.ImpressionType = SGImpressionType.SG_IMPTYPE_LP;
 		fingerInfo.ViewNumber = 1;
 
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelRegisterImage1.setIcon(new ImageIcon(imgRegistration1
 					.getScaledInstance(130, 150, Image.SCALE_DEFAULT)));
-			if (quality[0] == 0)
+			if (quality == 0)
 				this.jLabelStatus.setText("GetImageEx() Success [" + ret
-						+ "] but image quality is [" + quality[0]
+						+ "] but image quality is [" + quality
 						+ "]. Please try again");
 			else {
 
 				this.jLabelStatus.setText("GetImageEx() Success [" + ret + "]");
 
-				iError = fplib
-						.CreateTemplate(fingerInfo, imageBuffer1, regMin1);
+				iError = biometricsUtil.createTemplate(fingerInfo,
+						imageBuffer1, regMin1);
 				if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 					this.jLabelStatus
 							.setText("First registration image was captured");
@@ -849,21 +854,21 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonCaptureR1ActionPerformed
 
 	private void jButtonCaptureActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCaptureActionPerformed
-		int[] quality = new int[1];
 		BufferedImage img1gray = new BufferedImage(deviceInfo.imageWidth,
 				deviceInfo.imageHeight, BufferedImage.TYPE_BYTE_GRAY);
 		byte[] imageBuffer1 = ((java.awt.image.DataBufferByte) img1gray
 				.getRaster().getDataBuffer()).getData();
-		if (fplib != null) {
-			ret = fplib.GetImageEx(imageBuffer1,
+		if (biometricsUtil != null) {
+			ret = biometricsUtil.getImageEx(imageBuffer1,
 					jSliderSeconds.getValue() * 1000, 0,
 					jSliderQuality.getValue());
 			if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 				this.jLabelImage.setIcon(new ImageIcon(img1gray));
-				long ret2 = fplib.GetImageQuality(deviceInfo.imageWidth,
-						deviceInfo.imageHeight, imageBuffer1, quality);
+				int quality = biometricsUtil.getImageQuality(
+						deviceInfo.imageWidth, deviceInfo.imageHeight,
+						imageBuffer1);
 				this.jLabelStatus.setText("getImage() Success [" + ret + "]"
-						+ " Image Quality [" + quality[0] + "]");
+						+ " Image Quality [" + quality + "]");
 			} else {
 				this.jLabelStatus.setText("GetImageEx() Error [" + ret + "]");
 			}
@@ -874,9 +879,9 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonCaptureActionPerformed
 
 	private void jButtonToggleLEDActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonToggleLEDActionPerformed
-		if (fplib != null) {
+		if (biometricsUtil != null) {
 			bLEDOn = !bLEDOn;
-			ret = fplib.SetLedOn(bLEDOn);
+			ret = biometricsUtil.setLedOn(bLEDOn);
 			if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 				this.jLabelStatus.setText("SetLedOn(" + bLEDOn + ") Success ["
 						+ ret + "]");
@@ -906,9 +911,8 @@ public class MainWindow extends javax.swing.JFrame {
 			this.deviceName = SGFDxDeviceName.SG_DEV_FDU02;
 			break;
 		}
-		fplib = new JSGFPLib();
-		ret = fplib.Init(this.deviceName);
-		if ((fplib != null) && (ret == SGFDxErrorCode.SGFDX_ERROR_NONE)) {
+		ret = biometricsUtil.initDevice(this.deviceName);
+		if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelStatus.setText("JSGFPLib Initialization Success");
 			this.devicePort = SGPPPortAddr.AUTO_DETECT;
 			switch (this.jComboBoxUSBPort.getSelectedIndex()) {
@@ -925,10 +929,10 @@ public class MainWindow extends javax.swing.JFrame {
 				this.devicePort = this.jComboBoxUSBPort.getSelectedIndex() - 1;
 				break;
 			}
-			ret = fplib.OpenDevice(this.devicePort);
+			ret = biometricsUtil.openDevice(this.devicePort);
 			if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 				this.jLabelStatus.setText("OpenDevice() Success [" + ret + "]");
-				ret = fplib.GetDeviceInfo(deviceInfo);
+				ret = biometricsUtil.getDeviceInfo(deviceInfo);
 				if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 					this.jTextFieldSerialNumber.setText(new String(deviceInfo
 							.deviceSN()));
@@ -970,10 +974,12 @@ public class MainWindow extends javax.swing.JFrame {
 
 	/** Exit the Application */
 	private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
+		biometricsUtil.close();
 		System.exit(0);
 	}// GEN-LAST:event_exitForm
 
 	/**
+	 * For testing during development
 	 * @param args
 	 *            the command line arguments
 	 */
@@ -1046,21 +1052,6 @@ public class MainWindow extends javax.swing.JFrame {
 	public void exitOperation() {
 		// TODO Auto-generated method stub
 
-	}
-
-	/** @return the i18n resource bundle. */
-	public ResourceBundle getBundle() {
-		return bundle;
-	}
-
-	/**
-	 * Set the i18n resource bundle.
-	 * 
-	 * @param bundle
-	 *            the bundle to set.
-	 */
-	public void setBundle(ResourceBundle bundle) {
-		this.bundle = bundle;
 	}
 
 }

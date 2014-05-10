@@ -3,10 +3,7 @@
  */
 package com.larry.biometrics.query;
 
-import java.io.IOException;
-
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;

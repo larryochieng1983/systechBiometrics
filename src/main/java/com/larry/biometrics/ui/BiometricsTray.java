@@ -71,12 +71,9 @@ public class BiometricsTray {
 
 		return createMenuItem("showHideWindowItem", new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				showHideWindowItem
-						.setText(getShowHideWindowItemLabel(!mainWindow
-								.isVisible()));
+				
 				mainWindow.setVisible(!mainWindow.isVisible());
 			}
 		});
@@ -90,7 +87,6 @@ public class BiometricsTray {
 
 		return createMenuItem("quitItem", new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.exitOperation();
 			}
@@ -229,7 +225,6 @@ public class BiometricsTray {
 
 		SwingUtilities.invokeLater(new Runnable() {
 
-			@Override
 			public void run() {
 
 				tray.showGUI(true);
@@ -237,17 +232,7 @@ public class BiometricsTray {
 		});
 	}
 
-	/**
-	 * Get label for {@link #showHideWindowItem}.
-	 * 
-	 * @param visible
-	 *            should the label be the VISIBLE or HIDDEN 'variant'.
-	 * @return the label test for {@link #showHideWindowItem}.
-	 */
-	protected String getShowHideWindowItemLabel(boolean visible) {
-		return visible ? getString("menu.hide.tdu.window")
-				: getString("menu.show.tdu.window");
-	}
+	
 
 	/** Menu shown when user click the SystemTray icon. */
 	protected JPopupMenu trayMenu;
@@ -276,28 +261,10 @@ public class BiometricsTray {
 			 */
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				System.out.println("Hiding data input window in tray.");
-				showHideWindowItem.setText(getShowHideWindowItemLabel(false));
 			}
 		};
 	}
 
-	/**
-	 * Get String value from Iang resource bundle.
-	 * 
-	 * @param key
-	 *            bundle resource key.
-	 * @return the value of the key or "MISSING:key".
-	 */
-	protected String getString(String key) {
-		ResourceBundle bundle = mainWindow.getBundle();
-
-		if (bundle != null && bundle.containsKey(key)) {
-			return bundle.getString(key);
-		} else {
-			System.out.println("Unable to get resource '" + key
-					+ "' from bundle.");
-			return "MISSING:" + key;
-		}
-	}
+	
 
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jnlp href="$outputFile" spec="1.5+" codebase="$codebase">
+  <information>
+    <title>$tracetrackerProductLongName</title>
+    <vendor>$project.Organization.Name</vendor>
+    <homepage href="$vendorUrl"/>
+    <description kind="short">$project.description</description>
+    <icon kind="shortcut" href="http://www.tracetracker.com/images/logo_tdu_48x48.jpg" width="48" height="48"/>
+    <icon kind="shortcut" href="http://www.tracetracker.com/images/logo_tdu_64x64.jpg" width="64" height="64"/>
+    <icon kind="splash" href="http://www.tracetracker.com/images/tt-logo.jpg"/>
+    <offline-allowed/>
+    <shortcut online="true">
+        <desktop/>
+        <menu submenu="$project.Organization.Name"/>
+    </shortcut>
+  </information>
+  <security>
+    <all-permissions>
+    </all-permissions>
+  </security>
+  <resources>
+    <j2se version="1.7+" max-heap-size="256m" initial-heap-size="32m">
+    </j2se>
+    <property name="log4j.defaultInitOverride" value="true"/>
+    <property name="log4j.configuration" value="log4j.xml" />
+    $dependencies
+  </resources>
+  <application-desc main-class="$mainClass">
+	<argument>-trust</argument>
+	<argument>testcacerts</argument>
+	<argument>-pass</argument>
+	<argument>changeit</argument>
+	<argument>-port</argument>
+  	<argument>${tracetrackerDataUploaderPort}</argument>
+	<argument>-war</argument>
+	<argument>${tracetrackerDataUploaderApplication}</argument>
+  </application-desc>
+</jnlp>

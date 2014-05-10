@@ -4,9 +4,9 @@
 package com.larry.biometrics.util;
 
 /**
- * @author Larry
+ * @author Otieno Lawrence
  * 
- * Get info on the Fund Master
+ *         Get info on the Fund Master
  */
 public interface ApplicationInfo {
 	String getApplicationName();
