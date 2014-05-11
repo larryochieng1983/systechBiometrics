@@ -12,7 +12,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.GroupLayout;
@@ -24,7 +23,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 /**
- * @author USER
+ * @author Otieno Lawrence
  * 
  */
 public class InfoDialog {
@@ -147,15 +146,10 @@ public class InfoDialog {
 
 	protected void initText(String baseName, Font font) {
 
-		ResourceBundle bundle = ResourceBundle.getBundle(baseName);
+		setFont(font, messageLabel, closeButton);
+		messageLabel.setText("");
 
-		setFont(font, messageLabel,
-		// remindMeCheckBox,
-				closeButton);
-		messageLabel.setText(getString("message.reminder.tray", bundle));
-		// remindMeCheckBox.setText( getString( "message.reminder.again", bundle
-		// ) );
-		closeButton.setText(getString("common.ok", bundle));
+		closeButton.setText("Close");
 		dialog.pack();
 	}
 
@@ -178,23 +172,6 @@ public class InfoDialog {
 	 */
 	public void setTitle(String title) {
 		this.dialog.setTitle(title);
-	}
-
-	/**
-	 * Gets a string for the given key from a resource bundle.
-	 * 
-	 * @param key
-	 *            the key for the desired string
-	 * @param bundle
-	 *            the bundle containing locale-specific resources.
-	 * @return the string for the given key or 'MISSING:key' if the bundle does
-	 *         not contain the key.
-	 */
-	protected static String getString(String key, ResourceBundle bundle) {
-		if (bundle != null && bundle.containsKey(key)) {
-			return bundle.getString(key);
-		}
-		return "MISSING:" + key;
 	}
 
 	/**

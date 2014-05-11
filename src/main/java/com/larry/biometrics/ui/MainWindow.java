@@ -980,6 +980,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 	/**
 	 * For testing during development
+	 * 
 	 * @param args
 	 *            the command line arguments
 	 */
@@ -1050,7 +1051,8 @@ public class MainWindow extends javax.swing.JFrame {
 	// End of variables declaration//GEN-END:variables
 
 	public void exitOperation() {
-		// TODO Auto-generated method stub
+		biometricsUtil.close();
+		System.exit(0);
 
 	}
 

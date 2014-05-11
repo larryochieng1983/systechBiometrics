@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.util.Arrays;
-import java.util.ResourceBundle;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -69,14 +68,14 @@ public class BiometricsTray {
 	 */
 	protected JMenuItem createShowHideWindowItem() {
 
-		return createMenuItem("showHideWindowItem", new ActionListener() {
+		return createMenuItem("showHideWindowItem", "Show/Hide",
+				new ActionListener() {
 
-			public void actionPerformed(ActionEvent e) {
+					public void actionPerformed(ActionEvent e) {
 
-				
-				mainWindow.setVisible(!mainWindow.isVisible());
-			}
-		});
+						mainWindow.setVisible(!mainWindow.isVisible());
+					}
+				});
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class BiometricsTray {
 	 */
 	protected JMenuItem createQuitItem() {
 
-		return createMenuItem("quitItem", new ActionListener() {
+		return createMenuItem("quitItem", "Exit", new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				mainWindow.exitOperation();
@@ -98,21 +97,24 @@ public class BiometricsTray {
 	 * 
 	 * @param name
 	 *            the name to assign to the MenuItem.
+	 * 
+	 * @param label
+	 *            the label on the menu
 	 * @param actionListener
 	 *            the actionListener to assign to the MenuItem.
 	 * @return a new MenuItem.
 	 */
-	protected JMenuItem createMenuItem(String name,
+	protected JMenuItem createMenuItem(String name, String label,
 			ActionListener actionListener) {
 		JMenuItem item = new JMenuItem();
+		item.setText(label);
 		item.setName(name);
 		item.addActionListener(actionListener);
 		return item;
 	}
 
 	/**
-	 * Start Biometrics in SystemTray. If SystemTray is not supported by running
-	 * platform, the application will be launched showing the window.
+	 * Start Biometrics in SystemTray
 	 * 
 	 * @param showTrayReminder
 	 *            <code>true</code> if a dialog should be shown notifying the
@@ -176,7 +178,7 @@ public class BiometricsTray {
 			if (showTrayReminder) {
 				InfoDialog info = new InfoDialog("Biometrics",
 						getApplicationFont());
-				info.setTitle("Biometrics");
+				info.setTitle("Systech Biometrics");
 				info.setVisible(true);
 			}
 
@@ -232,8 +234,6 @@ public class BiometricsTray {
 		});
 	}
 
-	
-
 	/** Menu shown when user click the SystemTray icon. */
 	protected JPopupMenu trayMenu;
 
@@ -264,7 +264,5 @@ public class BiometricsTray {
 			}
 		};
 	}
-
-	
 
 }
