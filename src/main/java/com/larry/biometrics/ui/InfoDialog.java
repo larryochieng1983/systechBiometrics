@@ -35,9 +35,7 @@ public class InfoDialog {
 	 * 
 	 * @param baseName
 	 *            the base name of the resource bundle, a fully qualified class
-	 *            name.
-	 * @param locale
-	 *            the locale for which a resource bundle is desired.
+	 *            name.	 
 	 * @param font
 	 *            the font to use for the components.
 	 */
@@ -51,8 +49,7 @@ public class InfoDialog {
 
 		headerLabel = new JLabel();
 		headerLabel.setBackground(new java.awt.Color(27, 51, 86));
-		// headerLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource(
-		// "/images/tt_subheader_logo.png")));
+		
 		headerLabel.setText(" ");
 		headerLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 		headerLabel.setAlignmentX(1.0F);
@@ -62,7 +59,6 @@ public class InfoDialog {
 
 		messageLabel = new JLabel();
 
-		// remindMeCheckBox = new JCheckBox();
 
 		closeButton = new JButton();
 		closeButton.setAction(new AbstractAction() {
@@ -97,13 +93,8 @@ public class InfoDialog {
 				//
 				.addComponent(headerLabel, DEFAULT_SIZE, 494, Short.MAX_VALUE)
 				//
-				.addGroup(layout.createSequentialGroup()//
-						// .addContainerGap()//
-						// .addComponent( remindMeCheckBox,
-						// javax.swing.GroupLayout.DEFAULT_SIZE, 470,
-						// Short.MAX_VALUE )//
-						.addContainerGap())
-				//
+				.addGroup(layout.createSequentialGroup()						
+						.addContainerGap())				
 				.addGroup(
 						layout.createSequentialGroup()
 								//
@@ -129,8 +120,7 @@ public class InfoDialog {
 								.addGap(18, 18, 18)//
 								.addComponent(messageLabel, PREFERRED_SIZE, 57,
 										PREFERRED_SIZE)//
-								// .addGap( 18, 18, 18 )//
-								// .addComponent( remindMeCheckBox )//
+								
 								.addPreferredGap(
 										javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)//
 								.addComponent(closeButton)//
@@ -147,9 +137,9 @@ public class InfoDialog {
 	protected void initText(String baseName, Font font) {
 
 		setFont(font, messageLabel, closeButton);
-		messageLabel.setText("");
+		messageLabel.setText("Systech Biometrics is Running, Check your System Tray!");
 
-		closeButton.setText("Close");
+		closeButton.setText("OK");
 		dialog.pack();
 	}
 
@@ -193,9 +183,6 @@ public class InfoDialog {
 
 	/** Info message shown. */
 	private JLabel messageLabel;
-
-	// /** Check if dialog should be shown next time. */
-	// private JCheckBox remindMeCheckBox;
 
 	/** Close the dialog. */
 	private JButton closeButton;

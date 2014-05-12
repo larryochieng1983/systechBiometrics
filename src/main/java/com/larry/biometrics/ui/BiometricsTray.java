@@ -131,7 +131,7 @@ public class BiometricsTray {
 		}
 
 		trayIcon = new JTrayIcon(new javax.swing.ImageIcon(getClass()
-				.getResource(TRAY_LOGO)).getImage(), "Biometrics") {
+				.getResource(TRAY_LOGO)).getImage(), "Systech Biometrics") {
 
 			public void displayMessage(String caption, String text,
 					MessageType messageType) {
