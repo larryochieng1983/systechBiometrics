@@ -21,8 +21,7 @@ public interface BiometricsUtil {
 
 	public int getMatchingScore(byte[] regMin1, byte[] regMin2);
 
-	public long verify(byte[] verifyMin, byte[] registeredMin,
-			long securityLevel);
+	public long verify(byte[] verifyMin, long securityLevel);
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
 			long securityLevel);
@@ -39,6 +38,6 @@ public interface BiometricsUtil {
 	public long configure();
 
 	public long setLedOn(boolean bLedOn);
-	
+
 	public long close();
 }

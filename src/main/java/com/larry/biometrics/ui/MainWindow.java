@@ -7,9 +7,16 @@
 package com.larry.biometrics.ui;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import javax.swing.BorderFactory;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxDeviceName;
@@ -25,6 +32,18 @@ import com.larry.biometrics.util.BiometricsUtil;
 import com.larry.biometrics.util.BiometricsUtilImpl;
 import com.larry.biometrics.util.FundMasterConfiguration;
 
+/**
+ * This code was edited or generated using CloudGarden's Jigloo
+ * SWT/Swing GUI Builder, which is free for non-commercial
+ * use. If Jigloo is being used commercially (ie, by a corporation,
+ * company or business for any purpose whatever) then you
+ * should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details.
+ * Use of Jigloo implies acceptance of these licensing terms.
+ * A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+ * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+ * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 /**
  * 
  * @author Otieno lawrence
@@ -52,6 +71,18 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean v1Captured = false;
 	private ApplicationInfo applicationInfo;
 	private BiometricsUtil biometricsUtil;
+	private JTextField baseDirText;
+	private JLabel baseDirLabel;
+	private JButton saveBtn;
+	private JButton clearBtn;
+	private JTextField userPasswordText;
+	private JLabel userPasswordLabel;
+	private JTextField userNameText;
+	private JLabel userNameLabel;
+	private JTextField fundMasterUrlText;
+	private JLabel fundMasterUrlLabel;
+	private JLabel systemConfigLabel;
+	private JPanel systemConfigPanel;
 	private FundMasterConfiguration config;
 
 	/** Creates new form */
@@ -59,6 +90,7 @@ public class MainWindow extends javax.swing.JFrame {
 		biometricsUtil = new BiometricsUtilImpl();
 		applicationInfo = new ApplicationInfoImpl();
 		config = new FundMasterConfiguration();
+		loadSystemConfig();
 		bLEDOn = false;
 		initComponents();
 		disableControls();
@@ -93,6 +125,21 @@ public class MainWindow extends javax.swing.JFrame {
 			this.jButtonRegister.setEnabled(true);
 		if (r1Captured && r2Captured && v1Captured)
 			this.jButtonVerify.setEnabled(true);
+	}
+
+	private void loadSystemConfig() {
+		if (!config.getBaseDir().equals("")) {
+			baseDirText.setText(config.getBaseDir());
+		}
+		if (!config.getUrl().equals("")) {
+			fundMasterUrlText.setText(config.getUrl());
+		}
+		if (!config.getUserName().equals("")) {
+			userNameText.setText(config.getUserName());
+		}
+		if (!config.getPassword().equals("")) {
+			userPasswordText.setText(config.getPassword());
+		}
 	}
 
 	/**
@@ -581,6 +628,80 @@ public class MainWindow extends javax.swing.JFrame {
 						30));
 
 		jTabbedPane1.addTab("Device Info", jPanelDeviceInfo);
+		{
+			systemConfigPanel = new JPanel();
+			jTabbedPane1.addTab("System Configuration", null,
+					systemConfigPanel, null);
+			systemConfigPanel.setLayout(null);
+			{
+				systemConfigLabel = new JLabel();
+				systemConfigPanel.add(systemConfigLabel);
+				systemConfigLabel.setBounds(12, 23, 402, 236);
+				systemConfigLabel.setBorder(BorderFactory
+						.createTitledBorder("Configuration"));
+			}
+			{
+				fundMasterUrlLabel = new JLabel();
+				systemConfigPanel.add(fundMasterUrlLabel);
+				fundMasterUrlLabel.setText("Fund Master Url");
+				fundMasterUrlLabel.setBounds(26, 89, 93, 21);
+			}
+			{
+				fundMasterUrlText = new JTextField();
+				systemConfigPanel.add(fundMasterUrlText);
+				fundMasterUrlText.setBounds(134, 90, 208, 22);
+			}
+			{
+				userNameLabel = new JLabel();
+				systemConfigPanel.add(userNameLabel);
+				userNameLabel.setText("User Name");
+				userNameLabel.setBounds(26, 119, 88, 16);
+			}
+			{
+				userNameText = new JTextField();
+				systemConfigPanel.add(userNameText);
+				userNameText.setBounds(134, 119, 208, 23);
+			}
+			{
+				userPasswordLabel = new JLabel();
+				systemConfigPanel.add(userPasswordLabel);
+				userPasswordLabel.setText("Password");
+				userPasswordLabel.setBounds(26, 148, 89, 16);
+			}
+			{
+				userPasswordText = new JTextField();
+				systemConfigPanel.add(userPasswordText);
+				userPasswordText.setBounds(134, 151, 208, 23);
+			}
+			{
+				clearBtn = new JButton();
+				systemConfigPanel.add(clearBtn);
+				clearBtn.setText("Clear");
+				clearBtn.setBounds(206, 185, 56, 23);
+			}
+			{
+				saveBtn = new JButton();
+				systemConfigPanel.add(saveBtn);
+				saveBtn.setText("Save");
+				saveBtn.setBounds(273, 183, 66, 23);
+				saveBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						saveBtnActionPerformed(evt);
+					}
+				});
+			}
+			{
+				baseDirLabel = new JLabel();
+				systemConfigPanel.add(baseDirLabel);
+				baseDirLabel.setText("Config. Directory");
+				baseDirLabel.setBounds(25, 60, 98, 16);
+			}
+			{
+				baseDirText = new JTextField();
+				systemConfigPanel.add(baseDirText);
+				baseDirText.setBounds(135, 62, 207, 23);
+			}
+		}
 
 		getContentPane().add(
 				jTabbedPane1,
@@ -1053,6 +1174,18 @@ public class MainWindow extends javax.swing.JFrame {
 	public void exitOperation() {
 		biometricsUtil.close();
 		System.exit(0);
+
+	}
+
+	private void saveBtnActionPerformed(ActionEvent evt) {
+		String baseDir = baseDirText.getText();
+		String url = fundMasterUrlText.getText();
+		String userName = userNameText.getText();
+		String password = userPasswordText.getText();
+		if (!baseDir.equals("") && !url.equals("") && !userName.equals("")
+				&& !password.equals("")) {
+			config.saveConfiguration(baseDir, url, userName, password);
+		}
 
 	}
 

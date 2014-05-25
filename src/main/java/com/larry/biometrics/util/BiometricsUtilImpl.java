@@ -3,25 +3,34 @@
  */
 package com.larry.biometrics.util;
 
+import org.apache.log4j.Logger;
+
 import SecuGen.FDxSDKPro.jni.JSGFPLib;
 import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxErrorCode;
 import SecuGen.FDxSDKPro.jni.SGFingerInfo;
 
 import com.larry.biometrics.model.Pensioner;
+import com.larry.biometrics.query.PensionerBioQueryAdapter;
 
 /**
- * @author User
+ * @author Otieno Lawrence
  * 
  */
 public class BiometricsUtilImpl implements BiometricsUtil {
 
+	private static Logger logger = Logger.getLogger(BiometricsUtil.class);
 	public Pensioner currentPensioner;
+	private PensionerBioQueryAdapter adapter;
+	private FundMasterConfiguration configuration;
 
 	private JSGFPLib fplib = null;
 
 	public BiometricsUtilImpl() {
 		fplib = new JSGFPLib();
+		configuration = new FundMasterConfiguration();
+		adapter = new PensionerBioQueryAdapter(configuration.getUrl(),
+				configuration.getUserName(), configuration.getPassword());
 	}
 
 	public long initDevice(long deviceName) {
@@ -37,21 +46,31 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 		return fplib.GetDeviceInfo(deviceInfo);
 	}
 
-	public long verify(byte[] verifyMin, byte[] registeredMin,
-			long securityLevel) {
-
+	public long verify(byte[] verifyMin, long securityLevel) {
+		Pensioner pensioner = adapter.getPensionerInfo(currentPensioner
+				.getPensionerNumber());
+		byte[] registeredMin = pensioner.getFpMinutiae();
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
-
 		return fplib.MatchTemplate(registeredMin, verifyMin, securityLevel,
 				matched);
 	}
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
 			long securityLevel) {
+		currentPensioner.setFpMinutiae(registeredMin2);
 		boolean[] matched = new boolean[1];
-		return fplib.MatchTemplate(registeredMin1, registeredMin2,
+		long err = fplib.MatchTemplate(registeredMin1, registeredMin2,
 				securityLevel, matched);
+		if (err == SGFDxErrorCode.SGFDX_ERROR_NONE) {
+			currentPensioner.setFpMinutiae(registeredMin2);
+			try {
+				adapter.savePensionerInfo(currentPensioner);
+			} catch (Exception e) {
+				logger.error(e);
+			}
+		}
+		return err;
 
 	}
 

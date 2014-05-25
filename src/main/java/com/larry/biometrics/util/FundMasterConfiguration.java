@@ -43,7 +43,7 @@ public class FundMasterConfiguration {
 			}
 
 			OutputStream outputStream = new FileOutputStream(configFile);
-			props.store(outputStream, "File Modified" + new Date());
+			props.store(outputStream, "File Modified on: " + new Date());
 		} catch (Exception e) {
 			logger.error(e);
 		}
