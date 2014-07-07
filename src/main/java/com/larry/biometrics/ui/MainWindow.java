@@ -153,18 +153,139 @@ public class MainWindow extends javax.swing.JFrame {
 
 		jLabelStatus = new javax.swing.JLabel();
 		jTabbedPane1 = new javax.swing.JTabbedPane();
-		jPanelImage = new javax.swing.JPanel();
-		jButtonInit = new javax.swing.JButton();
-		jLabelImage = new javax.swing.JLabel();
-		jComboBoxUSBPort = new javax.swing.JComboBox();
-		jButtonToggleLED = new javax.swing.JButton();
-		jButtonCapture = new javax.swing.JButton();
-		jButtonConfig = new javax.swing.JButton();
-		jLabel1 = new javax.swing.JLabel();
-		jSliderQuality = new javax.swing.JSlider();
-		jLabel2 = new javax.swing.JLabel();
-		jLabel3 = new javax.swing.JLabel();
-		jSliderSeconds = new javax.swing.JSlider();
+		{
+			jPanelImage = new javax.swing.JPanel();
+			jTabbedPane1.addTab("Device Test/Configuration", null, jPanelImage, null);
+			jPanelImage.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+			{
+				jButtonInit = new javax.swing.JButton();
+				jPanelImage.add(jButtonInit,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100,
+								30));
+				jButtonInit.setText("Initialize");
+				jButtonInit.setMaximumSize(new java.awt.Dimension(100, 30));
+				jButtonInit.setMinimumSize(new java.awt.Dimension(100, 30));
+				jButtonInit.setName("jButtonInit"); // NOI18N
+				jButtonInit.setPreferredSize(new java.awt.Dimension(100, 30));
+				jButtonInit.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						jButtonInitActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jLabelImage = new javax.swing.JLabel();
+				jPanelImage.add(jLabelImage,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1,
+								-1));
+				jLabelImage.setBorder(javax.swing.BorderFactory
+						.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+				jLabelImage.setMinimumSize(new java.awt.Dimension(260, 300));
+				jLabelImage.setPreferredSize(new java.awt.Dimension(260, 300));
+			}
+			{
+				jComboBoxUSBPort = new javax.swing.JComboBox();
+				jPanelImage.add(jComboBoxUSBPort,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 170,
+								27));
+				jComboBoxUSBPort.setModel(new javax.swing.DefaultComboBoxModel(
+						new String[] { "AUTO_DETECT", "0", "1", "2", "3", "4", "5",
+								"6", "7", "8", "9" }));
+				jComboBoxUSBPort.setMaximumSize(new java.awt.Dimension(170, 27));
+				jComboBoxUSBPort.setMinimumSize(new java.awt.Dimension(170, 27));
+				jComboBoxUSBPort.setPreferredSize(new java.awt.Dimension(170, 27));
+			}
+			{
+				jButtonToggleLED = new javax.swing.JButton();
+				jPanelImage.add(jButtonToggleLED,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 100,
+								30));
+				jButtonToggleLED.setText("Toggle LED");
+				jButtonToggleLED.setMaximumSize(new java.awt.Dimension(100, 30));
+				jButtonToggleLED.setMinimumSize(new java.awt.Dimension(100, 30));
+				jButtonToggleLED.setPreferredSize(new java.awt.Dimension(100, 30));
+				jButtonToggleLED.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						jButtonToggleLEDActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jButtonCapture = new javax.swing.JButton();
+				jPanelImage.add(jButtonCapture,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 100,
+								30));
+				jButtonCapture.setText("Capture");
+				jButtonCapture.setMaximumSize(new java.awt.Dimension(100, 30));
+				jButtonCapture.setMinimumSize(new java.awt.Dimension(100, 30));
+				jButtonCapture.setPreferredSize(new java.awt.Dimension(100, 30));
+				jButtonCapture.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						jButtonCaptureActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jButtonConfig = new javax.swing.JButton();
+				jPanelImage.add(jButtonConfig,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1,
+								30));
+				jButtonConfig.setText("Config");
+				jButtonConfig.setMaximumSize(new java.awt.Dimension(100, 30));
+				jButtonConfig.setMinimumSize(new java.awt.Dimension(100, 30));
+				jButtonConfig.setPreferredSize(new java.awt.Dimension(100, 30));
+				jButtonConfig.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						jButtonConfigActionPerformed(evt);
+					}
+				});
+			}
+			{
+				jLabel1 = new javax.swing.JLabel();
+				jPanelImage.add(jLabel1,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1,
+								-1));
+				jLabel1.setText("USB Device");
+			}
+			{
+				jSliderQuality = new javax.swing.JSlider();
+				jPanelImage.add(jSliderQuality,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170,
+								220, -1));
+				jSliderQuality.setMajorTickSpacing(10);
+				jSliderQuality.setMinorTickSpacing(5);
+				jSliderQuality.setPaintLabels(true);
+				jSliderQuality.setPaintTicks(true);
+				jSliderQuality.setName(""); // NOI18N
+				jSliderQuality.setOpaque(false);
+			}
+			{
+				jLabel2 = new javax.swing.JLabel();
+				jPanelImage.add(jLabel2,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, -1,
+								-1));
+				jLabel2.setText("Image Quality");
+			}
+			{
+				jLabel3 = new javax.swing.JLabel();
+				jPanelImage.add(jLabel3,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 230, -1,
+								-1));
+				jLabel3.setText("Timeout (seconds)");
+			}
+			{
+				jSliderSeconds = new javax.swing.JSlider();
+				jPanelImage.add(jSliderSeconds,
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250,
+								220, -1));
+				jSliderSeconds.setMajorTickSpacing(1);
+				jSliderSeconds.setMaximum(10);
+				jSliderSeconds.setMinimum(1);
+				jSliderSeconds.setPaintLabels(true);
+				jSliderSeconds.setPaintTicks(true);
+				jSliderSeconds.setValue(5);
+			}
+		}
 		jPanelRegisterVerify = new javax.swing.JPanel();
 		jLabelSecurityLevel = new javax.swing.JLabel();
 		jLabelRegistration = new javax.swing.JLabel();
@@ -227,116 +348,6 @@ public class MainWindow extends javax.swing.JFrame {
 				jLabelStatus,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 490,
 						30));
-
-		jPanelImage.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-		jButtonInit.setText("Initialize");
-		jButtonInit.setMaximumSize(new java.awt.Dimension(100, 30));
-		jButtonInit.setMinimumSize(new java.awt.Dimension(100, 30));
-		jButtonInit.setName("jButtonInit"); // NOI18N
-		jButtonInit.setPreferredSize(new java.awt.Dimension(100, 30));
-		jButtonInit.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButtonInitActionPerformed(evt);
-			}
-		});
-		jPanelImage.add(jButtonInit,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100,
-						30));
-
-		jLabelImage.setBorder(javax.swing.BorderFactory
-				.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-		jLabelImage.setMinimumSize(new java.awt.Dimension(260, 300));
-		jLabelImage.setPreferredSize(new java.awt.Dimension(260, 300));
-		jPanelImage.add(jLabelImage,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1,
-						-1));
-
-		jComboBoxUSBPort.setModel(new javax.swing.DefaultComboBoxModel(
-				new String[] { "AUTO_DETECT", "0", "1", "2", "3", "4", "5",
-						"6", "7", "8", "9" }));
-		jComboBoxUSBPort.setMaximumSize(new java.awt.Dimension(170, 27));
-		jComboBoxUSBPort.setMinimumSize(new java.awt.Dimension(170, 27));
-		jComboBoxUSBPort.setPreferredSize(new java.awt.Dimension(170, 27));
-		jPanelImage.add(jComboBoxUSBPort,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 170,
-						27));
-
-		jButtonToggleLED.setText("Toggle LED");
-		jButtonToggleLED.setMaximumSize(new java.awt.Dimension(100, 30));
-		jButtonToggleLED.setMinimumSize(new java.awt.Dimension(100, 30));
-		jButtonToggleLED.setPreferredSize(new java.awt.Dimension(100, 30));
-		jButtonToggleLED.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButtonToggleLEDActionPerformed(evt);
-			}
-		});
-		jPanelImage.add(jButtonToggleLED,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 100,
-						30));
-
-		jButtonCapture.setText("Capture");
-		jButtonCapture.setMaximumSize(new java.awt.Dimension(100, 30));
-		jButtonCapture.setMinimumSize(new java.awt.Dimension(100, 30));
-		jButtonCapture.setPreferredSize(new java.awt.Dimension(100, 30));
-		jButtonCapture.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButtonCaptureActionPerformed(evt);
-			}
-		});
-		jPanelImage.add(jButtonCapture,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 100,
-						30));
-
-		jButtonConfig.setText("Config");
-		jButtonConfig.setMaximumSize(new java.awt.Dimension(100, 30));
-		jButtonConfig.setMinimumSize(new java.awt.Dimension(100, 30));
-		jButtonConfig.setPreferredSize(new java.awt.Dimension(100, 30));
-		jButtonConfig.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButtonConfigActionPerformed(evt);
-			}
-		});
-		jPanelImage.add(jButtonConfig,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1,
-						30));
-
-		jLabel1.setText("USB Device");
-		jPanelImage.add(jLabel1,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1,
-						-1));
-
-		jSliderQuality.setMajorTickSpacing(10);
-		jSliderQuality.setMinorTickSpacing(5);
-		jSliderQuality.setPaintLabels(true);
-		jSliderQuality.setPaintTicks(true);
-		jSliderQuality.setName(""); // NOI18N
-		jSliderQuality.setOpaque(false);
-		jPanelImage.add(jSliderQuality,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170,
-						220, -1));
-
-		jLabel2.setText("Image Quality");
-		jPanelImage.add(jLabel2,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, -1,
-						-1));
-
-		jLabel3.setText("Timeout (seconds)");
-		jPanelImage.add(jLabel3,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 230, -1,
-						-1));
-
-		jSliderSeconds.setMajorTickSpacing(1);
-		jSliderSeconds.setMaximum(10);
-		jSliderSeconds.setMinimum(1);
-		jSliderSeconds.setPaintLabels(true);
-		jSliderSeconds.setPaintTicks(true);
-		jSliderSeconds.setValue(5);
-		jPanelImage.add(jSliderSeconds,
-				new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250,
-						220, -1));
-
-		jTabbedPane1.addTab("Image", jPanelImage);
 
 		jPanelRegisterVerify
 				.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1187,5 +1198,27 @@ public class MainWindow extends javax.swing.JFrame {
 		}
 
 	}
+
+	/**
+	 * @return the applicationInfo
+	 */
+	public ApplicationInfo getApplicationInfo() {
+		return applicationInfo;
+	}	
+
+	/**
+	 * @return the biometricsUtil
+	 */
+	public BiometricsUtil getBiometricsUtil() {
+		return biometricsUtil;
+	}
+
+	/**
+	 * @return the config
+	 */
+	public FundMasterConfiguration getConfig() {
+		return config;
+	}
+	
 
 }

@@ -220,9 +220,7 @@ public class BiometricsTray {
 	private static void launchIangInSystemTray(String[] args) {
 
 		final MainWindow mainWindow = new MainWindow();
-
-		// final ImageIcon biometricsIcon = new javax.swing.ImageIcon("");
-		// mainWindow.setIconImage(biometricsIcon.getImage());
+		
 
 		final BiometricsTray tray = new BiometricsTray(mainWindow);
 
