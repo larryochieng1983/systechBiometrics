@@ -35,8 +35,9 @@ public class FundMasterConfiguration {
 		}
 		try {
 			configFile = new File(baseDir + separator + "fundmaster.properties");
-			if (!configFile.exists()) {
+			if (configFile.exists()) {
 				configFile.createNewFile();
+				props.put("baseDir", this.baseDir);
 				props.put("url", "");
 				props.put("userName", "");
 				props.put("password", "");

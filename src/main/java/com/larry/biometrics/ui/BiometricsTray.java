@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities;
 
 /**
  * 
- * Class for running TDU in SystemTray.
+ * Class for running Biometrics in SystemTray.
  * 
  * <br>
  * 
@@ -206,6 +206,7 @@ public class BiometricsTray {
 		try {
 			launchIangInSystemTray(args);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			System.exit(1);
 		}
 	}

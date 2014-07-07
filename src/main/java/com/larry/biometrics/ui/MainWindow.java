@@ -89,13 +89,13 @@ public class MainWindow extends javax.swing.JFrame {
 	public MainWindow() {
 		biometricsUtil = new BiometricsUtilImpl();
 		applicationInfo = new ApplicationInfoImpl();
-		config = new FundMasterConfiguration();
-		loadSystemConfig();
+		config = new FundMasterConfiguration();		
 		bLEDOn = false;
 		initComponents();
 		disableControls();
 		this.jComboBoxRegisterSecurityLevel.setSelectedIndex(4);
 		this.jComboBoxVerifySecurityLevel.setSelectedIndex(4);
+		loadSystemConfig();
 	}
 
 	private void disableControls() {
@@ -128,16 +128,16 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void loadSystemConfig() {
-		if (!config.getBaseDir().equals("")) {
+		if (config.getBaseDir() != null) {
 			baseDirText.setText(config.getBaseDir());
 		}
-		if (!config.getUrl().equals("")) {
+		if (config.getUrl() != null) {
 			fundMasterUrlText.setText(config.getUrl());
 		}
-		if (!config.getUserName().equals("")) {
+		if (config.getUserName() != null) {
 			userNameText.setText(config.getUserName());
 		}
-		if (!config.getPassword().equals("")) {
+		if (config.getPassword() != null) {
 			userPasswordText.setText(config.getPassword());
 		}
 	}
@@ -790,7 +790,7 @@ public class MainWindow extends javax.swing.JFrame {
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
 
-		iError = biometricsUtil.verify(regMin1, vrfMin, secuLevel);
+		iError = biometricsUtil.verify(regMin1,  secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			if (matched[0])
 				this.jLabelStatus
@@ -1095,8 +1095,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 	/** Exit the Application */
 	private void exitForm(java.awt.event.WindowEvent evt) {// GEN-FIRST:event_exitForm
-		biometricsUtil.close();
-		System.exit(0);
+		this.setVisible(false);
 	}// GEN-LAST:event_exitForm
 
 	/**
