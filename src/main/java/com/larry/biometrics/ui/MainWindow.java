@@ -10,14 +10,13 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import javax.swing.BorderFactory;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxDeviceName;
@@ -824,7 +823,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 		iError = biometricsUtil.getDeviceInfo(deviceInfo);
 		if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			this.jLabelStatus.setText("GetDeviceInfo() Success");
+			this.jLabelStatus.setText("Getting Device Info Successful!");
 			this.jTextFieldSerialNumber.setText(new String(deviceInfo
 					.deviceSN()));
 			this.jTextFieldBrightness.setText(new String(Integer
@@ -844,7 +843,7 @@ public class MainWindow extends javax.swing.JFrame {
 			this.jTextFieldImageWidth.setText(new String(Integer
 					.toString(deviceInfo.imageWidth)));
 		} else
-			this.jLabelStatus.setText("GetDeviceInfo() Error : " + iError);
+			this.jLabelStatus.setText("Getting Device Info Error! : " + iError);
 
 	}// GEN-LAST:event_jButtonGetDeviceInfoActionPerformed
 
@@ -853,13 +852,13 @@ public class MainWindow extends javax.swing.JFrame {
 
 		iError = biometricsUtil.configure();
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			this.jLabelStatus.setText("Configure() Success");
+			this.jLabelStatus.setText("Configuration Successful");
 			this.jButtonGetDeviceInfo.doClick();
 		} else if (iError == SGFDxErrorCode.SGFDX_ERROR_NOT_USED)
 			this.jLabelStatus
 					.setText("Configure() not supported on this platform");
 		else
-			this.jLabelStatus.setText("Configure() Error : " + iError);
+			this.jLabelStatus.setText("Configuration Error : " + iError);
 
 	}// GEN-LAST:event_jButtonConfigActionPerformed
 
@@ -919,11 +918,11 @@ public class MainWindow extends javax.swing.JFrame {
 
 			} else
 				this.jLabelStatus
-						.setText("Registration Fail, GetMatchingScore() Error : "
+						.setText("Registration Fail, Getting Matching Score Error : "
 								+ iError);
 		} else
 			this.jLabelStatus
-					.setText("Registration Fail, MatchTemplate() Error : "
+					.setText("Registration Fail, Matching Template Error : "
 							+ iError);
 	}// GEN-LAST:event_jButtonRegisterActionPerformed
 
@@ -947,11 +946,11 @@ public class MainWindow extends javax.swing.JFrame {
 			this.jLabelVerifyImage.setIcon(new ImageIcon(imgVerification
 					.getScaledInstance(130, 150, Image.SCALE_DEFAULT)));
 			if (quality == 0)
-				this.jLabelStatus.setText("GetImageEx() Success [" + ret
+				this.jLabelStatus.setText("Get Image Success [" + ret
 						+ "] but image quality is [" + quality
 						+ "]. Please try again");
 			else {
-				this.jLabelStatus.setText("GetImageEx() Success [" + ret + "]");
+				this.jLabelStatus.setText("Get Image Success [" + ret + "]");
 
 				iError = biometricsUtil.createTemplate(fingerInfo,
 						imageBuffer1, vrfMin);
@@ -961,11 +960,11 @@ public class MainWindow extends javax.swing.JFrame {
 					v1Captured = true;
 					this.enableRegisterAndVerifyControls();
 				} else
-					this.jLabelStatus.setText("CreateTemplate() Error : "
+					this.jLabelStatus.setText("Creating Template Error : "
 							+ iError);
 			}
 		} else
-			this.jLabelStatus.setText("GetImageEx() Error : " + iError);
+			this.jLabelStatus.setText("Get Image Error : " + iError);
 
 	}// GEN-LAST:event_jButtonCaptureV1ActionPerformed
 
@@ -989,11 +988,11 @@ public class MainWindow extends javax.swing.JFrame {
 			this.jLabelRegisterImage2.setIcon(new ImageIcon(imgRegistration2
 					.getScaledInstance(130, 150, Image.SCALE_DEFAULT)));
 			if (quality == 0)
-				this.jLabelStatus.setText("GetImageEx() Success [" + ret
+				this.jLabelStatus.setText("Get Image Success [" + ret
 						+ "] but image quality is [" + quality
 						+ "]. Please try again");
 			else {
-				this.jLabelStatus.setText("GetImageEx() Success [" + ret + "]");
+				this.jLabelStatus.setText("Get Image Success [" + ret + "]");
 
 				iError = biometricsUtil.createTemplate(fingerInfo,
 						imageBuffer1, regMin2);
@@ -1003,11 +1002,11 @@ public class MainWindow extends javax.swing.JFrame {
 					r2Captured = true;
 					this.enableRegisterAndVerifyControls();
 				} else
-					this.jLabelStatus.setText("CreateTemplate() Error : "
+					this.jLabelStatus.setText("Creating Template Error : "
 							+ iError);
 			}
 		} else
-			this.jLabelStatus.setText("GetImageEx() Error : " + iError);
+			this.jLabelStatus.setText("Get Image Error : " + iError);
 
 	}// GEN-LAST:event_jButtonCaptureR2ActionPerformed
 
@@ -1031,12 +1030,12 @@ public class MainWindow extends javax.swing.JFrame {
 			this.jLabelRegisterImage1.setIcon(new ImageIcon(imgRegistration1
 					.getScaledInstance(130, 150, Image.SCALE_DEFAULT)));
 			if (quality == 0)
-				this.jLabelStatus.setText("GetImageEx() Success [" + ret
+				this.jLabelStatus.setText("Get Image Success [" + ret
 						+ "] but image quality is [" + quality
 						+ "]. Please try again");
 			else {
 
-				this.jLabelStatus.setText("GetImageEx() Success [" + ret + "]");
+				this.jLabelStatus.setText("Get Image Success [" + ret + "]");
 
 				iError = biometricsUtil.createTemplate(fingerInfo,
 						imageBuffer1, regMin1);
@@ -1046,11 +1045,11 @@ public class MainWindow extends javax.swing.JFrame {
 					r1Captured = true;
 					this.enableRegisterAndVerifyControls();
 				} else
-					this.jLabelStatus.setText("CreateTemplate() Error : "
+					this.jLabelStatus.setText("Creating Template Error : "
 							+ iError);
 			}
 		} else
-			this.jLabelStatus.setText("GetImageEx() Error : " + iError);
+			this.jLabelStatus.setText("Get Image Error : " + iError);
 
 	}// GEN-LAST:event_jButtonCaptureR1ActionPerformed
 
@@ -1068,10 +1067,10 @@ public class MainWindow extends javax.swing.JFrame {
 				int quality = biometricsUtil.getImageQuality(
 						deviceInfo.imageWidth, deviceInfo.imageHeight,
 						imageBuffer1);
-				this.jLabelStatus.setText("getImage() Success [" + ret + "]"
+				this.jLabelStatus.setText("Get Image Success [" + ret + "]"
 						+ " Image Quality [" + quality + "]");
 			} else {
-				this.jLabelStatus.setText("GetImageEx() Error [" + ret + "]");
+				this.jLabelStatus.setText("Get Image Error [" + ret + "]");
 			}
 		} else {
 			this.jLabelStatus.setText("JSGFPLib is not Initialized");
@@ -1084,10 +1083,10 @@ public class MainWindow extends javax.swing.JFrame {
 			bLEDOn = !bLEDOn;
 			ret = biometricsUtil.setLedOn(bLEDOn);
 			if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-				this.jLabelStatus.setText("SetLedOn(" + bLEDOn + ") Success ["
+				this.jLabelStatus.setText("Set Led On(" + bLEDOn + ") Success ["
 						+ ret + "]");
 			} else {
-				this.jLabelStatus.setText("SetLedOn(" + bLEDOn + ") Error ["
+				this.jLabelStatus.setText("Set Led On(" + bLEDOn + ") Error ["
 						+ ret + "]");
 			}
 		} else {
@@ -1114,7 +1113,7 @@ public class MainWindow extends javax.swing.JFrame {
 		}
 		ret = biometricsUtil.initDevice(this.deviceName);
 		if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			this.jLabelStatus.setText("JSGFPLib Initialization Success");
+			this.jLabelStatus.setText("Initialization Success");
 			this.devicePort = SGPPPortAddr.AUTO_DETECT;
 			switch (this.jComboBoxUSBPort.getSelectedIndex()) {
 			case 1:
@@ -1132,7 +1131,7 @@ public class MainWindow extends javax.swing.JFrame {
 			}
 			ret = biometricsUtil.openDevice(this.devicePort);
 			if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-				this.jLabelStatus.setText("OpenDevice() Success [" + ret + "]");
+				this.jLabelStatus.setText("Open Device Success [" + ret + "]");
 				ret = biometricsUtil.getDeviceInfo(deviceInfo);
 				if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 					this.jTextFieldSerialNumber.setText(new String(deviceInfo
@@ -1164,12 +1163,12 @@ public class MainWindow extends javax.swing.JFrame {
 							BufferedImage.TYPE_BYTE_GRAY);
 					this.enableControls();
 				} else
-					this.jLabelStatus.setText("GetDeviceInfo() Error [" + ret
+					this.jLabelStatus.setText("Getting Device Info Error [" + ret
 							+ "]");
 			} else
-				this.jLabelStatus.setText("OpenDevice() Error [" + ret + "]");
+				this.jLabelStatus.setText("Open Device Error [" + ret + "]");
 		} else
-			this.jLabelStatus.setText("JSGFPLib Initialization Failed");
+			this.jLabelStatus.setText("Initialization Failed");
 
 	}// GEN-LAST:event_jButtonInitActionPerformed
 
