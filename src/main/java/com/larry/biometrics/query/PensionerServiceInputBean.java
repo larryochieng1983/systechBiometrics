@@ -13,13 +13,25 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
  */
 public class PensionerServiceInputBean {
 
+	@FormParam("member_id")
+	@PartType("text/plain")
+	private String memberId;
+
 	@FormParam("fpImage")
-	@PartType("application/octet-stream")
+	@PartType("image/bmp")
 	private byte[] fpImage;
 
 	@FormParam("fpMinutiae")
 	@PartType("application/octet-stream")
 	private byte[] fpMinutiae;
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 
 	/**
 	 * @return the fpImage

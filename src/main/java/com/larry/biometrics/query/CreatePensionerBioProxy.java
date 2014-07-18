@@ -18,19 +18,21 @@ import org.jboss.resteasy.client.ClientResponse;
  * @author Otieno Lawrence
  * 
  */
-@Path("/api/pensionerBio")
+@Path("/api/biometrics/")
 public interface CreatePensionerBioProxy {
 
 	@POST
+	@Path("uploadfp")
 	@Consumes("multipart/form-data")
 	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public ClientResponse<PensionerServiceInputBean> createPensionerBio(
 			@MultipartForm PensionerServiceInputBean inputBean);
 
 	@GET
-	@PathParam("pensionerId")
+	@Path("fingerprint/{member_id}/{type}")
 	@Consumes("text/xml")
-	@Produces(value = { MediaType.MULTIPART_FORM_DATA, MediaType.TEXT_PLAIN })
+	@Produces(value = {  MediaType.APPLICATION_OCTET_STREAM, "image/bmp" })
 	public ClientResponse<PensionerServiceInputBean> getPensionerBio(
-			@PathParam("pensionerId") String id);
+			@PathParam("member_id") String member_id,
+			@PathParam("type") String type);
 }
