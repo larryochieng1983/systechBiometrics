@@ -29,7 +29,7 @@ public interface CreatePensionerBioProxy {
 
 	@GET
 	@PathParam("pensionerId")
-	@Consumes("text/plain")
+	@Consumes("text/xml")
 	@Produces(value = { MediaType.MULTIPART_FORM_DATA, MediaType.TEXT_PLAIN })
 	public ClientResponse<PensionerServiceInputBean> getPensionerBio(
 			@PathParam("pensionerId") String id);

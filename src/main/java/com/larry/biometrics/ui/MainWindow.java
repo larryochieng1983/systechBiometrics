@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import org.netbeans.lib.awtextra.AbsoluteConstraints;
 
 import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxDeviceName;
@@ -89,7 +90,7 @@ public class MainWindow extends javax.swing.JFrame {
 	public MainWindow() {
 		biometricsUtil = new BiometricsUtilImpl();
 		applicationInfo = new ApplicationInfoImpl();
-		config = new FundMasterConfiguration();		
+		config = new FundMasterConfiguration();
 		bLEDOn = false;
 		initComponents();
 		disableControls();
@@ -155,149 +156,166 @@ public class MainWindow extends javax.swing.JFrame {
 		jTabbedPane1 = new javax.swing.JTabbedPane();
 		{
 			jPanelImage = new javax.swing.JPanel();
-			jTabbedPane1.addTab("Device Test/Configuration", null, jPanelImage, null);
-			jPanelImage.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+			jTabbedPane1.addTab("Device Test/Configuration", null, jPanelImage,
+					null);
+			jPanelImage
+					.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 			jPanelImage.setSize(500, 392);
-			jPanelImage.setFont(new java.awt.Font("Arial",0,12));
+			jPanelImage.setFont(new java.awt.Font("Arial", 0, 12));
 			{
 				jButtonInit = new javax.swing.JButton();
 				jPanelImage.add(jButtonInit,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100,
-								30));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(10,
+								10, 100, 30));
 				jButtonInit.setText("Initialize");
 				jButtonInit.setMaximumSize(new java.awt.Dimension(100, 30));
 				jButtonInit.setMinimumSize(new java.awt.Dimension(100, 30));
 				jButtonInit.setName("jButtonInit"); // NOI18N
 				jButtonInit.setPreferredSize(new java.awt.Dimension(100, 30));
-				jButtonInit.setFont(new java.awt.Font("Arial",0,12));
-				jButtonInit.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						jButtonInitActionPerformed(evt);
-					}
-				});
+				jButtonInit.setFont(new java.awt.Font("Arial", 0, 12));
+				jButtonInit
+						.addActionListener(new java.awt.event.ActionListener() {
+							public void actionPerformed(
+									java.awt.event.ActionEvent evt) {
+								jButtonInitActionPerformed(evt);
+							}
+						});
 			}
 			{
 				jLabelImage = new javax.swing.JLabel();
 				jPanelImage.add(jLabelImage,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1,
-								-1));
-				jLabelImage.setBorder(javax.swing.BorderFactory
-						.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(10,
+								60, -1, -1));
+				jLabelImage
+						.setBorder(javax.swing.BorderFactory
+								.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 				jLabelImage.setMinimumSize(new java.awt.Dimension(260, 300));
 				jLabelImage.setPreferredSize(new java.awt.Dimension(260, 300));
-				jLabelImage.setFont(new java.awt.Font("Arial",0,12));
+				jLabelImage.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				jComboBoxUSBPort = new javax.swing.JComboBox();
 				jPanelImage.add(jComboBoxUSBPort,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 220,
-								27));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(280,
+								90, 220, 27));
 				jComboBoxUSBPort.setModel(new javax.swing.DefaultComboBoxModel(
-						new String[] { "AUTO_DETECT", "0", "1", "2", "3", "4", "5",
-								"6", "7", "8", "9" }));
-				jComboBoxUSBPort.setMaximumSize(new java.awt.Dimension(170, 27));
-				jComboBoxUSBPort.setMinimumSize(new java.awt.Dimension(170, 27));
+						new String[] { "AUTO_DETECT", "0", "1", "2", "3", "4",
+								"5", "6", "7", "8", "9" }));
+				jComboBoxUSBPort
+						.setMaximumSize(new java.awt.Dimension(170, 27));
+				jComboBoxUSBPort
+						.setMinimumSize(new java.awt.Dimension(170, 27));
 				jComboBoxUSBPort.setBounds(280, 90, 210, 27);
 				jComboBoxUSBPort.setSize(220, 27);
-				jComboBoxUSBPort.setFont(new java.awt.Font("Arial",0,12));
+				jComboBoxUSBPort.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				jButtonToggleLED = new javax.swing.JButton();
 				jPanelImage.add(jButtonToggleLED,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 100,
-								30));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(120,
+								10, 100, 30));
 				jButtonToggleLED.setText("Toggle LED");
-				jButtonToggleLED.setMaximumSize(new java.awt.Dimension(100, 30));
-				jButtonToggleLED.setMinimumSize(new java.awt.Dimension(100, 30));
-				jButtonToggleLED.setPreferredSize(new java.awt.Dimension(100, 30));
-				jButtonToggleLED.setFont(new java.awt.Font("Arial",0,12));
-				jButtonToggleLED.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						jButtonToggleLEDActionPerformed(evt);
-					}
-				});
+				jButtonToggleLED
+						.setMaximumSize(new java.awt.Dimension(100, 30));
+				jButtonToggleLED
+						.setMinimumSize(new java.awt.Dimension(100, 30));
+				jButtonToggleLED.setPreferredSize(new java.awt.Dimension(100,
+						30));
+				jButtonToggleLED.setFont(new java.awt.Font("Arial", 0, 12));
+				jButtonToggleLED
+						.addActionListener(new java.awt.event.ActionListener() {
+							public void actionPerformed(
+									java.awt.event.ActionEvent evt) {
+								jButtonToggleLEDActionPerformed(evt);
+							}
+						});
 			}
 			{
 				jButtonCapture = new javax.swing.JButton();
 				jPanelImage.add(jButtonCapture,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 100,
-								30));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(230,
+								10, 100, 30));
 				jButtonCapture.setText("Capture");
 				jButtonCapture.setMaximumSize(new java.awt.Dimension(100, 30));
 				jButtonCapture.setMinimumSize(new java.awt.Dimension(100, 30));
-				jButtonCapture.setPreferredSize(new java.awt.Dimension(100, 30));
-				jButtonCapture.setFont(new java.awt.Font("Arial",0,12));
-				jButtonCapture.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						jButtonCaptureActionPerformed(evt);
-					}
-				});
+				jButtonCapture
+						.setPreferredSize(new java.awt.Dimension(100, 30));
+				jButtonCapture.setFont(new java.awt.Font("Arial", 0, 12));
+				jButtonCapture
+						.addActionListener(new java.awt.event.ActionListener() {
+							public void actionPerformed(
+									java.awt.event.ActionEvent evt) {
+								jButtonCaptureActionPerformed(evt);
+							}
+						});
 			}
 			{
 				jButtonConfig = new javax.swing.JButton();
 				jPanelImage.add(jButtonConfig,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 10, -1,
-								30));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(340,
+								10, -1, 30));
 				jButtonConfig.setText("Config");
 				jButtonConfig.setMaximumSize(new java.awt.Dimension(100, 30));
 				jButtonConfig.setMinimumSize(new java.awt.Dimension(100, 30));
 				jButtonConfig.setPreferredSize(new java.awt.Dimension(100, 30));
-				jButtonConfig.setFont(new java.awt.Font("Arial",0,12));
-				jButtonConfig.addActionListener(new java.awt.event.ActionListener() {
-					public void actionPerformed(java.awt.event.ActionEvent evt) {
-						jButtonConfigActionPerformed(evt);
-					}
-				});
+				jButtonConfig.setFont(new java.awt.Font("Arial", 0, 12));
+				jButtonConfig
+						.addActionListener(new java.awt.event.ActionListener() {
+							public void actionPerformed(
+									java.awt.event.ActionEvent evt) {
+								jButtonConfigActionPerformed(evt);
+							}
+						});
 			}
 			{
 				jLabel1 = new javax.swing.JLabel();
 				jPanelImage.add(jLabel1,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, -1,
-								-1));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(280,
+								70, -1, -1));
 				jLabel1.setText("USB Device");
-				jLabel1.setFont(new java.awt.Font("Arial",0,12));
+				jLabel1.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				jSliderQuality = new javax.swing.JSlider();
 				jPanelImage.add(jSliderQuality,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170,
-								220, -1));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(270,
+								170, 220, -1));
 				jSliderQuality.setMajorTickSpacing(10);
 				jSliderQuality.setMinorTickSpacing(5);
 				jSliderQuality.setPaintLabels(true);
 				jSliderQuality.setPaintTicks(true);
 				jSliderQuality.setName(""); // NOI18N
 				jSliderQuality.setOpaque(false);
-				jSliderQuality.setFont(new java.awt.Font("Arial",0,12));
+				jSliderQuality.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				jLabel2 = new javax.swing.JLabel();
 				jPanelImage.add(jLabel2,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, -1,
-								-1));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(280,
+								150, -1, -1));
 				jLabel2.setText("Image Quality");
-				jLabel2.setFont(new java.awt.Font("Arial",0,12));
+				jLabel2.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				jLabel3 = new javax.swing.JLabel();
 				jPanelImage.add(jLabel3,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 230, -1,
-								-1));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(290,
+								230, -1, -1));
 				jLabel3.setText("Timeout (seconds)");
-				jLabel3.setFont(new java.awt.Font("Arial",0,12));
+				jLabel3.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				jSliderSeconds = new javax.swing.JSlider();
 				jPanelImage.add(jSliderSeconds,
-						new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 250,
-								220, -1));
+						new org.netbeans.lib.awtextra.AbsoluteConstraints(270,
+								250, 220, -1));
 				jSliderSeconds.setMajorTickSpacing(1);
 				jSliderSeconds.setMaximum(10);
 				jSliderSeconds.setMinimum(1);
 				jSliderSeconds.setPaintLabels(true);
 				jSliderSeconds.setPaintTicks(true);
 				jSliderSeconds.setValue(5);
-				jSliderSeconds.setFont(new java.awt.Font("Arial",0,12));
+				jSliderSeconds.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 		}
 		jPanelRegisterVerify = new javax.swing.JPanel();
@@ -364,7 +382,7 @@ public class MainWindow extends javax.swing.JFrame {
 						30));
 		jLabelStatus.setBounds(10, 470, 664, 30);
 		jLabelStatus.setSize(675, 30);
-		jLabelStatus.setFont(new java.awt.Font("Arial",0,12));
+		jLabelStatus.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jPanelRegisterVerify
 				.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -374,19 +392,19 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jLabelSecurityLevel,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 460,
 						60));
-		jLabelSecurityLevel.setFont(new java.awt.Font("Arial",0,12));
+		jLabelSecurityLevel.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelRegistration.setText("Registration");
 		jPanelRegisterVerify.add(jLabelRegistration,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 34, -1,
 						-1));
-		jLabelRegistration.setFont(new java.awt.Font("Arial",0,12));
+		jLabelRegistration.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelVerification.setText("Verification");
 		jPanelRegisterVerify.add(jLabelVerification,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 34, -1,
 						-1));
-		jLabelVerification.setFont(new java.awt.Font("Arial",0,12));
+		jLabelVerification.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jComboBoxRegisterSecurityLevel
 				.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
@@ -395,7 +413,8 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jComboBoxRegisterSecurityLevel,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 130,
 						-1));
-		jComboBoxRegisterSecurityLevel.setFont(new java.awt.Font("Arial",0,12));
+		jComboBoxRegisterSecurityLevel
+				.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jComboBoxVerifySecurityLevel
 				.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
@@ -404,14 +423,14 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jComboBoxVerifySecurityLevel,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(325, 30, 130,
 						-1));
-		jComboBoxVerifySecurityLevel.setFont(new java.awt.Font("Arial",0,12));
+		jComboBoxVerifySecurityLevel.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelRegistrationBox.setBorder(javax.swing.BorderFactory
 				.createTitledBorder("Registration"));
 		jPanelRegisterVerify.add(jLabelRegistrationBox,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 290,
 						240));
-		jLabelRegistrationBox.setFont(new java.awt.Font("Arial",0,12));
+		jLabelRegistrationBox.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelRegisterImage1.setBorder(javax.swing.BorderFactory
 				.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -434,7 +453,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jLabelVerificationBox,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 150,
 						240));
-		jLabelVerificationBox.setFont(new java.awt.Font("Arial",0,12));
+		jLabelVerificationBox.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelVerifyImage.setBorder(javax.swing.BorderFactory
 				.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
@@ -457,7 +476,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jButtonCaptureR1,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 130,
 						30));
-		jButtonCaptureR1.setFont(new java.awt.Font("Arial",0,12));
+		jButtonCaptureR1.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jButtonCaptureV1.setText("Capture V1");
 		jButtonCaptureV1.setActionCommand("jButton1");
@@ -472,7 +491,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jButtonCaptureV1,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280,
 						130, 30));
-		jButtonCaptureV1.setFont(new java.awt.Font("Arial",0,12));
+		jButtonCaptureV1.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jButtonRegister.setText("Register");
 		jButtonRegister.setActionCommand("jButton1");
@@ -487,7 +506,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jButtonRegister,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 270,
 						30));
-		jButtonRegister.setFont(new java.awt.Font("Arial",0,12));
+		jButtonRegister.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jButtonVerify.setText("Verify");
 		jButtonVerify.setActionCommand("jButton1");
@@ -502,7 +521,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jButtonVerify,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 340,
 						130, 30));
-		jButtonVerify.setFont(new java.awt.Font("Arial",0,12));
+		jButtonVerify.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jButtonCaptureR2.setText("Capture R2");
 		jButtonCaptureR2.setActionCommand("jButton1");
@@ -517,7 +536,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jButtonCaptureR2,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 280,
 						130, 30));
-		jButtonCaptureR2.setFont(new java.awt.Font("Arial",0,12));
+		jButtonCaptureR2.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jProgressBarR1.setForeground(new java.awt.Color(0, 51, 153));
 		jPanelRegisterVerify.add(jProgressBarR1,
@@ -535,7 +554,7 @@ public class MainWindow extends javax.swing.JFrame {
 						130, -1));
 
 		jTabbedPane1.addTab("Register/Verify", jPanelRegisterVerify);
-		jPanelRegisterVerify.setFont(new java.awt.Font("Arial",0,12));
+		jPanelRegisterVerify.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jPanelDeviceInfo
 				.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -545,13 +564,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jLabelDeviceInfoGroup,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 290,
 						290));
-		jLabelDeviceInfoGroup.setFont(new java.awt.Font("Arial",0,12));
+		jLabelDeviceInfoGroup.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelDeviceID.setText("Device ID");
 		jPanelDeviceInfo.add(jLabelDeviceID,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1,
 						-1));
-		jLabelDeviceID.setFont(new java.awt.Font("Arial",0,12));
+		jLabelDeviceID.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldDeviceID.setEditable(false);
 		jTextFieldDeviceID.setBorder(javax.swing.BorderFactory
@@ -559,13 +578,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldDeviceID,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 160,
 						-1));
-		jTextFieldDeviceID.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldDeviceID.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelFWVersion.setText("F/W Version");
 		jPanelDeviceInfo.add(jLabelFWVersion,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1,
 						-1));
-		jLabelFWVersion.setFont(new java.awt.Font("Arial",0,12));
+		jLabelFWVersion.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldFWVersion.setEditable(false);
 		jTextFieldFWVersion.setBorder(javax.swing.BorderFactory
@@ -573,13 +592,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldFWVersion,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 160,
 						-1));
-		jTextFieldFWVersion.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldFWVersion.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelSerialNumber.setText("Serial #");
 		jPanelDeviceInfo.add(jLabelSerialNumber,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1,
 						-1));
-		jLabelSerialNumber.setFont(new java.awt.Font("Arial",0,12));
+		jLabelSerialNumber.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldSerialNumber.setEditable(false);
 		jTextFieldSerialNumber.setBorder(javax.swing.BorderFactory
@@ -587,13 +606,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldSerialNumber,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 160,
 						-1));
-		jTextFieldSerialNumber.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldSerialNumber.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelImageWidth.setText("Image Width");
 		jPanelDeviceInfo.add(jLabelImageWidth,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1,
 						-1));
-		jLabelImageWidth.setFont(new java.awt.Font("Arial",0,12));
+		jLabelImageWidth.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldImageWidth.setEditable(false);
 		jTextFieldImageWidth.setBorder(javax.swing.BorderFactory
@@ -601,13 +620,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldImageWidth,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120,
 						160, -1));
-		jTextFieldImageWidth.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldImageWidth.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelImageHeight.setText("Image Height");
 		jPanelDeviceInfo.add(jLabelImageHeight,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1,
 						-1));
-		jLabelImageHeight.setFont(new java.awt.Font("Arial",0,12));
+		jLabelImageHeight.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldImageHeight.setEditable(false);
 		jTextFieldImageHeight.setBorder(javax.swing.BorderFactory
@@ -615,13 +634,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldImageHeight,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150,
 						160, -1));
-		jTextFieldImageHeight.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldImageHeight.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelImageDPI.setText("Image DPI");
 		jPanelDeviceInfo.add(jLabelImageDPI,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1,
 						-1));
-		jLabelImageDPI.setFont(new java.awt.Font("Arial",0,12));
+		jLabelImageDPI.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldImageDPI.setEditable(false);
 		jTextFieldImageDPI.setBorder(javax.swing.BorderFactory
@@ -629,13 +648,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldImageDPI,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 180,
 						160, -1));
-		jTextFieldImageDPI.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldImageDPI.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelBrightness.setText("Brightness");
 		jPanelDeviceInfo.add(jLabelBrightness,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1,
 						-1));
-		jLabelBrightness.setFont(new java.awt.Font("Arial",0,12));
+		jLabelBrightness.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldBrightness.setEditable(false);
 		jTextFieldBrightness.setBorder(javax.swing.BorderFactory
@@ -643,13 +662,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldBrightness,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 210,
 						160, -1));
-		jTextFieldBrightness.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldBrightness.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelContrast.setText("Contrast");
 		jPanelDeviceInfo.add(jLabelContrast,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1,
 						-1));
-		jLabelContrast.setFont(new java.awt.Font("Arial",0,12));
+		jLabelContrast.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldContrast.setEditable(false);
 		jTextFieldContrast.setBorder(javax.swing.BorderFactory
@@ -657,13 +676,13 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldContrast,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240,
 						160, -1));
-		jTextFieldContrast.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldContrast.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelGain.setText("Gain");
 		jPanelDeviceInfo.add(jLabelGain,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, -1,
 						-1));
-		jLabelGain.setFont(new java.awt.Font("Arial",0,12));
+		jLabelGain.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTextFieldGain.setEditable(false);
 		jTextFieldGain.setBorder(javax.swing.BorderFactory
@@ -671,7 +690,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jTextFieldGain,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 270,
 						160, -1));
-		jTextFieldGain.setFont(new java.awt.Font("Arial",0,12));
+		jTextFieldGain.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jButtonGetDeviceInfo.setText("Get Device Info");
 		jButtonGetDeviceInfo.setMaximumSize(new java.awt.Dimension(150, 30));
@@ -686,16 +705,16 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelDeviceInfo.add(jButtonGetDeviceInfo,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 20, 150,
 						30));
-		jButtonGetDeviceInfo.setFont(new java.awt.Font("Arial",0,12));
+		jButtonGetDeviceInfo.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jTabbedPane1.addTab("Device Info", jPanelDeviceInfo);
-		jPanelDeviceInfo.setFont(new java.awt.Font("Arial",0,12));
+		jPanelDeviceInfo.setFont(new java.awt.Font("Arial", 0, 12));
 		{
 			systemConfigPanel = new JPanel();
 			jTabbedPane1.addTab("System Configuration", null,
 					systemConfigPanel, null);
 			systemConfigPanel.setLayout(null);
-			systemConfigPanel.setFont(new java.awt.Font("Arial",0,12));
+			systemConfigPanel.setFont(new java.awt.Font("Arial", 0, 12));
 			{
 				systemConfigLabel = new JLabel();
 				systemConfigPanel.add(systemConfigLabel);
@@ -708,53 +727,58 @@ public class MainWindow extends javax.swing.JFrame {
 				systemConfigPanel.add(fundMasterUrlLabel);
 				fundMasterUrlLabel.setText("Fund Master Url");
 				fundMasterUrlLabel.setBounds(26, 89, 93, 21);
-				fundMasterUrlLabel.setFont(new java.awt.Font("Arial",0,12));
+				fundMasterUrlLabel.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				fundMasterUrlText = new JTextField();
 				systemConfigPanel.add(fundMasterUrlText);
 				fundMasterUrlText.setBounds(134, 90, 208, 22);
-				fundMasterUrlText.setFont(new java.awt.Font("Arial",0,12));
+				fundMasterUrlText.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				userNameLabel = new JLabel();
 				systemConfigPanel.add(userNameLabel);
 				userNameLabel.setText("User Name");
 				userNameLabel.setBounds(26, 119, 88, 16);
-				userNameLabel.setFont(new java.awt.Font("Arial",0,12));
+				userNameLabel.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				userNameText = new JTextField();
 				systemConfigPanel.add(userNameText);
 				userNameText.setBounds(134, 119, 208, 23);
-				userNameText.setFont(new java.awt.Font("Arial",0,12));
+				userNameText.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				userPasswordLabel = new JLabel();
 				systemConfigPanel.add(userPasswordLabel);
 				userPasswordLabel.setText("Password");
 				userPasswordLabel.setBounds(26, 148, 89, 16);
-				userPasswordLabel.setFont(new java.awt.Font("Arial",0,12));
+				userPasswordLabel.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				userPasswordText = new JTextField();
 				systemConfigPanel.add(userPasswordText);
 				userPasswordText.setBounds(134, 151, 208, 23);
-				userPasswordText.setFont(new java.awt.Font("Arial",0,12));
+				userPasswordText.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				clearBtn = new JButton();
 				systemConfigPanel.add(clearBtn);
 				clearBtn.setText("Clear");
 				clearBtn.setBounds(191, 183, 71, 23);
-				clearBtn.setFont(new java.awt.Font("Arial",0,12));
+				clearBtn.setFont(new java.awt.Font("Arial", 0, 12));
+				clearBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						clearBtnActionPerformed(evt);
+					}
+				});
 			}
 			{
 				saveBtn = new JButton();
 				systemConfigPanel.add(saveBtn);
 				saveBtn.setText("Save");
 				saveBtn.setBounds(273, 183, 66, 23);
-				saveBtn.setFont(new java.awt.Font("Arial",0,12));
+				saveBtn.setFont(new java.awt.Font("Arial", 0, 12));
 				saveBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent evt) {
 						saveBtnActionPerformed(evt);
@@ -766,13 +790,13 @@ public class MainWindow extends javax.swing.JFrame {
 				systemConfigPanel.add(baseDirLabel);
 				baseDirLabel.setText("Config. Directory");
 				baseDirLabel.setBounds(25, 60, 98, 16);
-				baseDirLabel.setFont(new java.awt.Font("Arial",0,12));
+				baseDirLabel.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				baseDirText = new JTextField();
 				systemConfigPanel.add(baseDirText);
 				baseDirText.setBounds(135, 62, 207, 23);
-				baseDirText.setFont(new java.awt.Font("Arial",0,12));
+				baseDirText.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 		}
 
@@ -792,14 +816,14 @@ public class MainWindow extends javax.swing.JFrame {
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 10, 350,
 						-1));
 		jComboBoxDeviceName.setSize(350, 23);
-		jComboBoxDeviceName.setFont(new java.awt.Font("Arial",0,12));
+		jComboBoxDeviceName.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelDeviceName.setText("Device Name");
 		getContentPane().add(
 				jLabelDeviceName,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 110,
 						-1));
-		jLabelDeviceName.setFont(new java.awt.Font("Arial",0,12));
+		jLabelDeviceName.setFont(new java.awt.Font("Arial", 0, 12));
 
 		jLabelSpacer1.setText(" ");
 		getContentPane().add(
@@ -869,7 +893,7 @@ public class MainWindow extends javax.swing.JFrame {
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
 
-		iError = biometricsUtil.verify(regMin1,  secuLevel);
+		iError = biometricsUtil.verify(regMin1, secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			if (matched[0])
 				this.jLabelStatus
@@ -1083,8 +1107,8 @@ public class MainWindow extends javax.swing.JFrame {
 			bLEDOn = !bLEDOn;
 			ret = biometricsUtil.setLedOn(bLEDOn);
 			if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-				this.jLabelStatus.setText("Set Led On(" + bLEDOn + ") Success ["
-						+ ret + "]");
+				this.jLabelStatus.setText("Set Led On(" + bLEDOn
+						+ ") Success [" + ret + "]");
 			} else {
 				this.jLabelStatus.setText("Set Led On(" + bLEDOn + ") Error ["
 						+ ret + "]");
@@ -1163,8 +1187,8 @@ public class MainWindow extends javax.swing.JFrame {
 							BufferedImage.TYPE_BYTE_GRAY);
 					this.enableControls();
 				} else
-					this.jLabelStatus.setText("Getting Device Info Error [" + ret
-							+ "]");
+					this.jLabelStatus.setText("Getting Device Info Error ["
+							+ ret + "]");
 			} else
 				this.jLabelStatus.setText("Open Device Error [" + ret + "]");
 		} else
@@ -1272,7 +1296,7 @@ public class MainWindow extends javax.swing.JFrame {
 	 */
 	public ApplicationInfo getApplicationInfo() {
 		return applicationInfo;
-	}	
+	}
 
 	/**
 	 * @return the biometricsUtil
@@ -1287,6 +1311,12 @@ public class MainWindow extends javax.swing.JFrame {
 	public FundMasterConfiguration getConfig() {
 		return config;
 	}
-	
+
+	private void clearBtnActionPerformed(ActionEvent evt) {
+		baseDirText.setText("");
+		fundMasterUrlText.setText("");
+		userNameText.setText("");
+		userPasswordText.setText("");
+	}
 
 }

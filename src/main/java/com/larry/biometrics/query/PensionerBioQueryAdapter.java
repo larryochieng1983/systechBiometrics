@@ -25,6 +25,8 @@ public class PensionerBioQueryAdapter {
 	private String fundMasterUrl;
 	private String userName;
 	private String password;
+	/**For testing if the client works */
+	private int status;
 
 	public PensionerBioQueryAdapter(String fundMasterUrl, String userName,
 			String password) {
@@ -49,7 +51,7 @@ public class PensionerBioQueryAdapter {
 	}
 
 	public Pensioner getPensionerInfo(String pensionerNumber) {
-		Pensioner pensioner = new Pensioner();
+		Pensioner pensioner = null;
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, getFundMasterUrl());
 		ClientResponse response = createPensionerBioProxy
@@ -58,11 +60,10 @@ public class PensionerBioQueryAdapter {
 				.getEntity(MultipartFormDataInput.class);
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		if (response.getStatus() == 200) {
+			pensioner = new Pensioner();
 			pensioner.setPensionerNumber(pensionerNumber);
 			pensioner.setFpImage(extractByte(uploadForm, "fpImage"));
 			pensioner.setFpMinutiae(extractByte(uploadForm, "fpMinutiae"));
-		} else {
-
 		}
 		return pensioner;
 	}
