@@ -78,7 +78,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean r2Captured = false;
 	private boolean v1Captured = false;
 	private ApplicationInfo applicationInfo;
-	private BiometricsUtil biometricsUtil;
+	private BiometricsUtilImpl biometricsUtil;
 	private JButton memberSearchBtn;
 	private JTextField memberSearchText;
 	private JLabel memberPictureLabel;
@@ -1433,15 +1433,15 @@ public class MainWindow extends javax.swing.JFrame {
 		String searchId = getMemberSearchText().getText();
 		if (!searchId.equals("")) {
 			currentPensioner = queryAdapter.getPensionerBiometricInfo(searchId);
-			ImageIcon icon = new ImageIcon(currentPensioner.getPhotoUrl());
-			if (icon != null) {
+
+			if (currentPensioner != null) {
+				biometricsUtil.setCurrentPensioner(currentPensioner);
+				ImageIcon icon = new ImageIcon(currentPensioner.getPhotoUrl());
 				getMemberPictureLabel().setIcon(icon);
 			} else {
-				getMemberPictureLabel().setText("Not Available");
+				JOptionPane
+						.showMessageDialog(new JFrame(), "Member Not Found!");
 			}
-		}
-		if (currentPensioner == null) {
-			JOptionPane.showMessageDialog(new JFrame(), "Member Not Found!");
 		}
 	}
 
