@@ -17,7 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import org.netbeans.lib.awtextra.AbsoluteConstraints;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
 
 import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxDeviceName;
@@ -27,11 +28,15 @@ import SecuGen.FDxSDKPro.jni.SGFingerPosition;
 import SecuGen.FDxSDKPro.jni.SGImpressionType;
 import SecuGen.FDxSDKPro.jni.SGPPPortAddr;
 
+import com.larry.biometrics.model.Pensioner;
 import com.larry.biometrics.util.ApplicationInfo;
 import com.larry.biometrics.util.ApplicationInfoImpl;
 import com.larry.biometrics.util.BiometricsUtil;
 import com.larry.biometrics.util.BiometricsUtilImpl;
 import com.larry.biometrics.util.FundMasterConfiguration;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -72,6 +77,11 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean v1Captured = false;
 	private ApplicationInfo applicationInfo;
 	private BiometricsUtil biometricsUtil;
+	private JButton memberSearchBtn;
+	private JTextField memberSearchText;
+	private JLabel memberPictureLabel;
+	private JPanel searchPanel;
+	private JPanel currentMemberPanel;
 	private JTextField baseDirText;
 	private JLabel baseDirLabel;
 	private JButton saveBtn;
@@ -85,6 +95,9 @@ public class MainWindow extends javax.swing.JFrame {
 	private JLabel systemConfigLabel;
 	private JPanel systemConfigPanel;
 	private FundMasterConfiguration config;
+	
+	/**The currently selected pensioner/member */
+	private Pensioner currentPensioner;
 
 	/** Creates new form */
 	public MainWindow() {
@@ -141,6 +154,22 @@ public class MainWindow extends javax.swing.JFrame {
 		if (config.getPassword() != null) {
 			userPasswordText.setText(config.getPassword());
 		}
+	}
+	
+	
+
+	/**
+	 * @return the currentPensioner
+	 */
+	public Pensioner getCurrentPensioner() {
+		return currentPensioner;
+	}
+
+	/**
+	 * @param currentPensioner the currentPensioner to set
+	 */
+	public void setCurrentPensioner(Pensioner currentPensioner) {
+		this.currentPensioner = currentPensioner;
 	}
 
 	/**
@@ -552,6 +581,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jProgressBarV1,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 250,
 						130, -1));
+		jPanelRegisterVerify.add(getCurrentMemberPanel());
 
 		jTabbedPane1.addTab("Register/Verify", jPanelRegisterVerify);
 		jPanelRegisterVerify.setFont(new java.awt.Font("Arial", 0, 12));
@@ -1317,6 +1347,58 @@ public class MainWindow extends javax.swing.JFrame {
 		fundMasterUrlText.setText("");
 		userNameText.setText("");
 		userPasswordText.setText("");
+	}
+	
+	private JPanel getCurrentMemberPanel() {
+		if(currentMemberPanel == null) {
+			currentMemberPanel = new JPanel();
+			BorderLayout currentMemberPanelLayout = new BorderLayout();
+			currentMemberPanel.setLayout(currentMemberPanelLayout);
+			currentMemberPanel.setBounds(488, 12, 175, 308);
+			currentMemberPanel.setBorder(BorderFactory.createTitledBorder(null, "Current Member", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial",0,11)));
+			currentMemberPanel.add(getSearchPanel(), BorderLayout.NORTH);
+			currentMemberPanel.add(getMemberPictureLabel(), BorderLayout.CENTER);
+		}
+		return currentMemberPanel;
+	}
+	
+	private JPanel getSearchPanel() {
+		if(searchPanel == null) {
+			searchPanel = new JPanel();
+			FlowLayout searchPanelLayout = new FlowLayout();
+			searchPanel.setLayout(searchPanelLayout);
+			searchPanel.setPreferredSize(new java.awt.Dimension(165, 81));
+			searchPanel.add(getMemberSearchText());
+			searchPanel.add(getMemberSearchBtn());
+		}
+		return searchPanel;
+	}
+	
+	private JLabel getMemberPictureLabel() {
+		if(memberPictureLabel == null) {
+			memberPictureLabel = new JLabel();
+			memberPictureLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		}
+		return memberPictureLabel;
+	}
+	
+	private JTextField getMemberSearchText() {
+		if(memberSearchText == null) {
+			memberSearchText = new JTextField();
+			memberSearchText.setPreferredSize(new java.awt.Dimension(130, 23));
+			memberSearchText.setFont(new java.awt.Font("Arial",0,12));
+		}
+		return memberSearchText;
+	}
+	
+	private JButton getMemberSearchBtn() {
+		if(memberSearchBtn == null) {
+			memberSearchBtn = new JButton();
+			memberSearchBtn.setText("Search");
+			memberSearchBtn.setPreferredSize(new java.awt.Dimension(83, 23));
+			memberSearchBtn.setFont(new java.awt.Font("Arial",0,12));
+		}
+		return memberSearchBtn;
 	}
 
 }

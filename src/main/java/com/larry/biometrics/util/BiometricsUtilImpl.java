@@ -29,8 +29,7 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	public BiometricsUtilImpl() {
 		fplib = new JSGFPLib();
 		configuration = new FundMasterConfiguration();
-		adapter = new PensionerBioQueryAdapter(configuration.getUrl(),
-				configuration.getUserName(), configuration.getPassword());
+		adapter = new PensionerBioQueryAdapter(configuration);
 	}
 
 	public long initDevice(long deviceName) {
@@ -117,6 +116,21 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 
 	public long close() {
 		return fplib.Close();
+	}
+
+	/**
+	 * @return the currentPensioner
+	 */
+	public Pensioner getCurrentPensioner() {
+		return currentPensioner;
+	}
+
+	/**
+	 * @param currentPensioner
+	 *            the currentPensioner to set
+	 */
+	public void setCurrentPensioner(Pensioner currentPensioner) {
+		this.currentPensioner = currentPensioner;
 	}
 
 }

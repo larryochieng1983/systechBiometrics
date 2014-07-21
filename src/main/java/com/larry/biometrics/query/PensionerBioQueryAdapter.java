@@ -9,6 +9,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 
 import com.larry.biometrics.model.Pensioner;
+import com.larry.biometrics.util.FundMasterConfiguration;
 
 /**
  * @author Otieno Lawrence
@@ -18,17 +19,13 @@ import com.larry.biometrics.model.Pensioner;
  */
 public class PensionerBioQueryAdapter {
 
-	private String fundMasterUrl;
-	private String userName;
-	private String password;
+
+	private FundMasterConfiguration configuration;
 	/** For testing if the client works */
 	private int status;
 
-	public PensionerBioQueryAdapter(String fundMasterUrl, String userName,
-			String password) {
-		this.fundMasterUrl = fundMasterUrl;
-		this.userName = userName;
-		this.password = password;
+	public PensionerBioQueryAdapter(FundMasterConfiguration configuration) {
+		this.configuration = configuration;
 
 	}
 
@@ -36,7 +33,7 @@ public class PensionerBioQueryAdapter {
 		byte[] fpImage = pensioner.getFpImage();
 		byte[] fpMinutiae = pensioner.getFpMinutiae();
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
-				CreatePensionerBioProxy.class, getFundMasterUrl());
+				CreatePensionerBioProxy.class, configuration.getUrl());
 		PensionerServiceInputBean pensionerBioServiceInputBean = new PensionerServiceInputBean();
 		pensionerBioServiceInputBean.setMemberId(pensioner.getPensionerNumber());
 		pensionerBioServiceInputBean.setFpImage(fpImage);
@@ -51,7 +48,7 @@ public class PensionerBioQueryAdapter {
 	public Pensioner getPensionerInfo(String pensionerNumber) {
 		Pensioner pensioner = null;
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
-				CreatePensionerBioProxy.class, getFundMasterUrl());
+				CreatePensionerBioProxy.class, configuration.getUrl());
 		ClientResponse response = createPensionerBioProxy
 				.getPensionerBio(pensionerNumber,"fingerprint_data");
 		if (response.getStatus() == 200) {
@@ -76,56 +73,18 @@ public class PensionerBioQueryAdapter {
 	}
 
 	/**
-	 * @return the fundMasterUrl
+	 * @return the status
 	 */
-	public String getFundMasterUrl() {
-		return fundMasterUrl;
-	}
-
-	/**
-	 * @param fundMasterUrl
-	 *            the fundMasterUrl to set
-	 */
-	public void setFundMasterUrl(String fundMasterUrl) {
-		this.fundMasterUrl = fundMasterUrl;
-	}
-
-	/**
-	 * @return the userName
-	 */
-	public String getUserName() {
-		return userName;
-	}
-
-	/**
-	 * @param userName
-	 *            the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * @param password
-	 *            the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public int getStatus() {
 		return status;
 	}
 
+	/**
+	 * @param status the status to set
+	 */
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
+	
+	
 }
