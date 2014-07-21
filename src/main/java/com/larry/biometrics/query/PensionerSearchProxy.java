@@ -5,6 +5,7 @@ package com.larry.biometrics.query;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -23,5 +24,7 @@ public interface PensionerSearchProxy {
 	@Consumes("text/xml")
 	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public ClientResponse<PensionerServiceInputBean> searchMember(
+			@HeaderParam("userName") String userName,
+			@HeaderParam("password") String password,
 			@PathParam("q") String member_id);
 }
