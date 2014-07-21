@@ -6,6 +6,8 @@
 
 package com.larry.biometrics.ui;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +16,9 @@ import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
@@ -34,9 +38,6 @@ import com.larry.biometrics.util.ApplicationInfoImpl;
 import com.larry.biometrics.util.BiometricsUtil;
 import com.larry.biometrics.util.BiometricsUtilImpl;
 import com.larry.biometrics.util.FundMasterConfiguration;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -95,8 +96,8 @@ public class MainWindow extends javax.swing.JFrame {
 	private JLabel systemConfigLabel;
 	private JPanel systemConfigPanel;
 	private FundMasterConfiguration config;
-	
-	/**The currently selected pensioner/member */
+
+	/** The currently selected pensioner/member */
 	private Pensioner currentPensioner;
 
 	/** Creates new form */
@@ -155,8 +156,6 @@ public class MainWindow extends javax.swing.JFrame {
 			userPasswordText.setText(config.getPassword());
 		}
 	}
-	
-	
 
 	/**
 	 * @return the currentPensioner
@@ -166,7 +165,8 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	/**
-	 * @param currentPensioner the currentPensioner to set
+	 * @param currentPensioner
+	 *            the currentPensioner to set
 	 */
 	public void setCurrentPensioner(Pensioner currentPensioner) {
 		this.currentPensioner = currentPensioner;
@@ -581,7 +581,11 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(jProgressBarV1,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 250,
 						130, -1));
-		jPanelRegisterVerify.add(getCurrentMemberPanel());
+
+		/** current member panel */
+		jPanelRegisterVerify.add(getCurrentMemberPanel(),
+				new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, -1,
+						-1));
 
 		jTabbedPane1.addTab("Register/Verify", jPanelRegisterVerify);
 		jPanelRegisterVerify.setFont(new java.awt.Font("Arial", 0, 12));
@@ -827,6 +831,7 @@ public class MainWindow extends javax.swing.JFrame {
 				systemConfigPanel.add(baseDirText);
 				baseDirText.setBounds(135, 62, 207, 23);
 				baseDirText.setFont(new java.awt.Font("Arial", 0, 12));
+				baseDirText.setEditable(false);
 			}
 		}
 
@@ -1317,6 +1322,7 @@ public class MainWindow extends javax.swing.JFrame {
 		if (!baseDir.equals("") && !url.equals("") && !userName.equals("")
 				&& !password.equals("")) {
 			config.saveConfiguration(baseDir, url, userName, password);
+			JOptionPane.showMessageDialog(new JFrame(), "OK");
 		}
 
 	}
@@ -1343,62 +1349,76 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void clearBtnActionPerformed(ActionEvent evt) {
-		baseDirText.setText("");
 		fundMasterUrlText.setText("");
 		userNameText.setText("");
 		userPasswordText.setText("");
 	}
-	
+
 	private JPanel getCurrentMemberPanel() {
-		if(currentMemberPanel == null) {
+		if (currentMemberPanel == null) {
 			currentMemberPanel = new JPanel();
 			BorderLayout currentMemberPanelLayout = new BorderLayout();
 			currentMemberPanel.setLayout(currentMemberPanelLayout);
-			currentMemberPanel.setBounds(488, 12, 175, 308);
-			currentMemberPanel.setBorder(BorderFactory.createTitledBorder(null, "Current Member", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial",0,11)));
+			currentMemberPanel.setBounds(500, 85, 135, 236);
+			currentMemberPanel.setBorder(BorderFactory.createTitledBorder(null,
+					"Current Member", TitledBorder.LEADING,
+					TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial",
+							0, 12)));
+			currentMemberPanel.setFont(new java.awt.Font("Arial", 0, 12));
 			currentMemberPanel.add(getSearchPanel(), BorderLayout.NORTH);
-			currentMemberPanel.add(getMemberPictureLabel(), BorderLayout.CENTER);
 		}
 		return currentMemberPanel;
 	}
-	
+
 	private JPanel getSearchPanel() {
-		if(searchPanel == null) {
+		if (searchPanel == null) {
 			searchPanel = new JPanel();
 			FlowLayout searchPanelLayout = new FlowLayout();
 			searchPanel.setLayout(searchPanelLayout);
-			searchPanel.setPreferredSize(new java.awt.Dimension(165, 81));
+			searchPanel.setPreferredSize(new java.awt.Dimension(149, 219));
 			searchPanel.add(getMemberSearchText());
 			searchPanel.add(getMemberSearchBtn());
+			searchPanel.add(getMemberPictureLabel());
 		}
 		return searchPanel;
 	}
-	
+
 	private JLabel getMemberPictureLabel() {
-		if(memberPictureLabel == null) {
+		if (memberPictureLabel == null) {
 			memberPictureLabel = new JLabel();
-			memberPictureLabel.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+			memberPictureLabel.setBorder(BorderFactory
+					.createBevelBorder(BevelBorder.LOWERED));
+			memberPictureLabel
+					.setPreferredSize(new java.awt.Dimension(136, 152));
 		}
 		return memberPictureLabel;
 	}
-	
+
 	private JTextField getMemberSearchText() {
-		if(memberSearchText == null) {
+		if (memberSearchText == null) {
 			memberSearchText = new JTextField();
 			memberSearchText.setPreferredSize(new java.awt.Dimension(130, 23));
-			memberSearchText.setFont(new java.awt.Font("Arial",0,12));
+			memberSearchText.setFont(new java.awt.Font("Arial", 0, 12));
 		}
 		return memberSearchText;
 	}
-	
+
 	private JButton getMemberSearchBtn() {
-		if(memberSearchBtn == null) {
+		if (memberSearchBtn == null) {
 			memberSearchBtn = new JButton();
 			memberSearchBtn.setText("Search");
 			memberSearchBtn.setPreferredSize(new java.awt.Dimension(83, 23));
-			memberSearchBtn.setFont(new java.awt.Font("Arial",0,12));
+			memberSearchBtn.setFont(new java.awt.Font("Arial", 0, 12));
 		}
 		return memberSearchBtn;
+	}
+
+	// Check that FundMaster Config exists
+	private void checkFundMasterConfiguration() {
+		if (config.getBaseDir() == null || config.getUrl() == null) {
+			jLabelStatus
+					.setText("Warning: Please Check the FundMaster Configuration!");
+		}
 	}
 
 }

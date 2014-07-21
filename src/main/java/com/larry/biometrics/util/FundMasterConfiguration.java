@@ -4,7 +4,9 @@
 package com.larry.biometrics.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Properties;
@@ -26,51 +28,54 @@ public class FundMasterConfiguration {
 
 	private String baseDir;
 	private Properties props = new Properties();
-	private File configFile;
 
 	public FundMasterConfiguration() {
-		String separator = System.getProperty("file.separator");
-		if (this.baseDir == null || this.baseDir.equals("")) {
-			this.baseDir = System.getProperty("user.home");
-		}
-		try {
-			configFile = new File(baseDir + separator + "fundmaster.properties");
-			if (configFile.exists()) {
-				configFile.createNewFile();
-				props.put("baseDir", this.baseDir);
-				props.put("url", "");
-				props.put("userName", "");
-				props.put("password", "");
-			}
-
-			OutputStream outputStream = new FileOutputStream(configFile);
-			props.store(outputStream, "File Modified on: " + new Date());
-		} catch (Exception e) {
-			logger.error(e);
-		}
-
+		baseDir = System.getProperty("user.home");
+		loadConfiguration();
 	}
 
-	public void saveConfiguration(String baseDir, String url, String userName,
-			String password) {
-		this.baseDir = baseDir;
-		this.url = url;
-		this.userName = userName;
-		this.password = password;
-
-		if (!configFile.exists()) {
-			configFile.mkdir();
-			props.put("baseDir", this.baseDir);
-			props.put("url", this.url);
-			props.put("userName", this.userName);
-			props.put("password", this.password);
+	private void loadConfiguration() {
+		if (getBaseDir() != null) {
+			try {
+				props.load(new FileInputStream(new File(getBaseDir() + "/"
+						+ "fundmaster.properties")));
+				this.baseDir = props.getProperty("baseDir");
+				this.url = props.getProperty("url");
+				this.userName = props.getProperty("userName");
+				this.password = props.getProperty("password");
+			} catch (IOException e) {
+				logger.error(e);
+			}
 		}
+	}
+
+	public void reloadConfiguration() {
+		loadConfiguration();
+	}
+
+	public void saveConfiguration(String directory, String fundmasterUrl,
+			String username, String pass) {
+		File configFile = null;
+		OutputStream outputStream = null;
+		configFile = new File(directory + "/" + "fundmaster.properties");
+		configFile.mkdir();
+		props.put("baseDir", directory);
+		props.put("url", fundmasterUrl);
+		props.put("userName", username);
+		props.put("password", pass);
 		try {
-			OutputStream outputStream = new FileOutputStream(configFile);
+			outputStream = new FileOutputStream(configFile);
 			props.store(outputStream, "File Modified" + new Date());
 		} catch (Exception e) {
 			logger.error(e);
+		} finally {
+			try {
+				outputStream.close();
+			} catch (Exception e) {
+				logger.error(e);
+			}
 		}
+		reloadConfiguration();
 	}
 
 	/**
