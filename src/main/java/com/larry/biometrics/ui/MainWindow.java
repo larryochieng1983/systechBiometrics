@@ -32,7 +32,8 @@ import SecuGen.FDxSDKPro.jni.SGFingerPosition;
 import SecuGen.FDxSDKPro.jni.SGImpressionType;
 import SecuGen.FDxSDKPro.jni.SGPPPortAddr;
 
-import com.larry.biometrics.model.Pensioner;
+import com.larry.biometrics.model.PensionerDto;
+import com.larry.biometrics.query.PensionerBioQueryAdapter;
 import com.larry.biometrics.util.ApplicationInfo;
 import com.larry.biometrics.util.ApplicationInfoImpl;
 import com.larry.biometrics.util.BiometricsUtil;
@@ -96,15 +97,17 @@ public class MainWindow extends javax.swing.JFrame {
 	private JLabel systemConfigLabel;
 	private JPanel systemConfigPanel;
 	private FundMasterConfiguration config;
+	private PensionerBioQueryAdapter queryAdapter;
 
 	/** The currently selected pensioner/member */
-	private Pensioner currentPensioner;
+	private PensionerDto currentPensioner;
 
 	/** Creates new form */
 	public MainWindow() {
 		biometricsUtil = new BiometricsUtilImpl();
 		applicationInfo = new ApplicationInfoImpl();
 		config = new FundMasterConfiguration();
+		queryAdapter = new PensionerBioQueryAdapter(config);
 		bLEDOn = false;
 		initComponents();
 		disableControls();
@@ -160,7 +163,7 @@ public class MainWindow extends javax.swing.JFrame {
 	/**
 	 * @return the currentPensioner
 	 */
-	public Pensioner getCurrentPensioner() {
+	public PensionerDto getCurrentPensioner() {
 		return currentPensioner;
 	}
 
@@ -168,7 +171,7 @@ public class MainWindow extends javax.swing.JFrame {
 	 * @param currentPensioner
 	 *            the currentPensioner to set
 	 */
-	public void setCurrentPensioner(Pensioner currentPensioner) {
+	public void setCurrentPensioner(PensionerDto currentPensioner) {
 		this.currentPensioner = currentPensioner;
 	}
 
@@ -1409,6 +1412,11 @@ public class MainWindow extends javax.swing.JFrame {
 			memberSearchBtn.setText("Search");
 			memberSearchBtn.setPreferredSize(new java.awt.Dimension(83, 23));
 			memberSearchBtn.setFont(new java.awt.Font("Arial", 0, 12));
+			memberSearchBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					memberSearchBtnActionPerformed(evt);
+				}
+			});
 		}
 		return memberSearchBtn;
 	}
@@ -1418,6 +1426,19 @@ public class MainWindow extends javax.swing.JFrame {
 		if (config.getBaseDir() == null || config.getUrl() == null) {
 			jLabelStatus
 					.setText("Warning: Please Check the FundMaster Configuration!");
+		}
+	}
+
+	private void memberSearchBtnActionPerformed(ActionEvent evt) {
+		String searchId = getMemberSearchText().getText();
+		if (!searchId.equals("")) {
+			currentPensioner = queryAdapter.getPensionerBiometricInfo(searchId);
+			ImageIcon icon = new ImageIcon(currentPensioner.getPhotoUrl());
+			if (icon != null) {
+				getMemberPictureLabel().setIcon(icon);
+			} else {
+				getMemberPictureLabel().setText("Not Available");
+			}
 		}
 	}
 

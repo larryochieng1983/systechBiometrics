@@ -34,5 +34,5 @@ public interface CreatePensionerBioProxy {
 	@Produces(value = {  MediaType.APPLICATION_OCTET_STREAM, "image/bmp" })
 	public ClientResponse<PensionerServiceInputBean> getPensionerBio(
 			@PathParam("member_id") String member_id,
-			@PathParam("type") String type);
+			@PathParam("type") String type);	
 }

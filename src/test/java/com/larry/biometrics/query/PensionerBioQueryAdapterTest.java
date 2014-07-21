@@ -7,7 +7,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jmock.MockObjectTestCase;
 
-import com.larry.biometrics.model.Pensioner;
+import com.larry.biometrics.model.PensionerDto;
 import com.larry.biometrics.util.FundMasterConfiguration;
 
 /**
@@ -35,16 +35,16 @@ public class PensionerBioQueryAdapterTest extends MockObjectTestCase {
 	}
 
 	public void testGetPensionerInfo() throws Exception {
-		queryAdapter.getPensionerInfo("282580");
+		queryAdapter.getPensionerBiometricInfo("282580");
 		assertEquals(200, queryAdapter.getStatus());
 	}
 
 	public void testSavePensionerInfo() throws Exception {
-		Pensioner pensioner = new Pensioner();
-		pensioner.setPensionerNumber("282580");
-		pensioner.setFpImage(new byte[400]);
-		pensioner.setFpMinutiae(new byte[400]);
-		queryAdapter.savePensionerInfo(pensioner);
+		PensionerDto pensionerDto = new PensionerDto();
+		pensionerDto.setPensionerNumber("282580");
+		pensionerDto.setFpImage(new byte[400]);
+		pensionerDto.setFpMinutiae(new byte[400]);
+		queryAdapter.savePensionerInfo(pensionerDto);
 		assertEquals(200, queryAdapter.getStatus());
 	}
 

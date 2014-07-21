@@ -10,7 +10,7 @@ import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxErrorCode;
 import SecuGen.FDxSDKPro.jni.SGFingerInfo;
 
-import com.larry.biometrics.model.Pensioner;
+import com.larry.biometrics.model.PensionerDto;
 import com.larry.biometrics.query.PensionerBioQueryAdapter;
 
 /**
@@ -20,7 +20,7 @@ import com.larry.biometrics.query.PensionerBioQueryAdapter;
 public class BiometricsUtilImpl implements BiometricsUtil {
 
 	private static Logger logger = Logger.getLogger(BiometricsUtil.class);
-	public Pensioner currentPensioner;
+	public PensionerDto currentPensioner;
 	private PensionerBioQueryAdapter adapter;
 	private FundMasterConfiguration configuration;
 
@@ -46,9 +46,9 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	}
 
 	public long verify(byte[] verifyMin, long securityLevel) {
-		Pensioner pensioner = adapter.getPensionerInfo(currentPensioner
+		PensionerDto pensionerDto = adapter.getPensionerBiometricInfo(currentPensioner
 				.getPensionerNumber());
-		byte[] registeredMin = pensioner.getFpMinutiae();
+		byte[] registeredMin = pensionerDto.getFpMinutiae();
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
 		return fplib.MatchTemplate(registeredMin, verifyMin, securityLevel,
@@ -121,7 +121,7 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	/**
 	 * @return the currentPensioner
 	 */
-	public Pensioner getCurrentPensioner() {
+	public PensionerDto getCurrentPensioner() {
 		return currentPensioner;
 	}
 
@@ -129,7 +129,7 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	 * @param currentPensioner
 	 *            the currentPensioner to set
 	 */
-	public void setCurrentPensioner(Pensioner currentPensioner) {
+	public void setCurrentPensioner(PensionerDto currentPensioner) {
 		this.currentPensioner = currentPensioner;
 	}
 

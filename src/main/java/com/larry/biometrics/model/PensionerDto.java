@@ -6,20 +6,23 @@ package com.larry.biometrics.model;
 import java.io.Serializable;
 
 /**
+ * DTO for PensionerDto info
+ * 
  * @author Otieno Lawrence
  * 
  */
-public class Pensioner implements Serializable {
+public class PensionerDto implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private String pensionerNumber;
 	// the image of the fingerprint
 	private byte[] fpImage;
 	// the fingerprint minutiae
 	private byte[] fpMinutiae;
+	private String photoUrl;
 
 	public String getPensionerNumber() {
 		return pensionerNumber;
@@ -45,6 +48,21 @@ public class Pensioner implements Serializable {
 		this.fpMinutiae = fpMinutiae;
 	}
 
+	/**
+	 * @return the photoUrl
+	 */
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	/**
+	 * @param photoUrl
+	 *            the photoUrl to set
+	 */
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,7 +80,7 @@ public class Pensioner implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pensioner other = (Pensioner) obj;
+		PensionerDto other = (PensionerDto) obj;
 		if (pensionerNumber == null) {
 			if (other.pensionerNumber != null)
 				return false;

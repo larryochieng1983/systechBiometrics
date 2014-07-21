@@ -5,10 +5,14 @@ package com.larry.biometrics.query;
 
 import java.io.InputStream;
 
+import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import com.larry.biometrics.model.Pensioner;
+import com.larry.biometrics.model.PensionerDto;
 import com.larry.biometrics.util.FundMasterConfiguration;
 
 /**
@@ -19,6 +23,8 @@ import com.larry.biometrics.util.FundMasterConfiguration;
  */
 public class PensionerBioQueryAdapter {
 
+	private static Logger LOG = Logger
+			.getLogger(PensionerBioQueryAdapter.class);
 
 	private FundMasterConfiguration configuration;
 	/** For testing if the client works */
@@ -29,46 +35,71 @@ public class PensionerBioQueryAdapter {
 
 	}
 
-	public boolean savePensionerInfo(Pensioner pensioner) throws Exception {
-		byte[] fpImage = pensioner.getFpImage();
-		byte[] fpMinutiae = pensioner.getFpMinutiae();
+	public boolean savePensionerInfo(PensionerDto pensionerDto)
+			throws Exception {
+		byte[] fpImage = pensionerDto.getFpImage();
+		byte[] fpMinutiae = pensionerDto.getFpMinutiae();
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());
 		PensionerServiceInputBean pensionerBioServiceInputBean = new PensionerServiceInputBean();
-		pensionerBioServiceInputBean.setMemberId(pensioner.getPensionerNumber());
+		pensionerBioServiceInputBean.setMemberId(pensionerDto
+				.getPensionerNumber());
 		pensionerBioServiceInputBean.setFpImage(fpImage);
 		pensionerBioServiceInputBean.setFpMinutiae(fpMinutiae);
 		ClientResponse response = createPensionerBioProxy
-				.createPensionerBio(pensionerBioServiceInputBean);		
+				.createPensionerBio(pensionerBioServiceInputBean);
 		setStatus(response.getStatus());
 		return getStatus() == 200;
 
 	}
 
-	public Pensioner getPensionerInfo(String pensionerNumber) {
-		Pensioner pensioner = null;
+	public PensionerDto getPensionerBiometricInfo(String pensionerNumber) {
+		PensionerDto pensionerDto = null;
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());
-		ClientResponse response = createPensionerBioProxy
-				.getPensionerBio(pensionerNumber,"fingerprint_data");
+		ClientResponse response = createPensionerBioProxy.getPensionerBio(
+				pensionerNumber, "fingerprint_data");
 		if (response.getStatus() == 200) {
 			setStatus(200);
-			pensioner = new Pensioner();
-			pensioner.setPensionerNumber(pensionerNumber);
-			pensioner.setFpMinutiae(extractByte(response));
+			pensionerDto = new PensionerDto();
+			pensionerDto.setPensionerNumber(pensionerNumber);
+			pensionerDto.setFpMinutiae(extractByte(response));
 		}
-		return pensioner;
+		return pensionerDto;
+	}
+
+	public PensionerDto searchPensioner(String memberId) {
+		PensionerDto pensionerDto = null;
+		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
+				PensionerSearchProxy.class, configuration.getUrl());
+		ClientResponse response = pensionerSearchProxy.searchMember(memberId);
+		String result = (String) response.getEntity();
+		JSONObject jsonResult = null;
+		try {
+			jsonResult = (JSONObject) new JSONParser().parse(result);
+		} catch (ParseException e) {
+			LOG.error(e);
+		}
+		// Fetch the other info if the member exists
+		if (jsonResult != null || !jsonResult.isEmpty()) {
+			pensionerDto = getPensionerBiometricInfo(memberId);
+			pensionerDto.setPhotoUrl(jsonResult.get("member.image_url")
+					.toString());
+
+		}
+		return pensionerDto;
 	}
 
 	private byte[] extractByte(ClientResponse response) {
 		byte[] payload = new byte[400];
-			try {
-				InputStream inputStream = (InputStream)response.getEntity(InputStream.class);
-				inputStream.read(payload);
-				inputStream.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			InputStream inputStream = (InputStream) response
+					.getEntity(InputStream.class);
+			inputStream.read(payload);
+			inputStream.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return payload;
 	}
 
@@ -80,11 +111,11 @@ public class PensionerBioQueryAdapter {
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param status
+	 *            the status to set
 	 */
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	
+
 }
