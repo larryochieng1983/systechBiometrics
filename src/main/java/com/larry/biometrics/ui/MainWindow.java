@@ -1440,6 +1440,9 @@ public class MainWindow extends javax.swing.JFrame {
 				getMemberPictureLabel().setText("Not Available");
 			}
 		}
+		if (currentPensioner == null) {
+			JOptionPane.showMessageDialog(new JFrame(), "Member Not Found!");
+		}
 	}
 
 }
