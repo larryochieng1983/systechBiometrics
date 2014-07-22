@@ -993,24 +993,24 @@ public class MainWindow extends javax.swing.JFrame {
 				.getSelectedIndex() + 1);
 		matched[0] = false;
 		int matchScore = 0;
-		iError = biometricsUtil.register(regMin1, regMin2,
-				convertBufferedImageToByteArray(imgRegistration1), secuLevel);
-		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			matchScore = biometricsUtil.getMatchingScore(regMin1, regMin2);
-
+		matchScore = biometricsUtil.getMatchingScore(regMin1, regMin2);
+		if (matched[0]) {
+			iError = biometricsUtil.register(regMin1, regMin2,
+					convertBufferedImageToByteArray(imgRegistration1),
+					secuLevel);
 			if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-				if (matched[0])
-					this.jLabelStatus
-							.setText("Registration Success, Matching Score: "
-									+ matchScore);
-			} else
+				this.jLabelStatus
+						.setText("Registration Success, Matching Score: "
+								+ matchScore);
+			} else {
 				this.jLabelStatus
 						.setText("Registration Fail, Getting Matching Score Error : "
 								+ iError);
+			}
+
 		} else
-			this.jLabelStatus
-					.setText("Registration Fail, Matching Template Error : "
-							+ iError);
+			this.jLabelStatus.setText("Registration Fail, Matching Score: "
+					+ matchScore);
 	}// GEN-LAST:event_jButtonRegisterActionPerformed
 
 	private void jButtonCaptureV1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCaptureV1ActionPerformed
