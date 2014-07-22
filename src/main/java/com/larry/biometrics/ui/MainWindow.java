@@ -946,33 +946,17 @@ public class MainWindow extends javax.swing.JFrame {
 	private void jButtonVerifyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonVerifyActionPerformed
 		long iError;
 		long secuLevel = (long) (this.jComboBoxVerifySecurityLevel
-				.getSelectedIndex() + 1);
-		boolean[] matched = new boolean[1];
-		matched[0] = false;
+				.getSelectedIndex() + 1);		;
 
 		iError = biometricsUtil.verify(vrfMin, secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			if (matched[0])
-				this.jLabelStatus
-						.setText("Verification Success (1st template)");
-			else {
-				iError = biometricsUtil.getMatchingScore(regMin2, vrfMin);
-				if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE)
-					if (matched[0])
-						this.jLabelStatus
-								.setText("Verification Success (2nd template)");
-					else
-						this.jLabelStatus.setText("Verification Fail");
-				else
-					this.jLabelStatus
-							.setText("Verification Attempt 2 Fail - MatchTemplate() Error : "
-									+ iError);
+			this.jLabelStatus.setText("Verification Success!");
 
-			}
-		} else
+		} else if (iError == SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL) {
 			this.jLabelStatus
 					.setText("Verification Attempt 1 Fail - MatchTemplate() Error : "
 							+ iError);
+		}
 	}// GEN-LAST:event_jButtonVerifyActionPerformed
 
 	private byte[] convertBufferedImageToByteArray(BufferedImage image) {

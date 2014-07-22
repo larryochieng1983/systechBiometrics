@@ -52,8 +52,12 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 		byte[] registeredMin = pensionerDto.getFpMinutiae();
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
-		return fplib.MatchTemplate(registeredMin, verifyMin, securityLevel,
-				matched);
+		long iError = fplib.MatchTemplate(registeredMin, verifyMin,
+				securityLevel, matched);
+		if (!matched[0]) {
+			iError = SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL;
+		}
+		return iError;
 	}
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
