@@ -12,7 +12,10 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,6 +26,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
+
+import org.apache.log4j.Logger;
 
 import SecuGen.FDxSDKPro.jni.SGDeviceInfoParam;
 import SecuGen.FDxSDKPro.jni.SGFDxDeviceName;
@@ -62,6 +67,7 @@ public class MainWindow extends javax.swing.JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final Logger LOG = Logger.getLogger(MainWindow.class);
 	// Private instance variables
 	private long deviceName;
 	private long devicePort;
@@ -956,6 +962,17 @@ public class MainWindow extends javax.swing.JFrame {
 							+ iError);
 	}// GEN-LAST:event_jButtonVerifyActionPerformed
 
+	private byte[] convertBufferedImageToByteArray(BufferedImage image) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+			ImageIO.write(image, "png", baos);
+			baos.flush();
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+		return baos.toByteArray();
+	}
+
 	private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonRegisterActionPerformed
 		boolean[] matched = new boolean[1];
 		long iError;
@@ -963,8 +980,8 @@ public class MainWindow extends javax.swing.JFrame {
 				.getSelectedIndex() + 1);
 		matched[0] = false;
 		int matchScore = 0;
-
-		iError = biometricsUtil.register(regMin1, regMin2, secuLevel);
+		iError = biometricsUtil.register(regMin1, regMin2,
+				convertBufferedImageToByteArray(imgRegistration1), secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			matchScore = biometricsUtil.getMatchingScore(regMin1, regMin2);
 

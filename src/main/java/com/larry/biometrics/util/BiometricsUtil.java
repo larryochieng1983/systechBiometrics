@@ -24,7 +24,7 @@ public interface BiometricsUtil {
 	public long verify(byte[] verifyMin, long securityLevel);
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
-			long securityLevel);
+			byte[] fpImage,long securityLevel);
 
 	public long getImageEx(byte[] buffer, long imgWidth, long imgHeight,
 			long quality);
