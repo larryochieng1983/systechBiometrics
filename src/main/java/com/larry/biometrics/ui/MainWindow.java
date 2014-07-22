@@ -85,6 +85,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private boolean v1Captured = false;
 	private ApplicationInfo applicationInfo;
 	private BiometricsUtilImpl biometricsUtil;
+	private JButton resetBtn;
 	private JButton memberSearchBtn;
 	private JTextField memberSearchText;
 	private JLabel memberPictureLabel;
@@ -132,6 +133,8 @@ public class MainWindow extends javax.swing.JFrame {
 		this.jButtonVerify.setEnabled(false);
 		this.jButtonGetDeviceInfo.setEnabled(false);
 		this.jButtonConfig.setEnabled(false);
+		getResetBtn().setEnabled(false);
+		getMemberSearchBtn().setEnabled(false);
 	}
 
 	private void enableControls() {
@@ -142,12 +145,17 @@ public class MainWindow extends javax.swing.JFrame {
 		this.jButtonCaptureV1.setEnabled(true);
 		this.jButtonGetDeviceInfo.setEnabled(true);
 		this.jButtonConfig.setEnabled(true);
+		getResetBtn().setEnabled(true);
+		getMemberSearchBtn().setEnabled(true);
 	}
 
-	private void enableRegisterAndVerifyControls() {
+	private void enableRegisterControls() {
 		if (r1Captured && r2Captured)
 			this.jButtonRegister.setEnabled(true);
-		if (r1Captured && r2Captured && v1Captured)
+	}
+
+	private void enableVerifyControls() {
+		if (v1Captured)
 			this.jButtonVerify.setEnabled(true);
 	}
 
@@ -595,6 +603,9 @@ public class MainWindow extends javax.swing.JFrame {
 		jPanelRegisterVerify.add(getCurrentMemberPanel(),
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 80, -1,
 						-1));
+		jPanelRegisterVerify.add(getResetBtn(),
+				new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 340, -1,
+						-1));
 
 		jTabbedPane1.addTab("Register/Verify", jPanelRegisterVerify);
 		jPanelRegisterVerify.setFont(new java.awt.Font("Arial", 0, 12));
@@ -1037,7 +1048,7 @@ public class MainWindow extends javax.swing.JFrame {
 					this.jLabelStatus
 							.setText("Verification image was captured");
 					v1Captured = true;
-					this.enableRegisterAndVerifyControls();
+					this.enableVerifyControls();
 				} else
 					this.jLabelStatus.setText("Creating Template Error : "
 							+ iError);
@@ -1079,7 +1090,7 @@ public class MainWindow extends javax.swing.JFrame {
 					this.jLabelStatus
 							.setText("Second registration image was captured");
 					r2Captured = true;
-					this.enableRegisterAndVerifyControls();
+					this.enableRegisterControls();
 				} else
 					this.jLabelStatus.setText("Creating Template Error : "
 							+ iError);
@@ -1122,7 +1133,7 @@ public class MainWindow extends javax.swing.JFrame {
 					this.jLabelStatus
 							.setText("First registration image was captured");
 					r1Captured = true;
-					this.enableRegisterAndVerifyControls();
+					this.enableRegisterControls();
 				} else
 					this.jLabelStatus.setText("Creating Template Error : "
 							+ iError);
@@ -1410,6 +1421,7 @@ public class MainWindow extends javax.swing.JFrame {
 					.createBevelBorder(BevelBorder.LOWERED));
 			memberPictureLabel
 					.setPreferredSize(new java.awt.Dimension(136, 152));
+			memberPictureLabel.setFont(new java.awt.Font("Arial", 0, 12));
 		}
 		return memberPictureLabel;
 	}
@@ -1449,7 +1461,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private void memberSearchBtnActionPerformed(ActionEvent evt) {
 		String searchId = getMemberSearchText().getText();
 		if (!searchId.equals("")) {
-			currentPensioner = queryAdapter.getPensionerBiometricInfo(searchId);
+			currentPensioner = queryAdapter.searchPensioner(searchId);
 
 			if (currentPensioner != null) {
 				ImageIcon icon = null;
@@ -1465,6 +1477,37 @@ public class MainWindow extends javax.swing.JFrame {
 						.showMessageDialog(new JFrame(), "Member Not Found!");
 			}
 		}
+	}
+
+	private JButton getResetBtn() {
+		if (resetBtn == null) {
+			resetBtn = new JButton();
+			resetBtn.setText("Reset");
+			resetBtn.setMaximumSize(new java.awt.Dimension(160, 30));
+			resetBtn.setMinimumSize(new java.awt.Dimension(160, 30));
+			resetBtn.setPreferredSize(new java.awt.Dimension(160, 30));
+			resetBtn.setFont(new java.awt.Font("Arial", 0, 12));
+			resetBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					resetBtnActionPerformed(evt);
+				}
+			});
+		}
+		return resetBtn;
+	}
+
+	private void resetBtnActionPerformed(ActionEvent evt) {
+		reset();
+	}
+
+	/***/
+	private void reset() {
+		currentPensioner = null;
+		jLabelRegisterImage1.setText("");
+		jLabelRegisterImage2.setText("");
+		jLabelVerifyImage.setText("");
+		getMemberSearchText().setText("");
+		getMemberPictureLabel().setText("");
 	}
 
 }

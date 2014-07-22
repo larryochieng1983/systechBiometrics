@@ -74,8 +74,9 @@ public class PensionerBioQueryAdapter {
 		PensionerDto pensionerDto = null;
 		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
 				PensionerSearchProxy.class, configuration.getUrl());
-		ClientResponse response = pensionerSearchProxy.searchMember(memberId,
-				configuration.getUserName(), configuration.getPassword());
+		ClientResponse response = pensionerSearchProxy.searchMember(
+				configuration.getUserName(), configuration.getPassword(),
+				memberId);
 		String result = (String) response.getEntity();
 		JSONObject jsonResult = null;
 		try {

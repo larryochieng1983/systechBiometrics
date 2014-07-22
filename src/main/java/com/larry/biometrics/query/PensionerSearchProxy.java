@@ -17,14 +17,14 @@ import org.jboss.resteasy.client.ClientResponse;
  * @author Otieno Lawrence
  * 
  */
-@Path(" /api/membersearch")
+@Path("/api/auth")
 public interface PensionerSearchProxy {
 
 	@GET
-	@Consumes("text/xml")
+	@Consumes("application/json")
 	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public ClientResponse<PensionerServiceInputBean> searchMember(
 			@HeaderParam("username") String userName,
 			@HeaderParam("password") String password,
-			@PathParam("q") String member_id);
+			@PathParam("id") String member_id);
 }
