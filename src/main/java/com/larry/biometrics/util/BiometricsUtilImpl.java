@@ -71,6 +71,8 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 				} catch (Exception e) {
 					logger.error(e);
 				}
+			} else {
+				err = SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL;
 			}
 		}
 		return err;

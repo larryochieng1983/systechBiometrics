@@ -997,6 +997,10 @@ public class MainWindow extends javax.swing.JFrame {
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelStatus.setText("Registration Success, Matching Score: "
 					+ matchScore);
+		} else if (iError == SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL) {
+			this.jLabelStatus
+					.setText("Registration Fail, Templates Mismatch!, Matching Score: "
+							+ matchScore);
 		} else {
 			this.jLabelStatus
 					.setText("Registration Fail, Getting Matching Score Error : "
