@@ -1003,11 +1003,6 @@ public class MainWindow extends javax.swing.JFrame {
 					this.jLabelStatus
 							.setText("Registration Success, Matching Score: "
 									+ matchScore);
-				else
-					this.jLabelStatus
-							.setText("Registration Fail, Matching Score: "
-									+ matchScore);
-
 			} else
 				this.jLabelStatus
 						.setText("Registration Fail, Getting Matching Score Error : "
@@ -1470,9 +1465,9 @@ public class MainWindow extends javax.swing.JFrame {
 				biometricsUtil.setCurrentPensioner(currentPensioner);
 				if (currentPensioner.getPhotoUrl() != null) {
 					URL imageUrl = null;
-					try{
-					imageUrl = new URL(currentPensioner.getPhotoUrl());
-					}catch(MalformedURLException e){
+					try {
+						imageUrl = new URL(currentPensioner.getPhotoUrl());
+					} catch (MalformedURLException e) {
 						LOG.error(e);
 					}
 					icon = new ImageIcon(imageUrl);
