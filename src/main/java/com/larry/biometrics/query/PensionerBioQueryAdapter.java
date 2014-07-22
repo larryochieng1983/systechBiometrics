@@ -96,7 +96,7 @@ public class PensionerBioQueryAdapter {
 					+ jsonResult.get("member.firstname").toString()
 					+ " "
 					+ jsonResult.get("member.othernames").toString());
-			pensionerDto.setPhotoUrl(configuration.getPassword()+jsonResult.get("member.image_url").toString());
+			pensionerDto.setPhotoUrl(configuration.getUrl()+jsonResult.get("member.image_url").toString());
 
 		}
 		return pensionerDto;
