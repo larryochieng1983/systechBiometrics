@@ -78,6 +78,7 @@ public class PensionerBioQueryAdapter {
 				configuration.getUserName(), configuration.getPassword(),
 				memberId);
 		String result = (String) response.getEntity(String.class);
+		System.out.println(result);
 		JSONObject jsonResult = null;
 		try {
 			jsonResult = (JSONObject) new JSONParser().parse(result);
@@ -87,7 +88,7 @@ public class PensionerBioQueryAdapter {
 		// Fetch the other info if the member exists
 		if (jsonResult != null || !jsonResult.isEmpty()) {
 			pensionerDto = getPensionerBiometricInfo(memberId);
-			pensionerDto.setMemberName(jsonResult.get(" member.title")
+			pensionerDto.setMemberName(jsonResult.get("member.title")
 					.toString()
 					+ " "
 					+ jsonResult.get("member.surname").toString()
@@ -95,8 +96,7 @@ public class PensionerBioQueryAdapter {
 					+ jsonResult.get("member.firstname").toString()
 					+ " "
 					+ jsonResult.get("member.othernames").toString());
-			pensionerDto.setPhotoUrl(jsonResult.get("member.image_url")
-					.toString());
+			pensionerDto.setPhotoUrl(configuration.getPassword()+jsonResult.get("member.image_url").toString());
 
 		}
 		return pensionerDto;
