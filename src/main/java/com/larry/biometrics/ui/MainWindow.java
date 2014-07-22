@@ -1471,6 +1471,8 @@ public class MainWindow extends javax.swing.JFrame {
 				} else {
 					getMemberPictureLabel().setText("No Photo");
 				}
+				jLabelStatus.setText("Member Search Successful: "
+						+ currentPensioner.getMemberName());
 				getMemberPictureLabel().setIcon(icon);
 			} else {
 				JOptionPane
@@ -1508,6 +1510,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jLabelVerifyImage.setText("");
 		getMemberSearchText().setText("");
 		getMemberPictureLabel().setText("");
+		jLabelStatus.setText("");
 	}
 
 }

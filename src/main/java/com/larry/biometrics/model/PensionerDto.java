@@ -23,6 +23,7 @@ public class PensionerDto implements Serializable {
 	// the fingerprint minutiae
 	private byte[] fpMinutiae;
 	private String photoUrl;
+	private String memberName;
 
 	public String getPensionerNumber() {
 		return pensionerNumber;
@@ -61,6 +62,21 @@ public class PensionerDto implements Serializable {
 	 */
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	/**
+	 * @return the memberName
+	 */
+	public String getMemberName() {
+		return memberName;
+	}
+
+	/**
+	 * @param memberName
+	 *            the memberName to set
+	 */
+	public void setMemberName(String memberName) {
+		this.memberName = memberName;
 	}
 
 	@Override
