@@ -1435,8 +1435,13 @@ public class MainWindow extends javax.swing.JFrame {
 			currentPensioner = queryAdapter.getPensionerBiometricInfo(searchId);
 
 			if (currentPensioner != null) {
+				ImageIcon icon = null;
 				biometricsUtil.setCurrentPensioner(currentPensioner);
-				ImageIcon icon = new ImageIcon(currentPensioner.getPhotoUrl());
+				if (currentPensioner.getPhotoUrl() != null) {
+					icon = new ImageIcon(currentPensioner.getPhotoUrl());
+				} else {
+					getMemberPictureLabel().setText("No Photo");
+				}
 				getMemberPictureLabel().setIcon(icon);
 			} else {
 				JOptionPane
