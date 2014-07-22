@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -1467,7 +1469,13 @@ public class MainWindow extends javax.swing.JFrame {
 				ImageIcon icon = null;
 				biometricsUtil.setCurrentPensioner(currentPensioner);
 				if (currentPensioner.getPhotoUrl() != null) {
-					icon = new ImageIcon(currentPensioner.getPhotoUrl());
+					URL imageUrl = null;
+					try{
+					imageUrl = new URL(currentPensioner.getPhotoUrl());
+					}catch(MalformedURLException e){
+						LOG.error(e);
+					}
+					icon = new ImageIcon(imageUrl);
 				} else {
 					getMemberPictureLabel().setText("No Photo");
 				}
