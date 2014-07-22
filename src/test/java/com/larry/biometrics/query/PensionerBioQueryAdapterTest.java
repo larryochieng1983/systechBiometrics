@@ -29,7 +29,7 @@ public class PensionerBioQueryAdapterTest extends MockObjectTestCase {
 	public void testClientWorking() throws Exception {
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());
-		ClientResponse response = createPensionerBioProxy.getPensionerBio(
+		ClientResponse response = createPensionerBioProxy.getPensionerBio("","",
 				"7883737383", "fingerprint_data");
 		assertEquals(404, response.getStatus());
 	}
