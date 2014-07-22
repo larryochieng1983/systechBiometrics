@@ -46,8 +46,9 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	}
 
 	public long verify(byte[] verifyMin, long securityLevel) {
-		PensionerDto pensionerDto = adapter.getPensionerBiometricInfo(currentPensioner
-				.getPensionerNumber());
+		PensionerDto pensionerDto = adapter
+				.getPensionerBiometricInfo(currentPensioner
+						.getPensionerNumber());
 		byte[] registeredMin = pensionerDto.getFpMinutiae();
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
@@ -56,18 +57,20 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	}
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
-			byte[] fpImage,long securityLevel) {
+			byte[] fpImage, long securityLevel) {
 		currentPensioner.setFpMinutiae(registeredMin2);
 		boolean[] matched = new boolean[1];
 		long err = fplib.MatchTemplate(registeredMin1, registeredMin2,
 				securityLevel, matched);
 		if (err == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			currentPensioner.setFpMinutiae(registeredMin2);
-			currentPensioner.setFpImage(fpImage);
-			try {
-				adapter.savePensionerInfo(currentPensioner);
-			} catch (Exception e) {
-				logger.error(e);
+			if (matched[0]) {
+				currentPensioner.setFpMinutiae(registeredMin2);
+				currentPensioner.setFpImage(fpImage);
+				try {
+					adapter.savePensionerInfo(currentPensioner);
+				} catch (Exception e) {
+					logger.error(e);
+				}
 			}
 		}
 		return err;

@@ -987,30 +987,22 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonRegisterActionPerformed
-		boolean[] matched = new boolean[1];
 		long iError;
 		long secuLevel = (long) (this.jComboBoxRegisterSecurityLevel
 				.getSelectedIndex() + 1);
-		matched[0] = false;
 		int matchScore = 0;
 		matchScore = biometricsUtil.getMatchingScore(regMin1, regMin2);
-		if (matched[0]) {
-			iError = biometricsUtil.register(regMin1, regMin2,
-					convertBufferedImageToByteArray(imgRegistration1),
-					secuLevel);
-			if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-				this.jLabelStatus
-						.setText("Registration Success, Matching Score: "
-								+ matchScore);
-			} else {
-				this.jLabelStatus
-						.setText("Registration Fail, Getting Matching Score Error : "
-								+ iError);
-			}
-
-		} else
-			this.jLabelStatus.setText("Registration Fail, Matching Score: "
+		iError = biometricsUtil.register(regMin1, regMin2,
+				convertBufferedImageToByteArray(imgRegistration1), secuLevel);
+		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
+			this.jLabelStatus.setText("Registration Success, Matching Score: "
 					+ matchScore);
+		} else {
+			this.jLabelStatus
+					.setText("Registration Fail, Getting Matching Score Error : "
+							+ iError);
+		}
+
 	}// GEN-LAST:event_jButtonRegisterActionPerformed
 
 	private void jButtonCaptureV1ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonCaptureV1ActionPerformed
