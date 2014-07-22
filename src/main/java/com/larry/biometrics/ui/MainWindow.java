@@ -950,7 +950,7 @@ public class MainWindow extends javax.swing.JFrame {
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
 
-		iError = biometricsUtil.verify(regMin1, secuLevel);
+		iError = biometricsUtil.verify(vrfMin, secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			if (matched[0])
 				this.jLabelStatus
