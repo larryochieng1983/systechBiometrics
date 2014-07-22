@@ -77,7 +77,8 @@ public class PensionerBioQueryAdapter {
 		ClientResponse response = pensionerSearchProxy.searchMember(
 				configuration.getUserName(), configuration.getPassword(),
 				memberId);
-		String result = (String) response.getEntity();
+		String result = (String) response.getEntity(String.class);
+		System.out.println(result);
 		JSONObject jsonResult = null;
 		try {
 			jsonResult = (JSONObject) new JSONParser().parse(result);
