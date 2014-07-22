@@ -99,7 +99,7 @@ public class PensionerBioQueryAdapter {
 			inputStream.read(payload);
 			inputStream.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e);
 		}
 		return payload;
 	}

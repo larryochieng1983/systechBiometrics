@@ -24,7 +24,7 @@ public interface PensionerSearchProxy {
 	@Consumes("text/xml")
 	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public ClientResponse<PensionerServiceInputBean> searchMember(
-			@HeaderParam("userName") String userName,
+			@HeaderParam("username") String userName,
 			@HeaderParam("password") String password,
 			@PathParam("q") String member_id);
 }
