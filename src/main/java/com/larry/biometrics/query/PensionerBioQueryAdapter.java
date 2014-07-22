@@ -46,8 +46,9 @@ public class PensionerBioQueryAdapter {
 				.getPensionerNumber());
 		pensionerBioServiceInputBean.setFpImage(fpImage);
 		pensionerBioServiceInputBean.setFpMinutiae(fpMinutiae);
-		ClientResponse response = createPensionerBioProxy
-				.createPensionerBio(pensionerBioServiceInputBean);
+		ClientResponse response = createPensionerBioProxy.createPensionerBio(
+				configuration.getUserName(), configuration.getPassword(),
+				pensionerBioServiceInputBean);
 		setStatus(response.getStatus());
 		return getStatus() == 200;
 
@@ -58,6 +59,7 @@ public class PensionerBioQueryAdapter {
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());
 		ClientResponse response = createPensionerBioProxy.getPensionerBio(
+				configuration.getUserName(), configuration.getPassword(),
 				pensionerNumber, "fingerprint_data");
 		if (response.getStatus() == 200) {
 			setStatus(200);

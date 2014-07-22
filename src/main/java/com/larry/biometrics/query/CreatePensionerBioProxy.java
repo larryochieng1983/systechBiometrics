@@ -5,6 +5,7 @@ package com.larry.biometrics.query;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,13 +27,17 @@ public interface CreatePensionerBioProxy {
 	@Consumes("multipart/form-data")
 	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public ClientResponse<PensionerServiceInputBean> createPensionerBio(
+			@HeaderParam("username") String userName,
+			@HeaderParam("password") String password,
 			@MultipartForm PensionerServiceInputBean inputBean);
 
 	@GET
 	@Path("fingerprint/{member_id}/{type}")
 	@Consumes("text/xml")
-	@Produces(value = {  MediaType.APPLICATION_OCTET_STREAM, "image/bmp" })
+	@Produces(value = { MediaType.APPLICATION_OCTET_STREAM, "image/bmp" })
 	public ClientResponse<PensionerServiceInputBean> getPensionerBio(
+			@HeaderParam("username") String userName,
+			@HeaderParam("password") String password,
 			@PathParam("member_id") String member_id,
-			@PathParam("type") String type);	
+			@PathParam("type") String type);
 }
