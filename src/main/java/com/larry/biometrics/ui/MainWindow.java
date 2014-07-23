@@ -946,7 +946,8 @@ public class MainWindow extends javax.swing.JFrame {
 	private void jButtonVerifyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonVerifyActionPerformed
 		long iError;
 		long secuLevel = (long) (this.jComboBoxVerifySecurityLevel
-				.getSelectedIndex() + 1);		;
+				.getSelectedIndex() + 1);
+		;
 
 		iError = biometricsUtil.verify(vrfMin, secuLevel);
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
@@ -954,7 +955,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 		} else if (iError == SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL) {
 			this.jLabelStatus
-					.setText("Verification Attempt 1 Fail - MatchTemplate() Error : "
+					.setText("Verification Attempt Fail, Match Template Error : "
 							+ iError);
 		}
 	}// GEN-LAST:event_jButtonVerifyActionPerformed
@@ -1442,6 +1443,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 			if (currentPensioner != null) {
 				ImageIcon icon = null;
+				Image image = null;
 				biometricsUtil.setCurrentPensioner(currentPensioner);
 				if (currentPensioner.getPhotoUrl() != null) {
 					URL imageUrl = null;
@@ -1450,7 +1452,18 @@ public class MainWindow extends javax.swing.JFrame {
 					} catch (MalformedURLException e) {
 						LOG.error(e);
 					}
-					icon = new ImageIcon(imageUrl);
+					try {
+						image = ImageIO.read(imageUrl);
+					} catch (IOException e) {
+						LOG.error(e);
+					}
+					if (image != null) {
+						Image resizedImage = image.getScaledInstance(
+								getMemberPictureLabel().getWidth(),
+								getMemberPictureLabel().getHeight(), 0);
+						icon = new ImageIcon(resizedImage);
+					}
+
 				} else {
 					getMemberPictureLabel().setText("No Photo");
 				}
