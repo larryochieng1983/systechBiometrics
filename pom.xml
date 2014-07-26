@@ -106,12 +106,12 @@
 						</executions>
 						<configuration>
 							<jnlp>
-								<mainClass>${appMainClass}</mainClass>
+								<mainClass>${systechAppMainClass}</mainClass>
 							</jnlp>
 							<sign>
-								<keystore>${project.basedir}/src/main/jnlp/resources/stb.jks</keystore>
-								<storepass>larry2014</storepass>
-								<alias>stb</alias>
+								<keystore>${project.basedir}/src/main/jnlp/resources/demokeystore</keystore>
+								<storepass>demopassword</storepass>
+								<alias>demokey</alias>
 								<verify>false</verify>
 							</sign>
 						</configuration>
@@ -153,6 +153,78 @@
 							</execution>							
 						</executions>
 					</plugin>
+					<plugin>
+						<artifactId>maven-assembly-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>create-systechBiometrics-installer</id>
+								<phase>package</phase>
+								<goals>
+									<goal>attached</goal>
+								</goals>
+								<configuration>
+									<descriptor>${basedir}/src/main/assembly/zip.xml</descriptor>
+								</configuration>
+							</execution>
+							<execution>
+								<configuration>
+									<descriptorRefs>
+										<descriptorRef>jar-with-dependencies</descriptorRef>
+									</descriptorRefs>
+									<outputDirectory>${project.build.directory}/unsigned</outputDirectory>
+									<archive>
+										<manifestEntries>
+											<Permissions>all-permissions</Permissions>
+											<Codebase>${manifest-codebase}</Codebase>
+										</manifestEntries>
+									</archive>
+								</configuration>
+								<phase>package</phase>
+								<goals>
+									<goal>attached</goal>
+								</goals>
+								<id>create-jar-with-dependencies</id>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>configure-aggregate-jar</id>
+								<phase>package</phase>
+								<configuration>
+									<target name="sign-aggregated-jar-and-remove-others">
+										<!-- delete other jars in the jnlp folder -->
+										<delete>
+											<fileset dir="${project.build.directory}/jnlp" includes="**/*.jar" />
+										</delete>
+										<!-- sign the aggregate jar -->
+										<signjar destDir="${project.build.directory}/jnlp" alias="demokey" keystore="${project.basedir}/src/main/jnlp/resources/demokeystore" storepass="demopassword " force="true">
+											<path>
+												<fileset dir="${project.build.directory}/unsigned" includes="*.jar" />
+											</path>
+										</signjar>
+										<!-- remove occurrences of other jars in the jnlp file and introduce 
+											the aggregate jar -->
+										<replace file="${project.build.directory}/jnlp/launch.jnlp">
+											<replacetoken><![CDATA[jar href="systech-biometrics-${project.version}.jar"/]]></replacetoken>
+											<replacevalue><![CDATA[!-- removed unccessary jar dependency --]]></replacevalue>
+										</replace>
+										<replace file="${project.build.directory}/jnlp/launch.jnlp">
+											<replacetoken><![CDATA[systech-biometrics-${project.version}.jar]]></replacetoken>
+											<replacevalue>systech-biometrics-${project.version}-jar-with-dependencies.jar</replacevalue>
+										</replace>
+										<!-- create a zipped file containing the entire application -->
+										<zip destfile="${project.build.directory}/systech-biometrics-${project.version}.zip" basedir="${project.build.directory}/jnlp" />
+									</target>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -163,15 +235,21 @@
 				<manifest-codebase></manifest-codebase>
 			</properties>
 		</profile>
+		<profile>
+			<id>local</id>
+			<properties>
+				<codebase>file:///${project.build.directory}/jnlp</codebase>
+			</properties>
+		</profile>
 	</profiles>
 	<properties>
 		<systechProductName>STB</systechProductName>
-		<systechProductLongName>Systech Biometrics</systechProductLongName>
-		<project.Organization.Name></project.Organization.Name>
-		<vendorUrl>${codebase}</vendorUrl>
-		<systechDataUploaderApplication>systech-biometrics-${project.version}.jar</systechDataUploaderApplication>
+		<systechProductLongName>Fingerprint Biometrics</systechProductLongName>
+		<project.Organization.Name>Systech Africa Biometrics</project.Organization.Name>
+		<vendorUrl>www.systechafrica.com</vendorUrl>
+		<systechBiometricsApplication>systech-biometrics-${project.version}.jar</systechBiometricsApplication>
 		<systechAppMainClass>com.larry.biometrics.ui.BiometricsTray</systechAppMainClass>
-		<codebase>file://${project.build.directory}/jnlp</codebase>
-		<manifest-codebase>file://${project.build.directory}/jnlp</manifest-codebase>
+		<codebase>file:///${project.build.directory}/jnlp</codebase>
+		<manifest-codebase>file:///${project.build.directory}/jnlp</manifest-codebase>
 	</properties>
 </project>

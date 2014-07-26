@@ -3,7 +3,7 @@
 <jnlp href="$outputFile" spec="1.5+" codebase="$codebase">
   <information>
     <title>$systechProductLongName</title>
-    <vendor>$project.Organization.Name</vendor>
+    <vendor>$vendorUrl</vendor>
     <homepage href="$vendorUrl"/>
     <description kind="short">$project.description</description>    
     <offline-allowed/>
@@ -23,14 +23,8 @@
     <property name="log4j.configuration" value="log4j.xml" />
     $dependencies
   </resources>
-  <application-desc main-class="$mainClass">
-	<argument>-trust</argument>
-	<argument>testcacerts</argument>
-	<argument>-pass</argument>
-	<argument>changeit</argument>
-	<argument>-port</argument>
-  	<argument>${systechDataUploaderPort}</argument>
-	<argument>-war</argument>
-	<argument>${systechDataUploaderApplication}</argument>
+  <application-desc main-class="$mainClass">	
+	<argument>-jar</argument>
+	<argument>${systechBiometricsApplication}</argument>
   </application-desc>
 </jnlp>
