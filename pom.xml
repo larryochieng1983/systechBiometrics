@@ -4,7 +4,19 @@
 	<groupId>systechBiometrics</groupId>
 	<artifactId>systechBiometrics</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	<scm>
+		<connection>scm:git:ssh://git@github.com/larryochieng1983/systechBiometrics.git</connection>
+		<url>https://github.com/larryochieng1983/systechBiometrics</url>
+	</scm>
+	<developers>
+		<developer>
+			<name>Otieno Lawrence Ochieng</name>
+			<roles>
+				<role>Lead</role>
+			</roles>
+			<email>larryochieng@gmail.com</email>
+		</developer>
+	</developers>
 	<repositories>
 		<!--These are needed for Swing/Netbeans -->
 		<repository>
@@ -92,6 +104,27 @@
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-install-plugin</artifactId>
+						<version>2.4</version>
+						<executions>
+							<execution>
+								<id>secugen</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>install-file</goal>
+								</goals>
+								<configuration>
+									<groupId>com.secugen</groupId>
+									<artifactId>fdxsdkpro</artifactId>
+									<version>1.0.0</version>
+									<packaging>jar</packaging>
+									<file>${basedir}/src/main/jnlp/resources/secugen/FDxSDKPro.jar</file>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.codehaus.mojo.webstart</groupId>
 						<artifactId>webstart-maven-plugin</artifactId>
 						<version>1.0-alpha-2</version>
@@ -114,44 +147,14 @@
 								<alias>demokey</alias>
 								<verify>false</verify>
 							</sign>
+							<unsignAlreadySignedJars>true</unsignAlreadySignedJars>
+							<verbose>false</verbose>
+							<verbose>false</verbose>
+							<dependencies>
+								<includes>
+								</includes>
+							</dependencies>
 						</configuration>
-					</plugin>
-					<plugin>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>single</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-install-plugin</artifactId>
-						<version>2.4</version>
-						<executions>
-							<execution>
-								<id>secugen</id>
-								<phase>initialize</phase>
-								<goals>
-									<goal>install-file</goal>
-								</goals>
-								<configuration>
-									<groupId>com.secugen</groupId>
-									<artifactId>fdxsdkpro</artifactId>
-									<version>1.0.0</version>
-									<packaging>jar</packaging>
-									<file>${basedir}/src/main/jnlp/resources/secugen/FDxSDKPro.jar</file>
-								</configuration>
-							</execution>							
-						</executions>
 					</plugin>
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
@@ -189,6 +192,35 @@
 					</plugin>
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.7</version>
+						<dependencies>
+							<dependency>
+								<groupId>com.jcraft</groupId>
+								<artifactId>jsch</artifactId>
+								<version>0.1.29</version>
+							</dependency>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>ant-jsch</artifactId>
+								<version>1.6.5</version>
+							</dependency>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>ant-trax</artifactId>
+								<version>1.6.5</version>
+							</dependency>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>optional</artifactId>
+								<version>1.5.4</version>
+							</dependency>
+							<dependency>
+								<!-- Needed for running native2ascii -->
+								<groupId>com.sun</groupId>
+								<artifactId>tools</artifactId>
+								<version>1.5.0.12</version>
+							</dependency>
+						</dependencies>
 						<executions>
 							<execution>
 								<id>configure-aggregate-jar</id>
@@ -197,15 +229,20 @@
 									<target name="sign-aggregated-jar-and-remove-others">
 										<!-- delete other jars in the jnlp folder -->
 										<delete>
-											<fileset dir="${project.build.directory}/jnlp" includes="**/*.jar" />
+											<fileset dir="${project.build.directory}/jnlp"
+												includes="**/*.jar" />
 										</delete>
 										<!-- sign the aggregate jar -->
-										<signjar destDir="${project.build.directory}/jnlp" alias="demokey" keystore="${project.basedir}/src/main/jnlp/resources/demokeystore" storepass="demopassword " force="true">
+										<signjar destDir="${project.build.directory}/jnlp"
+											alias="demokey"
+											keystore="${project.basedir}/src/main/jnlp/resources/demokeystore"
+											storepass="demopassword" force="true">
 											<path>
-												<fileset dir="${project.build.directory}/unsigned" includes="*.jar" />
+												<fileset dir="${project.build.directory}/unsigned"
+													includes="*.jar" />
 											</path>
 										</signjar>
-										<!-- remove occurrences of other jars in the jnlp file and introduce 
+										<!-- remove occurrences of other jars in the jnlp folder and introduce 
 											the aggregate jar -->
 										<replace file="${project.build.directory}/jnlp/launch.jnlp">
 											<replacetoken><![CDATA[jar href="systech-biometrics-${project.version}.jar"/]]></replacetoken>
@@ -216,7 +253,9 @@
 											<replacevalue>systech-biometrics-${project.version}-jar-with-dependencies.jar</replacevalue>
 										</replace>
 										<!-- create a zipped file containing the entire application -->
-										<zip destfile="${project.build.directory}/systech-biometrics-${project.version}.zip" basedir="${project.build.directory}/jnlp" />
+										<zip
+											destfile="${project.build.directory}/installer/systech-biometrics-${project.version}.zip"
+											basedir="${project.build.directory}/jnlp" />
 									</target>
 								</configuration>
 								<goals>
@@ -225,14 +264,26 @@
 							</execution>
 						</executions>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+						<version>2.4.1</version>
+						<configuration>
+							<checkModificationExcludes>
+								<checkModificationExclude>**/.Xauthority-*</checkModificationExclude>
+							</checkModificationExcludes>
+							<releaseProfiles>webstart,release</releaseProfiles>
+							<preparationGoals>clean install</preparationGoals>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
 		<profile>
 			<id>release</id>
 			<properties>
-				<codebase></codebase>
-				<manifest-codebase></manifest-codebase>
+				<codebase>${codebase}</codebase>
+				<manifest-codebase>${manifest-codebase}</manifest-codebase>
 			</properties>
 		</profile>
 		<profile>
