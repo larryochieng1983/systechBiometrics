@@ -250,16 +250,16 @@
 										<!-- remove occurrences of other jars in the jnlp folder and introduce 
 											the aggregate jar -->
 										<replace file="${project.build.directory}/jnlp/launch.jnlp">
-											<replacetoken><![CDATA[jar href="systech-biometrics-${project.version}.jar"/]]></replacetoken>
+											<replacetoken><![CDATA[jar href="systechBiometrics-${project.version}.jar"/]]></replacetoken>
 											<replacevalue><![CDATA[!-- removed unccessary jar dependency --]]></replacevalue>
 										</replace>
 										<replace file="${project.build.directory}/jnlp/launch.jnlp">
-											<replacetoken><![CDATA[systech-biometrics-${project.version}.jar]]></replacetoken>
-											<replacevalue>systech-biometrics-${project.version}-jar-with-dependencies.jar</replacevalue>
+											<replacetoken><![CDATA[systechBiometrics-${project.version}.jar]]></replacetoken>
+											<replacevalue>systechBiometrics-${project.version}-jar-with-dependencies.jar</replacevalue>
 										</replace>
 										<!-- create a zipped file containing the entire application -->
 										<zip
-											destfile="${project.build.directory}/installer/systech-biometrics-${project.version}.zip"
+											destfile="${project.build.directory}/installer/systechBiometrics-${project.version}.zip"
 											basedir="${project.build.directory}/jnlp" />
 									</target>
 								</configuration>
@@ -303,7 +303,7 @@
 		<systechProductLongName>Fingerprint Biometrics</systechProductLongName>
 		<project.Organization.Name>Systech Africa Biometrics</project.Organization.Name>
 		<vendorUrl>www.systechafrica.com</vendorUrl>
-		<systechBiometricsApplication>systech-biometrics-${project.version}.jar</systechBiometricsApplication>
+		<systechBiometricsApplication>systechBiometrics-${project.version}.jar</systechBiometricsApplication>
 		<systechAppMainClass>com.larry.biometrics.ui.BiometricsTray</systechAppMainClass>
 		<codebase>file:///${project.build.directory}/jnlp</codebase>
 		<manifest-codebase>file:///${project.build.directory}/jnlp</manifest-codebase>

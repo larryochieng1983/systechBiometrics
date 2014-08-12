@@ -21,7 +21,7 @@
     </j2se>
     <property name="log4j.defaultInitOverride" value="true"/>
     <property name="log4j.configuration" value="log4j.xml" />
-    $dependencies
+    <jar href="${systechBiometricsApplication}" main="true"/>
   </resources>
   <application-desc main-class="$mainClass">	
 	<argument>-jar</argument>
