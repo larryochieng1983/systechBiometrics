@@ -896,6 +896,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 		pack();
 		this.setSize(700, 544);
+		this.setResizable(false);
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jButtonGetDeviceInfoActionPerformed(
