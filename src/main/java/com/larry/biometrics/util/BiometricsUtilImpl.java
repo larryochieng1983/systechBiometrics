@@ -3,6 +3,12 @@
  */
 package com.larry.biometrics.util;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import SecuGen.FDxSDKPro.jni.JSGFPLib;
@@ -25,6 +31,11 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	private FundMasterConfiguration configuration;
 
 	private JSGFPLib fplib = null;
+
+	static {
+		logger.info("Loading Secugen DLL");
+		loadLib();
+	}
 
 	public BiometricsUtilImpl() {
 		fplib = new JSGFPLib();
@@ -141,6 +152,37 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	 */
 	public void setCurrentPensioner(PensionerDto currentPensioner) {
 		this.currentPensioner = currentPensioner;
+	}
+
+	/**
+	 * Puts library to temp dir and loads to memory
+	 */
+	private static void loadLib() {
+		String defaultNativeFile = "/jnlp/secugen/win32/jnisgfplib.dll";
+		try {
+			InputStream in = BiometricsUtilImpl.class
+					.getResourceAsStream(defaultNativeFile);
+			File fileOut = new File("C:/Windows/System32/jnisgfplib.dll");
+			OutputStream out = FileUtils.openOutputStream(fileOut);
+			IOUtils.copy(in, out);
+			in.close();
+			out.close();
+			String osArch = System.getProperty("os.arch");
+			if (osArch.equalsIgnoreCase("amd64")) {
+				String sixtyFourBitNativeFile = "/jnlp/secugen/x64/jnisgfplib.dll";
+				InputStream inStream = BiometricsUtilImpl.class
+						.getResourceAsStream(sixtyFourBitNativeFile);
+				File outFile = new File("C:/Windows/System32/jnisgfplib.dll");
+				OutputStream outStream = FileUtils.openOutputStream(outFile);
+				IOUtils.copy(inStream, outStream);
+				in.close();
+				out.close();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e);
+		}
 	}
 
 }

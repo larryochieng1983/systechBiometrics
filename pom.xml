@@ -97,6 +97,11 @@
 			<artifactId>AbsoluteLayout</artifactId>
 			<version>RELEASE701</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
@@ -119,7 +124,7 @@
 									<artifactId>fdxsdkpro</artifactId>
 									<version>1.0.0</version>
 									<packaging>jar</packaging>
-									<file>${basedir}/src/main/jnlp/resources/secugen/FDxSDKPro.jar</file>
+									<file>${basedir}/src/main/resources/jnlp/secugen/FDxSDKPro.jar</file>
 								</configuration>
 							</execution>
 						</executions>
@@ -275,7 +280,7 @@
 							<releaseProfiles>webstart,release</releaseProfiles>
 							<preparationGoals>clean install</preparationGoals>
 						</configuration>
-					</plugin>
+					</plugin>					
 				</plugins>
 			</build>
 		</profile>
