@@ -58,7 +58,6 @@ public class FundMasterConfiguration {
 		File configFile = null;
 		OutputStream outputStream = null;
 		configFile = new File(directory + "/" + "fundmaster.properties");
-		configFile.mkdir();
 		props.put("baseDir", directory);
 		props.put("url", fundmasterUrl);
 		props.put("userName", username);
