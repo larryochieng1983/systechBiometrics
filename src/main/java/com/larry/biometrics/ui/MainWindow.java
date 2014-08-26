@@ -107,6 +107,8 @@ public class MainWindow extends javax.swing.JFrame {
 	private JPanel systemConfigPanel;
 	private FundMasterConfiguration config;
 	private PensionerBioQueryAdapter queryAdapter;
+	/** Frame for notification dialogs */
+	private JFrame frame = new JFrame();
 
 	/** The currently selected pensioner/member */
 	private PensionerDto currentPensioner;
@@ -897,6 +899,7 @@ public class MainWindow extends javax.swing.JFrame {
 		pack();
 		this.setSize(700, 544);
 		this.setResizable(false);
+		this.setLocationRelativeTo(null);
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jButtonGetDeviceInfoActionPerformed(
@@ -945,12 +948,16 @@ public class MainWindow extends javax.swing.JFrame {
 	}// GEN-LAST:event_jButtonConfigActionPerformed
 
 	private void jButtonVerifyActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonVerifyActionPerformed
-		long iError;
+		long iError = 0L;
 		long secuLevel = (long) (this.jComboBoxVerifySecurityLevel
 				.getSelectedIndex() + 1);
-		;
-
-		iError = biometricsUtil.verify(vrfMin, secuLevel);
+		try {
+			iError = biometricsUtil.verify(vrfMin, secuLevel);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, e.getMessage(), "Error!",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelStatus.setText("Verification Success!");
 
@@ -973,13 +980,20 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void jButtonRegisterActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButtonRegisterActionPerformed
-		long iError;
+		long iError = 0L;
 		long secuLevel = (long) (this.jComboBoxRegisterSecurityLevel
 				.getSelectedIndex() + 1);
 		int matchScore = 0;
 		matchScore = biometricsUtil.getMatchingScore(regMin1, regMin2);
-		iError = biometricsUtil.register(regMin1, regMin2,
-				convertBufferedImageToByteArray(imgRegistration1), secuLevel);
+		try {
+			iError = biometricsUtil.register(regMin1, regMin2,
+					convertBufferedImageToByteArray(imgRegistration1),
+					secuLevel);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, e.getMessage(), "Error!",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
 			this.jLabelStatus.setText("Registration Success, Matching Score: "
 					+ matchScore);
@@ -1440,7 +1454,13 @@ public class MainWindow extends javax.swing.JFrame {
 	private void memberSearchBtnActionPerformed(ActionEvent evt) {
 		String searchId = getMemberSearchText().getText();
 		if (!searchId.equals("")) {
-			currentPensioner = queryAdapter.searchPensioner(searchId);
+			try {
+				currentPensioner = queryAdapter.searchPensioner(searchId);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage(),
+						"System Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
 			if (currentPensioner != null) {
 				ImageIcon icon = null;
@@ -1472,8 +1492,7 @@ public class MainWindow extends javax.swing.JFrame {
 						+ currentPensioner.getMemberName());
 				getMemberPictureLabel().setIcon(icon);
 			} else {
-				JOptionPane
-						.showMessageDialog(new JFrame(), "Member Not Found!");
+				JOptionPane.showMessageDialog(frame, "Member Not Found!");
 			}
 		}
 	}

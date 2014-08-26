@@ -21,10 +21,10 @@ public interface BiometricsUtil {
 
 	public int getMatchingScore(byte[] regMin1, byte[] regMin2);
 
-	public long verify(byte[] verifyMin, long securityLevel);
+	public long verify(byte[] verifyMin, long securityLevel) throws Exception;
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
-			byte[] fpImage,long securityLevel);
+			byte[] fpImage, long securityLevel) throws Exception;
 
 	public long getImageEx(byte[] buffer, long imgWidth, long imgHeight,
 			long quality);

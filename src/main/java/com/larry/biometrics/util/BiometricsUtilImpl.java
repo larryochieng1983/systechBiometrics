@@ -3,12 +3,24 @@
  */
 package com.larry.biometrics.util;
 
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
+import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.AclEntry;
+import java.nio.file.attribute.AclEntryPermission;
+import java.nio.file.attribute.AclEntryType;
+import java.nio.file.attribute.AclFileAttributeView;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
 
 import SecuGen.FDxSDKPro.jni.JSGFPLib;
@@ -32,10 +44,16 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 
 	private JSGFPLib fplib = null;
 
-	static {
-		logger.info("Loading Secugen DLL");
-		loadLib();
-	}
+	// static {
+	// logger.info("Loading Secugen DLL");
+	// try {
+	// loadLib();
+	// } catch (Exception e) {
+	// JOptionPane.showMessageDialog(new JFrame(), e.getMessage(),
+	// "System Error", JOptionPane.ERROR_MESSAGE);
+	// System.exit(0);
+	// }
+	// }
 
 	public BiometricsUtilImpl() {
 		fplib = new JSGFPLib();
@@ -56,10 +74,15 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 		return fplib.GetDeviceInfo(deviceInfo);
 	}
 
-	public long verify(byte[] verifyMin, long securityLevel) {
-		PensionerDto pensionerDto = adapter
-				.getPensionerBiometricInfo(currentPensioner
-						.getPensionerNumber());
+	public long verify(byte[] verifyMin, long securityLevel) throws Exception {
+		PensionerDto pensionerDto = null;
+		try {
+			pensionerDto = adapter.getPensionerBiometricInfo(currentPensioner
+					.getPensionerNumber());
+		} catch (Exception e) {
+			logger.error(e);
+			throw new Exception(e.getMessage());
+		}
 		byte[] registeredMin = pensionerDto.getFpMinutiae();
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
@@ -72,7 +95,7 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	}
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
-			byte[] fpImage, long securityLevel) {
+			byte[] fpImage, long securityLevel) throws Exception {
 		currentPensioner.setFpMinutiae(registeredMin2);
 		boolean[] matched = new boolean[1];
 		long err = fplib.MatchTemplate(registeredMin1, registeredMin2,
@@ -85,6 +108,7 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 					adapter.savePensionerInfo(currentPensioner);
 				} catch (Exception e) {
 					logger.error(e);
+					throw new Exception(e.getMessage());
 				}
 			} else {
 				err = SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL;
@@ -157,31 +181,43 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 	/**
 	 * Puts library to temp dir and loads to memory
 	 */
-	private static void loadLib() {
-		String defaultNativeFile = "/jnlp/secugen/win32/jnisgfplib.dll";
+	private static void loadLib() throws Exception {
+		String separator = System.getProperty("file.separator");
+		String userName = System.getProperty("user.name");
+		InputStream src = BiometricsUtilImpl.class
+				.getResourceAsStream("/jnlp/secugen/win32/jnisgfplib.dll");
+		Path target = null;
 		try {
-			InputStream in = BiometricsUtilImpl.class
-					.getResourceAsStream(defaultNativeFile);
-			File fileOut = new File("C:/Windows/System32/jnisgfplib.dll");
-			OutputStream out = FileUtils.openOutputStream(fileOut);
-			IOUtils.copy(in, out);
-			in.close();
-			out.close();
+			target = Paths.get("C:/Windows/System32/");
 			String osArch = System.getProperty("os.arch");
 			if (osArch.equalsIgnoreCase("amd64")) {
-				String sixtyFourBitNativeFile = "/jnlp/secugen/x64/jnisgfplib.dll";
-				InputStream inStream = BiometricsUtilImpl.class
-						.getResourceAsStream(sixtyFourBitNativeFile);
-				File outFile = new File("C:/Windows/System32/jnisgfplib.dll");
-				OutputStream outStream = FileUtils.openOutputStream(outFile);
-				IOUtils.copy(inStream, outStream);
-				in.close();
-				out.close();
+				src = BiometricsUtilImpl.class
+						.getResourceAsStream("/jnlp/secugen/x64/jnisgfplib.dll");
+				target = Paths.get("C:/Windows/SysWOW64/");
 			}
-
+			AclFileAttributeView view = Files.getFileAttributeView(target,
+					AclFileAttributeView.class);
+			List<AclEntry> aclEntryList = view.getAcl();
+			UserPrincipalLookupService lookupService = FileSystems.getDefault()
+					.getUserPrincipalLookupService();
+			UserPrincipal userPrincipal = lookupService
+					.lookupPrincipalByName(userName);
+			AclEntry.Builder builder = AclEntry.newBuilder();
+			builder.setType(AclEntryType.ALLOW);
+			builder.setPrincipal(userPrincipal);
+			builder.setPermissions(AclEntryPermission.WRITE_ACL,
+					AclEntryPermission.DELETE);
+			AclEntry entry = builder.build();
+			aclEntryList.add(0, entry);
+			if (target.toFile().canWrite()) {
+				view.setAcl(aclEntryList);
+			}
+			target = Paths.get(target + separator + "jnisgfplib.dll");
+			Files.copy(src, target, REPLACE_EXISTING);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error(e);
+			throw new Exception(e.getMessage());
 		}
 	}
 

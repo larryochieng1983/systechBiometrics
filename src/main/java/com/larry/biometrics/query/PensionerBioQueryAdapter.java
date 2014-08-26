@@ -54,7 +54,8 @@ public class PensionerBioQueryAdapter {
 
 	}
 
-	public PensionerDto getPensionerBiometricInfo(String pensionerNumber) {
+	public PensionerDto getPensionerBiometricInfo(String pensionerNumber)
+			throws Exception {
 		PensionerDto pensionerDto = null;
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());
@@ -70,7 +71,7 @@ public class PensionerBioQueryAdapter {
 		return pensionerDto;
 	}
 
-	public PensionerDto searchPensioner(String memberId) {
+	public PensionerDto searchPensioner(String memberId) throws Exception {
 		PensionerDto pensionerDto = null;
 		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
 				PensionerSearchProxy.class, configuration.getUrl());
@@ -78,7 +79,6 @@ public class PensionerBioQueryAdapter {
 				configuration.getUserName(), configuration.getPassword(),
 				memberId);
 		String result = (String) response.getEntity(String.class);
-		System.out.println(result);
 		JSONObject jsonResult = null;
 		try {
 			jsonResult = (JSONObject) new JSONParser().parse(result);
@@ -96,7 +96,8 @@ public class PensionerBioQueryAdapter {
 					+ jsonResult.get("member.firstname").toString()
 					+ " "
 					+ jsonResult.get("member.othernames").toString());
-			pensionerDto.setPhotoUrl(configuration.getUrl()+jsonResult.get("member.image_url").toString());
+			pensionerDto.setPhotoUrl(configuration.getUrl()
+					+ jsonResult.get("member.image_url").toString());
 
 		}
 		return pensionerDto;
