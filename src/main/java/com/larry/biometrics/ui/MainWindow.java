@@ -959,7 +959,8 @@ public class MainWindow extends javax.swing.JFrame {
 			return;
 		}
 		if (iError == SGFDxErrorCode.SGFDX_ERROR_NONE) {
-			this.jLabelStatus.setText("Verification Success!");
+			this.jLabelStatus.setText("Verification Success for "
+					+ currentPensioner.getMemberName() + "!");
 
 		} else if (iError == SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL) {
 			this.jLabelStatus
