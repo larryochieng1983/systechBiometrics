@@ -84,6 +84,10 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 			throw new Exception(e.getMessage());
 		}
 		byte[] registeredMin = pensionerDto.getFpMinutiae();
+		if (registeredMin == null) {
+			throw new Exception(
+					"Could not fetch registered biometric data for member!");
+		}
 		boolean[] matched = new boolean[1];
 		matched[0] = false;
 		long iError = fplib.MatchTemplate(registeredMin, verifyMin,
