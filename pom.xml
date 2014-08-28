@@ -107,28 +107,7 @@
 		<profile>
 			<id>webstart</id>
 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-install-plugin</artifactId>
-						<version>2.4</version>
-						<executions>
-							<execution>
-								<id>secugen</id>
-								<phase>initialize</phase>
-								<goals>
-									<goal>install-file</goal>
-								</goals>
-								<configuration>
-									<groupId>com.secugen</groupId>
-									<artifactId>fdxsdkpro</artifactId>
-									<version>1.0.0</version>
-									<packaging>jar</packaging>
-									<file>${basedir}/src/main/resources/jnlp/secugen/FDxSDKPro.jar</file>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
+				<plugins>					
 					<plugin>
 						<groupId>org.codehaus.mojo.webstart</groupId>
 						<artifactId>webstart-maven-plugin</artifactId>
@@ -257,6 +236,11 @@
 											<replacetoken><![CDATA[systechBiometrics-${project.version}.jar]]></replacetoken>
 											<replacevalue>systechBiometrics-${project.version}-jar-with-dependencies.jar</replacevalue>
 										</replace>
+										<!-- Copy the secugen native files for distribution -->
+										<copy todir="${project.build.directory}/jnlp/">
+											<fileset dir="${project.basedir}/jnlp/secugen"
+												excludes="*.jar"/>
+										</copy>
 										<!-- create a zipped file containing the entire application -->
 										<zip
 											destfile="${project.build.directory}/installer/systechBiometrics-${project.version}.zip"
@@ -280,7 +264,7 @@
 							<releaseProfiles>webstart,release</releaseProfiles>
 							<preparationGoals>clean install</preparationGoals>
 						</configuration>
-					</plugin>					
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
