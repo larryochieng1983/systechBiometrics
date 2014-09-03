@@ -1491,6 +1491,11 @@ public class MainWindow extends javax.swing.JFrame {
 				jLabelStatus.setText("Member Search Successful: "
 						+ currentPensioner.getMemberName());
 				getMemberPictureLabel().setIcon(icon);
+				if (currentPensioner.getFpMinutiae() != null) {
+					JOptionPane.showMessageDialog(new JFrame(), "Alert",
+							"This Member has already been Registered!",
+							JOptionPane.WARNING_MESSAGE);
+				}
 			} else {
 				JOptionPane.showMessageDialog(frame, "Member Not Found!");
 			}
