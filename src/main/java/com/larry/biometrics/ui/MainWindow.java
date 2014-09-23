@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
@@ -97,7 +98,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private JLabel baseDirLabel;
 	private JButton saveBtn;
 	private JButton clearBtn;
-	private JTextField userPasswordText;
+	private JPasswordField userPasswordField;
 	private JLabel userPasswordLabel;
 	private JTextField userNameText;
 	private JLabel userNameLabel;
@@ -174,7 +175,7 @@ public class MainWindow extends javax.swing.JFrame {
 			userNameText.setText(config.getUserName());
 		}
 		if (config.getPassword() != null) {
-			userPasswordText.setText(config.getPassword());
+			userPasswordField.setText(config.getPassword());
 		}
 	}
 
@@ -813,10 +814,10 @@ public class MainWindow extends javax.swing.JFrame {
 				userPasswordLabel.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
-				userPasswordText = new JTextField();
-				systemConfigPanel.add(userPasswordText);
-				userPasswordText.setBounds(134, 151, 208, 23);
-				userPasswordText.setFont(new java.awt.Font("Arial", 0, 12));
+				userPasswordField = new JPasswordField();
+				systemConfigPanel.add(userPasswordField);
+				userPasswordField.setBounds(134, 151, 208, 23);
+				userPasswordField.setFont(new java.awt.Font("Arial", 0, 12));
 			}
 			{
 				clearBtn = new JButton();
@@ -1342,11 +1343,12 @@ public class MainWindow extends javax.swing.JFrame {
 		String baseDir = baseDirText.getText();
 		String url = fundMasterUrlText.getText();
 		String userName = userNameText.getText();
-		String password = userPasswordText.getText();
+		char[] password = userPasswordField.getPassword();
 		if (!baseDir.equals("") && !url.equals("") && !userName.equals("")
 				&& !password.equals("")) {
-			config.saveConfiguration(baseDir, url, userName, password);
-			JOptionPane.showMessageDialog(new JFrame(), "OK");
+			config.saveConfiguration(baseDir, url, userName,
+					String.valueOf(password));
+			JOptionPane.showMessageDialog(frame, "OK");
 		}
 
 	}
@@ -1375,7 +1377,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private void clearBtnActionPerformed(ActionEvent evt) {
 		fundMasterUrlText.setText("");
 		userNameText.setText("");
-		userPasswordText.setText("");
+		userPasswordField.setText("");
 	}
 
 	private JPanel getCurrentMemberPanel() {
