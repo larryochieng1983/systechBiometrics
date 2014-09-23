@@ -638,7 +638,7 @@ public class MainWindow extends javax.swing.JFrame {
 						-1));
 		jTextFieldDeviceID.setFont(new java.awt.Font("Arial", 0, 12));
 
-		jLabelFWVersion.setText("F/W Version");
+		jLabelFWVersion.setText("Firmware");
 		jPanelDeviceInfo.add(jLabelFWVersion,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, -1,
 						-1));
@@ -652,7 +652,7 @@ public class MainWindow extends javax.swing.JFrame {
 						-1));
 		jTextFieldFWVersion.setFont(new java.awt.Font("Arial", 0, 12));
 
-		jLabelSerialNumber.setText("Serial #");
+		jLabelSerialNumber.setText("Serial No.");
 		jPanelDeviceInfo.add(jLabelSerialNumber,
 				new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1,
 						-1));
