@@ -86,7 +86,7 @@ public class PensionerBioQueryAdapter {
 			LOG.error(e);
 		}
 		// Fetch the other info if the member exists
-		if (jsonResult != null || !jsonResult.isEmpty()) {
+		if (!jsonResult.isEmpty()) {
 			pensionerDto = getPensionerBiometricInfo(memberId);
 			pensionerDto.setMemberName(jsonResult.get("member.title")
 					.toString()
@@ -101,6 +101,21 @@ public class PensionerBioQueryAdapter {
 
 		}
 		return pensionerDto;
+	}
+
+	/**
+	 * Send an arbitrary string just to test connection to XI
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public int testXiConnection() throws Exception {
+		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
+				PensionerSearchProxy.class, configuration.getUrl());
+		ClientResponse response = pensionerSearchProxy.searchMember(
+				configuration.getUserName(), configuration.getPassword(),
+				"teststring");
+		return response.getStatus();
 	}
 
 	private byte[] extractByte(ClientResponse response) {

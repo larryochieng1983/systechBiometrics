@@ -1340,6 +1340,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void saveBtnActionPerformed(ActionEvent evt) {
+		int xiResponse = -1;
 		String baseDir = baseDirText.getText();
 		String url = fundMasterUrlText.getText();
 		String userName = userNameText.getText();
@@ -1348,7 +1349,24 @@ public class MainWindow extends javax.swing.JFrame {
 				&& !password.equals("")) {
 			config.saveConfiguration(baseDir, url, userName,
 					String.valueOf(password));
-			JOptionPane.showMessageDialog(frame, "OK");
+			try {
+				xiResponse = queryAdapter.testXiConnection();
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(frame,
+						"Could Not Connect to XI, Configuration Saved Anyway!",
+						"Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if (xiResponse == 200) {
+				JOptionPane.showMessageDialog(frame,
+						"Connection to XI successful, Configuration Saved!","Message",
+						JOptionPane.INFORMATION_MESSAGE);
+			}else{
+				JOptionPane.showMessageDialog(frame,
+						"Could Not Connect to XI, Configuration Saved Anyway!","Message",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+
 		}
 
 	}

@@ -28,4 +28,5 @@ public interface PensionerSearchProxy {
 			@HeaderParam("username") String userName,
 			@HeaderParam("password") String password,
 			@PathParam("id") String member_id);
+	
 }
