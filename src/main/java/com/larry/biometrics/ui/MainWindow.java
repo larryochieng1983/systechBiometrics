@@ -940,7 +940,7 @@ public class MainWindow extends javax.swing.JFrame {
 			this.jButtonGetDeviceInfo.doClick();
 		} else if (iError == SGFDxErrorCode.SGFDX_ERROR_NOT_USED)
 			this.jLabelStatus
-					.setText("Configure() not supported on this platform");
+					.setText("Configure not supported on this platform");
 		else
 			this.jLabelStatus.setText("Configuration Error : " + iError);
 
@@ -1156,7 +1156,7 @@ public class MainWindow extends javax.swing.JFrame {
 				this.jLabelStatus.setText("Get Image Error [" + ret + "]");
 			}
 		} else {
-			this.jLabelStatus.setText("JSGFPLib is not Initialized");
+			this.jLabelStatus.setText("Device Not Initialized!");
 		}
 
 	}// GEN-LAST:event_jButtonCaptureActionPerformed
@@ -1173,7 +1173,7 @@ public class MainWindow extends javax.swing.JFrame {
 						+ ret + "]");
 			}
 		} else {
-			this.jLabelStatus.setText("JSGFPLib is not Initialized");
+			this.jLabelStatus.setText("Initialized");
 		}
 	}// GEN-LAST:event_jButtonToggleLEDActionPerformed
 
@@ -1385,7 +1385,7 @@ public class MainWindow extends javax.swing.JFrame {
 			currentMemberPanel.setLayout(currentMemberPanelLayout);
 			currentMemberPanel.setBounds(500, 85, 135, 236);
 			currentMemberPanel.setBorder(BorderFactory.createTitledBorder(null,
-					"Current Member", TitledBorder.LEADING,
+					"Current Member Number", TitledBorder.LEADING,
 					TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial",
 							0, 12)));
 			currentMemberPanel.setFont(new java.awt.Font("Arial", 0, 12));
