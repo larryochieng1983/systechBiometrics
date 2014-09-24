@@ -5,7 +5,6 @@ package com.larry.biometrics.query;
 
 import java.io.InputStream;
 
-import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.json.simple.JSONObject;
@@ -22,9 +21,6 @@ import com.larry.biometrics.util.FundMasterConfiguration;
  * 
  */
 public class PensionerBioQueryAdapter {
-
-	private static Logger LOG = Logger
-			.getLogger(PensionerBioQueryAdapter.class);
 
 	private FundMasterConfiguration configuration;
 	/** For testing if the client works */
@@ -83,7 +79,6 @@ public class PensionerBioQueryAdapter {
 		try {
 			jsonResult = (JSONObject) new JSONParser().parse(result);
 		} catch (ParseException e) {
-			LOG.error(e);
 			throw new Exception(e.getMessage());
 		}
 		// Fetch the other info if the member exists
@@ -119,7 +114,7 @@ public class PensionerBioQueryAdapter {
 		return response.getStatus();
 	}
 
-	private byte[] extractByte(ClientResponse response) {
+	private byte[] extractByte(ClientResponse response) throws Exception {
 		byte[] payload = new byte[400];
 		try {
 			InputStream inputStream = (InputStream) response
@@ -127,7 +122,7 @@ public class PensionerBioQueryAdapter {
 			inputStream.read(payload);
 			inputStream.close();
 		} catch (Exception e) {
-			LOG.error(e);
+			throw new Exception(e.getMessage());
 		}
 		return payload;
 	}
