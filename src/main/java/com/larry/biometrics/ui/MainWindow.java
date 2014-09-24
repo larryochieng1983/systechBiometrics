@@ -13,9 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -108,6 +112,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private JPanel systemConfigPanel;
 	private FundMasterConfiguration config;
 	private PensionerBioQueryAdapter queryAdapter;
+	private ClientAppInfo appInfo;
 	/** Frame for notification dialogs */
 	private JFrame frame = new JFrame();
 
@@ -118,6 +123,7 @@ public class MainWindow extends javax.swing.JFrame {
 	public MainWindow() {
 		biometricsUtil = new BiometricsUtilImpl();
 		applicationInfo = new ApplicationInfoImpl();
+		initBiometricsAppInfo();
 		config = new FundMasterConfiguration();
 		queryAdapter = new PensionerBioQueryAdapter(config);
 		bLEDOn = false;
@@ -126,6 +132,20 @@ public class MainWindow extends javax.swing.JFrame {
 		this.jComboBoxRegisterSecurityLevel.setSelectedIndex(4);
 		this.jComboBoxVerifySecurityLevel.setSelectedIndex(4);
 		loadSystemConfig();
+	}
+
+	private void initBiometricsAppInfo() {
+		appInfo = new ClientAppInfo();
+		InputStream inputStream = getClass().getResourceAsStream(
+				"/application.properties");
+		Properties properties = new Properties();
+		try {
+			properties.load(inputStream);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+		appInfo.setName(properties.getProperty("application.name"));
+		appInfo.setVersion(properties.getProperty("application.version"));
 	}
 
 	private void disableControls() {
@@ -414,7 +434,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jLabelSpacer1 = new javax.swing.JLabel();
 		jLabelSpacer2 = new javax.swing.JLabel();
 
-		setTitle("Systech Biometrics");
+		setTitle(appInfo.getName()+"-"+appInfo.getVersion());
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				exitForm(evt);
@@ -1359,12 +1379,12 @@ public class MainWindow extends javax.swing.JFrame {
 			}
 			if (xiResponse == 200) {
 				JOptionPane.showMessageDialog(frame,
-						"Connection to XI successful, Configuration Saved!","Message",
-						JOptionPane.INFORMATION_MESSAGE);
-			}else{
+						"Connection to XI successful, Configuration Saved!",
+						"Message", JOptionPane.INFORMATION_MESSAGE);
+			} else {
 				JOptionPane.showMessageDialog(frame,
-						"Could Not Connect to XI, Configuration Saved Anyway!","Message",
-						JOptionPane.INFORMATION_MESSAGE);
+						"Could Not Connect to XI, Configuration Saved Anyway!",
+						"Message", JOptionPane.INFORMATION_MESSAGE);
 			}
 
 		}

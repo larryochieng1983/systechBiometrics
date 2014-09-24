@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>systechBiometrics</groupId>
-	<artifactId>systechBiometrics</artifactId>
+	<artifactId>SystechBiometrics</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/larryochieng1983/systechBiometrics.git</connection>
@@ -107,7 +107,13 @@
 		<profile>
 			<id>webstart</id>
 			<build>
-				<plugins>					
+				<resources>
+					<resource>
+						<filtering>true</filtering>
+						<directory>src/main/resources</directory>
+					</resource>
+				</resources>
+				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo.webstart</groupId>
 						<artifactId>webstart-maven-plugin</artifactId>
@@ -239,7 +245,7 @@
 										<!-- Copy the secugen native files for distribution -->
 										<copy todir="${project.build.directory}/jnlp/">
 											<fileset dir="${project.basedir}/jnlp/secugen"
-												excludes="*.jar"/>
+												excludes="*.jar" />
 										</copy>
 										<!-- create a zipped file containing the entire application -->
 										<zip
@@ -265,6 +271,14 @@
 							<preparationGoals>clean install</preparationGoals>
 						</configuration>
 					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.5</version>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -286,7 +300,8 @@
 		<systechProductName>STB</systechProductName>
 		<systechProductLongName>Fingerprint Biometrics</systechProductLongName>
 		<project.Organization.Name>Systech Africa Biometrics</project.Organization.Name>
-		<vendorUrl>www.systechafrica.com</vendorUrl>
+		<project.vendorUrl>www.systechafrica.com</project.vendorUrl>
+		<project.vendor>Systech Africa Ltd</project.vendor>
 		<systechBiometricsApplication>systechBiometrics-${project.version}.jar</systechBiometricsApplication>
 		<systechAppMainClass>com.larry.biometrics.ui.BiometricsTray</systechAppMainClass>
 		<codebase>file:///${project.build.directory}/jnlp</codebase>
