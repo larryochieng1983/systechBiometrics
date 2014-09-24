@@ -84,6 +84,7 @@ public class PensionerBioQueryAdapter {
 			jsonResult = (JSONObject) new JSONParser().parse(result);
 		} catch (ParseException e) {
 			LOG.error(e);
+			throw new Exception(e.getMessage());
 		}
 		// Fetch the other info if the member exists
 		if (!jsonResult.isEmpty()) {
