@@ -1564,10 +1564,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	/***/
-	private void reset() {
-		regMin1 = null;
-		regMin2 = null;
-		vrfMin = null;
+	private void reset() {		
 		currentPensioner = null;
 		jLabelRegisterImage1.setIcon(null);
 		jLabelRegisterImage2.setIcon(null);
