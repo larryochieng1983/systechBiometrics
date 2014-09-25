@@ -127,7 +127,7 @@ public class MainWindow extends javax.swing.JFrame {
 		queryAdapter = new PensionerBioQueryAdapter(config);
 		bLEDOn = false;
 		initComponents();
-		disableControls();
+		disableControls();		
 		this.jComboBoxRegisterSecurityLevel.setSelectedIndex(4);
 		this.jComboBoxVerifySecurityLevel.setSelectedIndex(4);
 		loadSystemConfig();
@@ -150,24 +150,27 @@ public class MainWindow extends javax.swing.JFrame {
 	private void disableControls() {
 		this.jButtonToggleLED.setEnabled(false);
 		this.jButtonCapture.setEnabled(false);
+		this.jButtonConfig.setEnabled(false);
 		this.jButtonCaptureR1.setEnabled(false);
 		this.jButtonCaptureR2.setEnabled(false);
 		this.jButtonCaptureV1.setEnabled(false);
 		this.jButtonRegister.setEnabled(false);
 		this.jButtonVerify.setEnabled(false);
-		this.jButtonGetDeviceInfo.setEnabled(false);
-		this.jButtonConfig.setEnabled(false);
+		this.jButtonGetDeviceInfo.setEnabled(false);		
 		getResetBtn().setEnabled(false);
 	}
-
-	private void enableControls() {
+	
+	private void enableConfigTestCtrls(){
 		this.jButtonToggleLED.setEnabled(true);
 		this.jButtonCapture.setEnabled(true);
+		this.jButtonConfig.setEnabled(true);
+	}
+
+	private void enableControls() {		
 		this.jButtonCaptureR1.setEnabled(true);
 		this.jButtonCaptureR2.setEnabled(true);
 		this.jButtonCaptureV1.setEnabled(true);
 		this.jButtonGetDeviceInfo.setEnabled(true);
-		this.jButtonConfig.setEnabled(true);
 		getResetBtn().setEnabled(true);
 	}
 
@@ -1214,6 +1217,7 @@ public class MainWindow extends javax.swing.JFrame {
 		}
 		ret = biometricsUtil.initDevice(this.deviceName);
 		if (ret == SGFDxErrorCode.SGFDX_ERROR_NONE) {
+			enableConfigTestCtrls();
 			this.jLabelStatus.setText("Initialization Success");
 			this.devicePort = SGPPPortAddr.AUTO_DETECT;
 			switch (this.jComboBoxUSBPort.getSelectedIndex()) {
@@ -1564,12 +1568,15 @@ public class MainWindow extends javax.swing.JFrame {
 	/***/
 	private void reset() {		
 		currentPensioner = null;
-		jLabelRegisterImage1.setIcon(null);
-		jLabelRegisterImage2.setIcon(null);
-		jLabelVerifyImage.setIcon(null);
+		this.jLabelRegisterImage1.setIcon(null);
+		this.jLabelRegisterImage2.setIcon(null);
+		this.jLabelVerifyImage.setIcon(null);
 		getMemberSearchText().setText("");
 		getMemberPictureLabel().setText("");
-		jLabelStatus.setText("");
+		this.jLabelStatus.setText("");
+		this.jProgressBarR1.setValue(0);
+		this.jProgressBarR2.setValue(0);
+		this.jProgressBarV1.setValue(0);
 	}
 
 }
