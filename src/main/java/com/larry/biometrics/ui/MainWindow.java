@@ -158,7 +158,6 @@ public class MainWindow extends javax.swing.JFrame {
 		this.jButtonGetDeviceInfo.setEnabled(false);
 		this.jButtonConfig.setEnabled(false);
 		getResetBtn().setEnabled(false);
-		getMemberSearchBtn().setEnabled(false);
 	}
 
 	private void enableControls() {
@@ -170,7 +169,6 @@ public class MainWindow extends javax.swing.JFrame {
 		this.jButtonGetDeviceInfo.setEnabled(true);
 		this.jButtonConfig.setEnabled(true);
 		getResetBtn().setEnabled(true);
-		getMemberSearchBtn().setEnabled(true);
 	}
 
 	private void enableRegisterControls() {
@@ -1263,8 +1261,7 @@ public class MainWindow extends javax.swing.JFrame {
 							BufferedImage.TYPE_BYTE_GRAY);
 					imgVerification = new BufferedImage(deviceInfo.imageWidth,
 							deviceInfo.imageHeight,
-							BufferedImage.TYPE_BYTE_GRAY);
-					this.enableControls();
+							BufferedImage.TYPE_BYTE_GRAY);					
 				} else
 					this.jLabelStatus.setText("Getting Device Info Error ["
 							+ ret + "]");
@@ -1531,6 +1528,7 @@ public class MainWindow extends javax.swing.JFrame {
 				jLabelStatus.setText("Member Search Successful: "
 						+ currentPensioner.getMemberName());
 				getMemberPictureLabel().setIcon(icon);
+				this.enableControls();
 				if (currentPensioner.getFpMinutiae() != null) {
 					JOptionPane.showMessageDialog(new JFrame(), "Alert",
 							"This Member has already been Registered!",
