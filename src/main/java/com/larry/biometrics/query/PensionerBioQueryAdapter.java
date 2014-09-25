@@ -35,6 +35,9 @@ public class PensionerBioQueryAdapter {
 
 	public boolean savePensionerInfo(PensionerDto pensionerDto)
 			throws Exception {
+		if(pensionerDto == null){
+			throw new Exception("Member Search not Successful, please search first!");
+		}
 		byte[] fpImage = pensionerDto.getFpImage();
 		byte[] fpMinutiae = pensionerDto.getFpMinutiae();
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
@@ -54,6 +57,9 @@ public class PensionerBioQueryAdapter {
 
 	public PensionerDto getPensionerBiometricInfo(String pensionerNumber)
 			throws Exception {
+		if(pensionerNumber == null){
+			throw new Exception("Member Search not Successful, please search first!");
+		}
 		PensionerDto pensionerDto = null;
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());

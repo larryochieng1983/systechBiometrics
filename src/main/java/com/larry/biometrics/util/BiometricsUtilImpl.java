@@ -37,7 +37,6 @@ import com.larry.biometrics.query.PensionerBioQueryAdapter;
  */
 public class BiometricsUtilImpl implements BiometricsUtil {
 
-	private static Logger logger = Logger.getLogger(BiometricsUtil.class);
 	public PensionerDto currentPensioner;
 	private PensionerBioQueryAdapter adapter;
 	private FundMasterConfiguration configuration;
@@ -76,11 +75,14 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 
 	public long verify(byte[] verifyMin, long securityLevel) throws Exception {
 		PensionerDto pensionerDto = null;
+		if (currentPensioner == null) {
+			throw new Exception(
+					"Member Search not Successful, please search first!");
+		}
 		try {
 			pensionerDto = adapter.getPensionerBiometricInfo(currentPensioner
 					.getPensionerNumber());
 		} catch (Exception e) {
-			logger.error(e);
 			throw new Exception(e.getMessage());
 		}
 		byte[] registeredMin = pensionerDto.getFpMinutiae();
@@ -100,6 +102,10 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
 			byte[] fpImage, long securityLevel) throws Exception {
+		if (currentPensioner == null) {
+			throw new Exception(
+					"Member Search not Successful, please search first!");
+		}
 		currentPensioner.setFpMinutiae(registeredMin2);
 		boolean[] matched = new boolean[1];
 		long err = fplib.MatchTemplate(registeredMin1, registeredMin2,
@@ -111,7 +117,6 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 				try {
 					adapter.savePensionerInfo(currentPensioner);
 				} catch (Exception e) {
-					logger.error(e);
 					throw new Exception(e.getMessage());
 				}
 			} else {
@@ -219,8 +224,6 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 			target = Paths.get(target + separator + "jnisgfplib.dll");
 			Files.copy(src, target, REPLACE_EXISTING);
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error(e);
 			throw new Exception(e.getMessage());
 		}
 	}
