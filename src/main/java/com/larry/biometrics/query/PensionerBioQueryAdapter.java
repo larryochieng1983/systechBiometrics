@@ -5,6 +5,8 @@ package com.larry.biometrics.query;
 
 import java.io.InputStream;
 
+import javax.ws.rs.core.Response.Status;
+
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.json.simple.JSONObject;
@@ -77,9 +79,9 @@ public class PensionerBioQueryAdapter {
 		String result = (String) response.getEntity(String.class);
 		JSONObject jsonResult = null;
 		try {
-			jsonResult = (JSONObject) new JSONParser().parse(result);
+			jsonResult = (JSONObject) new JSONParser().parse(result);			
 		} catch (ParseException e) {
-			throw new Exception(e.getMessage());
+			throw new Exception("Could Not Parse Response from Xi!");
 		}
 		// Fetch the other info if the member exists
 		if (!jsonResult.isEmpty()) {
@@ -105,13 +107,13 @@ public class PensionerBioQueryAdapter {
 	 * @return
 	 * @throws Exception
 	 */
-	public int testXiConnection() throws Exception {
+	public Status testXiConnection() throws Exception {
 		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
 				PensionerSearchProxy.class, configuration.getUrl());
 		ClientResponse response = pensionerSearchProxy.searchMember(
 				configuration.getUserName(), configuration.getPassword(),
-				"teststring");
-		return response.getStatus();
+				"0");
+		return response.getResponseStatus();
 	}
 
 	private byte[] extractByte(ClientResponse response) throws Exception {

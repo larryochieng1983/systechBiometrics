@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -33,6 +31,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
@@ -434,7 +433,7 @@ public class MainWindow extends javax.swing.JFrame {
 		jLabelSpacer1 = new javax.swing.JLabel();
 		jLabelSpacer2 = new javax.swing.JLabel();
 
-		setTitle(appInfo.getName()+"-"+appInfo.getVersion());
+		setTitle(appInfo.getName() + "-" + appInfo.getVersion());
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				exitForm(evt);
@@ -1360,24 +1359,25 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void saveBtnActionPerformed(ActionEvent evt) {
-		int xiResponse = -1;
+		Status status = null;
 		String baseDir = baseDirText.getText();
 		String url = fundMasterUrlText.getText();
 		String userName = userNameText.getText();
 		char[] password = userPasswordField.getPassword();
 		if (!baseDir.equals("") && !url.equals("") && !userName.equals("")
-				&& !password.equals("")) {
-			config.saveConfiguration(baseDir, url, userName,
-					String.valueOf(password));
+				&& password.length != 0) {
+			config.saveConfiguration(baseDir, url, userName, new String(
+					password));			
 			try {
-				xiResponse = queryAdapter.testXiConnection();
+				status = queryAdapter.testXiConnection();
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(frame,
-						"Could Not Connect to XI, Configuration Saved Anyway!",
-						"Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame, "Could Not Connect to XI,"
+						+ "Error is: " + status.toString()
+						+ "Configuration Saved Anyway!", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (xiResponse == 200) {
+			if (status == Status.OK) {
 				JOptionPane.showMessageDialog(frame,
 						"Connection to XI successful, Configuration Saved!",
 						"Message", JOptionPane.INFORMATION_MESSAGE);
