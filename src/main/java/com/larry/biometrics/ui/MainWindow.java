@@ -127,7 +127,7 @@ public class MainWindow extends javax.swing.JFrame {
 		queryAdapter = new PensionerBioQueryAdapter(config);
 		bLEDOn = false;
 		initComponents();
-		disableControls();		
+		disableControls();
 		this.jComboBoxRegisterSecurityLevel.setSelectedIndex(4);
 		this.jComboBoxVerifySecurityLevel.setSelectedIndex(4);
 		loadSystemConfig();
@@ -156,17 +156,22 @@ public class MainWindow extends javax.swing.JFrame {
 		this.jButtonCaptureV1.setEnabled(false);
 		this.jButtonRegister.setEnabled(false);
 		this.jButtonVerify.setEnabled(false);
-		this.jButtonGetDeviceInfo.setEnabled(false);		
+		this.jButtonGetDeviceInfo.setEnabled(false);
 		getResetBtn().setEnabled(false);
 	}
-	
-	private void enableConfigTestCtrls(){
+	public void disableRegisterCtrls(){
+		this.jButtonCaptureR1.setEnabled(false);
+		this.jButtonCaptureR2.setEnabled(false);
+		this.jButtonRegister.setEnabled(false);
+	}
+
+	private void enableConfigTestCtrls() {
 		this.jButtonToggleLED.setEnabled(true);
 		this.jButtonCapture.setEnabled(true);
 		this.jButtonConfig.setEnabled(true);
 	}
 
-	private void enableControls() {		
+	private void enableControls() {
 		this.jButtonCaptureR1.setEnabled(true);
 		this.jButtonCaptureR2.setEnabled(true);
 		this.jButtonCaptureV1.setEnabled(true);
@@ -1265,7 +1270,7 @@ public class MainWindow extends javax.swing.JFrame {
 							BufferedImage.TYPE_BYTE_GRAY);
 					imgVerification = new BufferedImage(deviceInfo.imageWidth,
 							deviceInfo.imageHeight,
-							BufferedImage.TYPE_BYTE_GRAY);					
+							BufferedImage.TYPE_BYTE_GRAY);
 				} else
 					this.jLabelStatus.setText("Getting Device Info Error ["
 							+ ret + "]");
@@ -1368,7 +1373,7 @@ public class MainWindow extends javax.swing.JFrame {
 		if (!baseDir.equals("") && !url.equals("") && !userName.equals("")
 				&& password.length != 0) {
 			config.saveConfiguration(baseDir, url, userName, new String(
-					password));			
+					password));
 			try {
 				status = queryAdapter.testXiConnection();
 			} catch (Exception e) {
@@ -1496,7 +1501,8 @@ public class MainWindow extends javax.swing.JFrame {
 		String searchId = getMemberSearchText().getText();
 		if (!searchId.equals("")) {
 			try {
-				currentPensioner = queryAdapter.searchPensioner(Long.valueOf(searchId));
+				currentPensioner = queryAdapter.searchPensioner(Long
+						.valueOf(searchId));
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(frame, e.getMessage(),
 						"System Error", JOptionPane.ERROR_MESSAGE);
@@ -1534,9 +1540,10 @@ public class MainWindow extends javax.swing.JFrame {
 				getMemberPictureLabel().setIcon(icon);
 				this.enableControls();
 				if (currentPensioner.getFpMinutiae() != null) {
-					JOptionPane.showMessageDialog(new JFrame(), "Alert",
+					JOptionPane.showMessageDialog(new JFrame(),
 							"This Member has already been Registered!",
-							JOptionPane.WARNING_MESSAGE);
+							"Alert", JOptionPane.WARNING_MESSAGE);
+					disableRegisterCtrls();
 				}
 			} else {
 				JOptionPane.showMessageDialog(frame, "Member Not Found!");
@@ -1566,13 +1573,14 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	/***/
-	private void reset() {		
+	private void reset() {
 		currentPensioner = null;
 		this.jLabelRegisterImage1.setIcon(null);
 		this.jLabelRegisterImage2.setIcon(null);
 		this.jLabelVerifyImage.setIcon(null);
 		getMemberSearchText().setText("");
 		getMemberPictureLabel().setText("");
+		disableControls();
 		this.jLabelStatus.setText("");
 		this.jProgressBarR1.setValue(0);
 		this.jProgressBarR2.setValue(0);
