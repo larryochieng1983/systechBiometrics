@@ -1360,7 +1360,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void saveBtnActionPerformed(ActionEvent evt) {
-		Status status = null;
+		Status status = Status.INTERNAL_SERVER_ERROR;
 		String baseDir = baseDirText.getText();
 		String url = fundMasterUrlText.getText();
 		String userName = userNameText.getText();
@@ -1373,8 +1373,8 @@ public class MainWindow extends javax.swing.JFrame {
 				status = queryAdapter.testXiConnection();
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(frame, "Could Not Connect to XI,"
-						+ "Error is: " + status.toString()
-						+ "Configuration Saved Anyway!", "Error",
+						+ "Error is: " + status
+						+ ", Configuration Saved Anyway!", "Error",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -1496,7 +1496,7 @@ public class MainWindow extends javax.swing.JFrame {
 		String searchId = getMemberSearchText().getText();
 		if (!searchId.equals("")) {
 			try {
-				currentPensioner = queryAdapter.searchPensioner(searchId);
+				currentPensioner = queryAdapter.searchPensioner(Long.valueOf(searchId));
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(frame, e.getMessage(),
 						"System Error", JOptionPane.ERROR_MESSAGE);

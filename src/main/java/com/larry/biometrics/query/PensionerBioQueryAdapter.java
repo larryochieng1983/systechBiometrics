@@ -55,9 +55,9 @@ public class PensionerBioQueryAdapter {
 
 	}
 
-	public PensionerDto getPensionerBiometricInfo(String pensionerNumber)
+	public PensionerDto getPensionerBiometricInfo(long pensionerNumber)
 			throws Exception {
-		if(pensionerNumber == null){
+		if(new Long(pensionerNumber) == null){
 			throw new Exception("Member Search not Successful, please search first!");
 		}
 		PensionerDto pensionerDto = null;
@@ -75,7 +75,7 @@ public class PensionerBioQueryAdapter {
 		return pensionerDto;
 	}
 
-	public PensionerDto searchPensioner(String memberId) throws Exception {
+	public PensionerDto searchPensioner(long memberId) throws Exception {
 		PensionerDto pensionerDto = null;
 		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
 				PensionerSearchProxy.class, configuration.getUrl());
@@ -118,7 +118,7 @@ public class PensionerBioQueryAdapter {
 				PensionerSearchProxy.class, configuration.getUrl());
 		ClientResponse response = pensionerSearchProxy.searchMember(
 				configuration.getUserName(), configuration.getPassword(),
-				"0");
+				0L);
 		return response.getResponseStatus();
 	}
 

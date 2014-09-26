@@ -24,7 +24,7 @@ public class PensionerBioQueryAdapterTest extends MockObjectTestCase {
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, testUrl);
 		ClientResponse response = createPensionerBioProxy.getPensionerBio("",
-				"", "7883737383", "fingerprint_data");
+				"", 7883737383L, "fingerprint_data");
 		assertEquals(404, response.getStatus());
 	}
 

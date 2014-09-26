@@ -17,7 +17,7 @@ public class PensionerDto implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String pensionerNumber;
+	private long pensionerNumber;
 	// the image of the fingerprint
 	private byte[] fpImage;
 	// the fingerprint minutiae
@@ -25,11 +25,11 @@ public class PensionerDto implements Serializable {
 	private String photoUrl;
 	private String memberName;
 
-	public String getPensionerNumber() {
+	public long getPensionerNumber() {
 		return pensionerNumber;
 	}
 
-	public void setPensionerNumber(String pensionerNumber) {
+	public void setPensionerNumber(long pensionerNumber) {
 		this.pensionerNumber = pensionerNumber;
 	}
 
@@ -84,7 +84,7 @@ public class PensionerDto implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((pensionerNumber == null) ? 0 : pensionerNumber.hashCode());
+				+ (int) (pensionerNumber ^ (pensionerNumber >>> 32));
 		return result;
 	}
 
@@ -97,12 +97,11 @@ public class PensionerDto implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		PensionerDto other = (PensionerDto) obj;
-		if (pensionerNumber == null) {
-			if (other.pensionerNumber != null)
-				return false;
-		} else if (!pensionerNumber.equals(other.pensionerNumber))
+		if (pensionerNumber != other.pensionerNumber)
 			return false;
 		return true;
 	}
+
+	
 
 }

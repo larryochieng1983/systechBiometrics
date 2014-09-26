@@ -15,7 +15,7 @@ public class PensionerServiceInputBean {
 
 	@FormParam("member_id")
 	@PartType("text/plain")
-	private String memberId;
+	private long memberId;
 
 	@FormParam("fpImage")
 	@PartType("image/bmp")
@@ -25,11 +25,11 @@ public class PensionerServiceInputBean {
 	@PartType("application/octet-stream")
 	private byte[] fpMinutiae;
 
-	public String getMemberId() {
+	public long getMemberId() {
 		return memberId;
 	}
 
-	public void setMemberId(String memberId) {
+	public void setMemberId(long memberId) {
 		this.memberId = memberId;
 	}
 

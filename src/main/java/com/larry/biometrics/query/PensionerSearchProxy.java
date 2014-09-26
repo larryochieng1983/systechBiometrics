@@ -27,6 +27,6 @@ public interface PensionerSearchProxy {
 	public ClientResponse<PensionerServiceInputBean> searchMember(
 			@HeaderParam("username") String userName,
 			@HeaderParam("password") String password,
-			@PathParam("id") String member_id);
+			@PathParam("id") long member_id);
 	
 }

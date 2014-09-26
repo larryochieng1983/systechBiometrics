@@ -38,6 +38,6 @@ public interface CreatePensionerBioProxy {
 	public ClientResponse<PensionerServiceInputBean> getPensionerBio(
 			@HeaderParam("username") String userName,
 			@HeaderParam("password") String password,
-			@PathParam("member_id") String member_id,
+			@PathParam("member_id") long member_id,
 			@PathParam("type") String type);
 }
