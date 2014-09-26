@@ -102,6 +102,7 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 
 	public long register(byte[] registeredMin1, byte[] registeredMin2,
 			byte[] fpImage, long securityLevel) throws Exception {
+		boolean saved = false;
 		if (currentPensioner == null) {
 			throw new Exception(
 					"Member Search not Successful, please search first!");
@@ -115,9 +116,12 @@ public class BiometricsUtilImpl implements BiometricsUtil {
 				currentPensioner.setFpMinutiae(registeredMin2);
 				currentPensioner.setFpImage(fpImage);
 				try {
-					adapter.savePensionerInfo(currentPensioner);
+					saved = adapter.savePensionerInfo(currentPensioner);
 				} catch (Exception e) {
 					throw new Exception(e.getMessage());
+				}
+				if (saved != true) {
+					throw new Exception("Error Saving Information to XI!");
 				}
 			} else {
 				err = SGFDxErrorCode.SGFDX_ERROR_MATCH_FAIL;

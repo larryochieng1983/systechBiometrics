@@ -35,8 +35,9 @@ public class PensionerBioQueryAdapter {
 
 	public boolean savePensionerInfo(PensionerDto pensionerDto)
 			throws Exception {
-		if(pensionerDto == null){
-			throw new Exception("Member Search not Successful, please search first!");
+		if (pensionerDto == null) {
+			throw new Exception(
+					"Member Search not Successful, please search first!");
 		}
 		byte[] fpImage = pensionerDto.getFpImage();
 		byte[] fpMinutiae = pensionerDto.getFpMinutiae();
@@ -57,20 +58,24 @@ public class PensionerBioQueryAdapter {
 
 	public PensionerDto getPensionerBiometricInfo(long pensionerNumber)
 			throws Exception {
-		if(new Long(pensionerNumber) == null){
-			throw new Exception("Member Search not Successful, please search first!");
+		if (new Long(pensionerNumber) == null) {
+			throw new Exception(
+					"Member Search not Successful, please search first!");
 		}
 		PensionerDto pensionerDto = null;
 		CreatePensionerBioProxy createPensionerBioProxy = ProxyFactory.create(
 				CreatePensionerBioProxy.class, configuration.getUrl());
 		ClientResponse response = createPensionerBioProxy.getPensionerBio(
 				configuration.getUserName(), configuration.getPassword(),
-				pensionerNumber, "fingerprint_data");
+				pensionerNumber, "fingerprint_data");		
 		if (response.getStatus() == 200) {
 			setStatus(200);
 			pensionerDto = new PensionerDto();
 			pensionerDto.setPensionerNumber(pensionerNumber);
-			pensionerDto.setFpMinutiae(extractByte(response));
+			byte[] minutiae = extractByte(response);
+			if (minutiae != null) {
+				pensionerDto.setFpMinutiae(minutiae);
+			}
 		}
 		return pensionerDto;
 	}
@@ -85,7 +90,7 @@ public class PensionerBioQueryAdapter {
 		String result = (String) response.getEntity(String.class);
 		JSONObject jsonResult = null;
 		try {
-			jsonResult = (JSONObject) new JSONParser().parse(result);			
+			jsonResult = (JSONObject) new JSONParser().parse(result);
 		} catch (ParseException e) {
 			throw new Exception("Could Not Parse Response from Xi!");
 		}
@@ -117,8 +122,7 @@ public class PensionerBioQueryAdapter {
 		PensionerSearchProxy pensionerSearchProxy = ProxyFactory.create(
 				PensionerSearchProxy.class, configuration.getUrl());
 		ClientResponse response = pensionerSearchProxy.searchMember(
-				configuration.getUserName(), configuration.getPassword(),
-				0L);
+				configuration.getUserName(), configuration.getPassword(), 0L);
 		return response.getResponseStatus();
 	}
 
@@ -127,8 +131,12 @@ public class PensionerBioQueryAdapter {
 		try {
 			InputStream inputStream = (InputStream) response
 					.getEntity(InputStream.class);
-			inputStream.read(payload);
-			inputStream.close();
+			if (inputStream.available() > 0) {
+				inputStream.read(payload);
+				inputStream.close();
+			} else {
+				return null;
+			}
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

@@ -34,7 +34,7 @@ public interface CreatePensionerBioProxy {
 	@GET
 	@Path("fingerprint/{member_id}/{type}")
 	@Consumes("text/xml")
-	@Produces(value = { MediaType.APPLICATION_OCTET_STREAM, "image/bmp" })
+	@Produces(value = { MediaType.APPLICATION_OCTET_STREAM, "application/octet-stream" })
 	public ClientResponse<PensionerServiceInputBean> getPensionerBio(
 			@HeaderParam("username") String userName,
 			@HeaderParam("password") String password,
