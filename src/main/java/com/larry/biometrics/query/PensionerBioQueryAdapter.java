@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.json.simple.JSONObject;
@@ -67,13 +68,13 @@ public class PensionerBioQueryAdapter {
 				CreatePensionerBioProxy.class, configuration.getUrl());
 		ClientResponse response = createPensionerBioProxy.getPensionerBio(
 				configuration.getUserName(), configuration.getPassword(),
-				pensionerNumber, "fingerprint_data");		
+				pensionerNumber, "fingerprint_data");
 		if (response.getStatus() == 200) {
 			setStatus(200);
 			pensionerDto = new PensionerDto();
 			pensionerDto.setPensionerNumber(pensionerNumber);
-			byte[] minutiae = extractByte(response);
-			if (minutiae != null) {
+			byte[] minutiae = extractByte(response);			
+			if (minutiae.length == 400) {
 				pensionerDto.setFpMinutiae(minutiae);
 			}
 		}
@@ -128,17 +129,14 @@ public class PensionerBioQueryAdapter {
 
 	private byte[] extractByte(ClientResponse response) throws Exception {
 		byte[] payload = new byte[400];
+		InputStream inputStream = null;
 		try {
-			InputStream inputStream = (InputStream) response
-					.getEntity(InputStream.class);
-			if (inputStream.available() > 0) {
-				inputStream.read(payload);
-				inputStream.close();
-			} else {
-				return null;
-			}
+			inputStream = (InputStream) response.getEntity(InputStream.class);
+			payload = IOUtils.toByteArray(inputStream);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
+		} finally {
+			inputStream.close();
 		}
 		return payload;
 	}
